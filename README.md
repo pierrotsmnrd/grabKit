@@ -1,5 +1,4 @@
 
-
 GrabKit
 =======================
 
@@ -218,5 +217,8 @@ Contact
 Are you using GrabKit in your project ? Do you have a suggestion ? Any question ? 
 
 
-Pierre-Olivier Simonard pierre.olivier.simonard@gmail.com
+Pierre-Olivier Simonard 
+
+pierre.olivier.simonard@gmail.com
+
 www.twitter.com/pierrotsmnrd
