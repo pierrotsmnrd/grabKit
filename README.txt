@@ -106,18 +106,17 @@ How To Use GrabKit
 * First, include GrabKit in you project : just drag'n'drop the grabKitSources directory.
 
 * in your appDelegate, import "GRKConnectorsDispatcher.h" and add :		
-###  
-	- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-	
-	    BOOL urlHasBeenHandledByDispatcher = [[GRKConnectorsDispatcher sharedInstance] dispatchURLToConnectingServiceConnector:url];
-	    if ( urlHasBeenHandledByDispatcher  ) return YES;
-	    else {
-	        // If you have specific URL schemes to handle for you application, 
-	        //  the GRKConnectorDispatcher won't handle the URL. 
-	        // Then, you can handle here your own URL schemes.
-	        return NO;
-	    }
-	}
+
+        - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+            BOOL urlHasBeenHandledByDispatcher = [[GRKConnectorsDispatcher sharedInstance] dispatchURLToConnectingServiceConnector:url];
+            if ( urlHasBeenHandledByDispatcher  ) return YES;
+            else {
+                // If you have specific URL schemes to handle for you application, 
+                //  the GRKConnectorDispatcher won't handle the URL. 
+                // Then, you can handle here your own URL schemes.
+                return NO;
+            }
+        }
 
 
 * GrabKit comes with all the needed libraries included. Just drag'n'drop the "libs" directory into your project.
@@ -220,4 +219,3 @@ Are you using GrabKit in your project ? Do you have a suggestion ? Any question 
 
 Pierre-Olivier Simonard pierre.olivier.simonard@gmail.com
 www.twitter.com/pierrotsmnrd
-
