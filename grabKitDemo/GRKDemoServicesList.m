@@ -214,7 +214,7 @@
     
     id grabber = nil;
     @try {
-        grabber = [[grabberClass alloc] init];
+        grabber = [[[grabberClass alloc] init] autorelease];
     }
     @catch (NSException *exception) {
 

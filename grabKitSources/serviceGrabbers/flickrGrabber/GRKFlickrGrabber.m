@@ -273,7 +273,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
     
     __block GRKFlickrQuery * query = nil;
     
-    query = [[GRKFlickrQuery queryWithMethod:@"flickr.photosets.getPhotos"
+    query = [GRKFlickrQuery queryWithMethod:@"flickr.photosets.getPhotos"
                                   andParams:params
                           withHandlingBlock:^(GRKFlickrQuery * query, id result){
                               
@@ -335,7 +335,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 
                               }
                               [self unregisterQueryAsLoading:query];
-                          }] retain];
+                          }] ;
     
     [self registerQueryAsLoading:query];
     [query perform];

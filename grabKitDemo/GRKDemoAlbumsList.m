@@ -38,6 +38,7 @@ NSUInteger kNumberOfAlbumsPerPage = 8;
 
 -(void) dealloc {
     
+    [_albums release];
     [_grabber release];
     [super dealloc];
     

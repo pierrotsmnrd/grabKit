@@ -36,6 +36,7 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
 @interface GRKDemoImagesDownloader()
     -(void) downloadNextImage;
     -(void) updateImageView:(UIImageView*)imageView withData:(NSData*)data;
+    -(void) cancelAllConnections;
 @end
 
 @implementation GRKDemoImagesDownloader
@@ -52,6 +53,7 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
 
 -(void) dealloc {
     
+    [self cancelAllConnections];
     [urlsOfImagesToDownload release], urlsOfImagesToDownload = nil;
     [connections release], connections = nil;
     [super dealloc];
@@ -137,11 +139,9 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
     UIImageView * imageView = [[urlsOfImagesToDownload objectAtIndex:0] objectForKey:@"imageView"];
 
     
-    [urlsOfImagesToDownload removeObjectAtIndex:0];
-    
     __block AsyncURLConnection * connection = nil;
     
-    connection = [[AsyncURLConnection connectionWithString:[nextImageURL absoluteString] 
+    connection = [AsyncURLConnection connectionWithString:[nextImageURL absoluteString] 
                                              responseBlock:nil
                                              progressBlock:nil 
                                              completeBlock:^(NSData *data) {
@@ -152,7 +152,7 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
                                               // update the image view
                                               [self updateImageView:imageView withData:data];
                                               
-                                              [connection release];
+                                              //[connection release];
                                               
                                               //numberOfImagesDownloading--;
                                               [connections removeObject:connection];
@@ -162,13 +162,18 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
                                               
                                               // oops !
                                               [imageView setBackgroundColor:[UIColor redColor]];
-                                              [connection release];
+                                             // [connection release];
                                               
                                              // numberOfImagesDownloading--;
                                               [connections removeObject:connection];                                              
                                               [self downloadNextImage];
                                               
-                                          }] retain];
+                                          }];
+    
+    // remove the data after the creation of the request, 
+    // to let the block retain the var nextImageURL and imageView.
+    // Otherwise, these vars are released, and it makes the app crash...
+    [urlsOfImagesToDownload removeObjectAtIndex:0];
     
    // numberOfImagesDownloading++;
     [connections addObject:connection];
