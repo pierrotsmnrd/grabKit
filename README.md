@@ -21,7 +21,8 @@ So far, GrabKit supports :
 - iPhone/iPad
 
 
-GrabKit doesn't use ARC (yet).
+GrabKit is an ARC project.  Run the demo to see it working :)
+
 
 Quick Examples
 -------------
@@ -91,7 +92,7 @@ Model
 	* ``name`` : nome of the album
 
 
-* a **photo** is an instance of a ``GRKPhoto``. It has a ``name`` (title of the photo), a ``caption``(its description)
+* a **photo** is an instance of a ``GRKPhoto``. It has a ``name`` (title of the photo), a ``caption``(its description). 
 A ``GRKPhoto`` has several **images** which represent the photo in different sizes.
 
 * an **image** is an instance of ``GRKImage``. it has a ``width``, a ``height``, an ``URL``, and a flag (``isOriginal``) notifying if this image is the original image uploaded by the user. 
@@ -100,35 +101,13 @@ A ``GRKPhoto`` has several **images** which represent the photo in different siz
 How To Use GrabKit
 -------------
 
+The demo application included in the project is ready to use.
 
-### Installation
+To use GrabKit in your own applications, there are two steps :
 
-* First, include GrabKit in you project : just drag'n'drop the grabKitSources directory.
+_ The installation, described in the wiki [here](https://github.com/pierrotsmnrd/grabKit/wiki/)
+_ The configuration
 
-* in your appDelegate, import "GRKConnectorsDispatcher.h" and add :		
-
-        - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-            BOOL urlHasBeenHandledByDispatcher = [[GRKConnectorsDispatcher sharedInstance] dispatchURLToConnectingServiceConnector:url];
-            if ( urlHasBeenHandledByDispatcher  ) return YES;
-            else {
-                // If you have specific URL schemes to handle for you application, 
-                //  the GRKConnectorDispatcher won't handle the URL. 
-                // Then, you can handle here your own URL schemes.
-                return NO;
-            }
-        }
-
-
-* GrabKit comes with all the needed libraries included. Just drag'n'drop the "libs" directory into your project.
-Nevertheless, if you need to manually add services' libraries to your project, you'll find informations in the wiki. (coming soon)
-
-
-* Add the following Frameworks :
-    * CFNetwork.framework (for the FlickR Lib)
-    * SystemConfiguration.framework and Security.framework (for the Picasa Lib)
-    * AssetsLibrary.framework (for the Device Grabber)
-	
-	
                     
 ### Configuration                    
                     
@@ -140,25 +119,26 @@ In order to grab content from each service, you need to register your app and ge
 * Once you have completed the process, you'll access the page of your app.
   It shows an App Id : that's what we need.
 
-* Open your application's App-Info.plist and in "URL Types" -> "item N" -> "URL Schemes", add "fb" + your App Id.
-* Open the file GRKFacebookConstants.m and set your App Id to kGRKFacebookAppId
+* Open your application's App-Info.plist and in "URL Types" -> "item N" -> "URL Schemes", add "fb" + your App Id (like "fb350975928312519" for example)
+* Report your App Id into your configurator file, in the method facebookAppId
     
 
 
 #### Instagram :
 * go to http://instagram.com/developer/clients/register/
 * fill the form. In the "OAuth redirect_uri" field, enter a lowercase url like "mygreatapplication://". 
-* Report your Client ID and your Redirect URI in GRKInstragramConstants.m
-* Open your application's App-Info.plist and in "URL Types" -> "item N" -> "URL Schemes", add your redirect URI
+* Report your Client ID and your Redirect URI  into your configurator file, respectively in the methods instagramAppId and instagramRedirectUri
+* Open your application's App-Info.plist and in "URL Types" -> "item N" -> "URL Schemes", add your redirect URI (without the "://")
 
     
 #### FlickR :
-* go to http://www.flickr.com/services/apps/create/apply/ and choose the kind of key you want
-* Process the form and report your Api Key and your Api Secret in GRKFlickrConstants.m
+* go to http://www.flickr.com/services/apps/create/apply/ and choose the kind of key you want (Commercial or non-commercial)
+* Process the form and report your Api Key and your Api Secret into your configurator file, in the methods flickrApiKey and flickrApiSecret.
 * Click on "Edit auth flow for this app", 
     * in App type, select "web application" (yes, web application ;))
     * in Callback URL, add a custom and unique url, like "mygreatappusinggrabkit://" or "flickr"+your app id+"://"
-    Report your callback url (without the "://") to GRKFlickrConstants.m and in your App-Info.plist => "URL Types" -> "item N" -> "URL Schemes"
+    Report your callback url into your configurator file in the method flickrRedirectUri
+	* Open your application's App-Info.plist and in "URL Types" -> "item N" -> "URL Schemes", add your redirect URI (without the "://")
         
     
 
@@ -169,18 +149,10 @@ In order to grab content from each service, you need to register your app and ge
 
 * Select your project, go to the "API Access" item, and click on "Create an OAUth 2.0 client ID ..."
 * Enter your application's name and other informations if you need
-* in Application type, select "Installed application", then validate
-
-* Report your Client ID and Client secret in GRKPicasaConstants.m
+* in Application type, select "Installed application"
+* in "Installed application type", select "other" (don't select "iOS", it's buggy ...)
+* Report your Client ID and Client secret into your configurator file in the methods picasaClientId and picasaClientSecret. 
             
-
-                    
-### How to disable a service ?
-
-If you don't need to use a specific service :
-_ Delete the directory of its grabber under GrabKitSources/servicesGrabber/ 
-_ Delete the according lib under libs/ (warning : Instagram uses Facebook's library)
-
 
 
 Coming soon
@@ -191,10 +163,37 @@ Coming soon
 * More documentation
 * More content to grab
 * Changes for iOS6
-* ARC version
 
 Feel free to help and contribute :)
 
+
+Changelog
+-------
+
+GrabKit v1.1 changelog :
+_ Project re-organized : 1 project, 3 targets : demo application, static library and bundle.
+_ GrabKit is ARC
+_ GrabKit uses Facebook iOS SDK 3.0
+_ Update in the Instagram grabber to use NSJSONSerialization (no need of SBJSon anymore)
+_ Fix in the FlickR Grabber for connection 
+_ Fix in the Picasa Grabber related to Gdata lib's intern cache mechanism
+_ Update in connectors to allow canceling connections
+_ Adding a configuration protocol (GRKConfiguratorProtocol)
+_ Udpate in demo : 
+	_ Fix to make GRKDeviceGrabber work
+	_ In the list of photos, each page of result is now a TableView section
+	_ A logout button is now available
+	_ Icons for each service
+
+
+GrabKit v1.0 changelog : 
+_ Initial version, non ARC, with the following grabbers:
+	- Facebook
+	- FlickR
+	- Instagram
+	- Picasa
+	- iPhone/iPad
+	
 
 License
 -------

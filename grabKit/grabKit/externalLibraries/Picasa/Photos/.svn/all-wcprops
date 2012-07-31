@@ -1,0 +1,191 @@
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/svn/!svn/ver/672/trunk/Source/Clients/Photos
+END
+GDataPhotoConstants.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataPhotoConstants.m
+END
+GDataFeedPhotoAlbum.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/375/trunk/Source/Clients/Photos/GDataFeedPhotoAlbum.h
+END
+GDataQueryGooglePhotos.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/619/trunk/Source/Clients/Photos/GDataQueryGooglePhotos.h
+END
+GDataFeedPhotoAlbum.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataFeedPhotoAlbum.m
+END
+GDataQueryGooglePhotos.m
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataQueryGooglePhotos.m
+END
+GDataEntryPhotoBase.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataEntryPhotoBase.h
+END
+GDataEntryPhotoTag.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataEntryPhotoTag.h
+END
+GDataEntryPhotoUser.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataEntryPhotoUser.h
+END
+GDataEntryPhotoBase.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataEntryPhotoBase.m
+END
+GDataEntryPhotoTag.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataEntryPhotoTag.m
+END
+GDataPhotos.h
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/293/trunk/Source/Clients/Photos/GDataPhotos.h
+END
+GDataFeedPhoto.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/375/trunk/Source/Clients/Photos/GDataFeedPhoto.h
+END
+GDataEntryPhotoUser.m
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataEntryPhotoUser.m
+END
+GDataFeedPhoto.m
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataFeedPhoto.m
+END
+GDataPhotoElements.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/619/trunk/Source/Clients/Photos/GDataPhotoElements.h
+END
+GDataServiceGooglePhotos.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/619/trunk/Source/Clients/Photos/GDataServiceGooglePhotos.h
+END
+GDataPhotoElements.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataPhotoElements.m
+END
+GDataEntryPhotoAlbum.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/551/trunk/Source/Clients/Photos/GDataEntryPhotoAlbum.h
+END
+GDataEntryPhotoComment.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataEntryPhotoComment.h
+END
+GDataServiceGooglePhotos.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/619/trunk/Source/Clients/Photos/GDataServiceGooglePhotos.m
+END
+GDataEntryPhotoAlbum.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataEntryPhotoAlbum.m
+END
+GDataEntryPhotoComment.m
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataEntryPhotoComment.m
+END
+GDataFeedPhotoBase.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataFeedPhotoBase.h
+END
+GDataEXIFTags.h
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataEXIFTags.h
+END
+GDataEntryPhoto.h
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/375/trunk/Source/Clients/Photos/GDataEntryPhoto.h
+END
+GDataFeedPhotoUser.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataFeedPhotoUser.h
+END
+GDataFeedPhotoBase.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/305/trunk/Source/Clients/Photos/GDataFeedPhotoBase.m
+END
+GDataEXIFTags.m
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataEXIFTags.m
+END
+GDataEntryPhoto.m
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataEntryPhoto.m
+END
+GDataFeedPhotoUser.m
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/672/trunk/Source/Clients/Photos/GDataFeedPhotoUser.m
+END
+GDataPhotoConstants.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/619/trunk/Source/Clients/Photos/GDataPhotoConstants.h
+END
