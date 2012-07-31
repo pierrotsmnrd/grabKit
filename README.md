@@ -105,8 +105,8 @@ The demo application included in the project is ready to use.
 
 To use GrabKit in your own applications, there are two steps :
 
-_ The installation, described in the wiki [here](https://github.com/pierrotsmnrd/grabKit/wiki/)
-_ The configuration
+* The installation, described in the wiki [here](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-install-GrabKit)
+* The configuration
 
                     
 ### Configuration                    
@@ -171,28 +171,28 @@ Changelog
 -------
 
 GrabKit v1.1 changelog :
-_ Project re-organized : 1 project, 3 targets : demo application, static library and bundle.
-_ GrabKit is ARC
-_ GrabKit uses Facebook iOS SDK 3.0
-_ Update in the Instagram grabber to use NSJSONSerialization (no need of SBJSon anymore)
-_ Fix in the FlickR Grabber for connection 
-_ Fix in the Picasa Grabber related to Gdata lib's intern cache mechanism
-_ Update in connectors to allow canceling connections
-_ Adding a configuration protocol (GRKConfiguratorProtocol)
-_ Udpate in demo : 
-	_ Fix to make GRKDeviceGrabber work
-	_ In the list of photos, each page of result is now a TableView section
-	_ A logout button is now available
-	_ Icons for each service
+* Project re-organized : 1 project, 3 targets : demo application, static library and bundle.
+* GrabKit is ARC
+* GrabKit uses Facebook iOS SDK 3.0
+* Update in the Instagram grabber to use NSJSONSerialization (no need of SBJSon anymore)
+* Fix in the FlickR Grabber for connection 
+* Fix in the Picasa Grabber related to Gdata lib's intern cache mechanism
+* Update in connectors to allow canceling connections
+* Adding a configuration protocol (GRKConfiguratorProtocol)
+* Udpate in demo : 
+	* Fix to make GRKDeviceGrabber work
+	* In the list of photos, each page of result is now a TableView section
+	* A logout button is now available
+	* Icons for each service
 
 
 GrabKit v1.0 changelog : 
-_ Initial version, non ARC, with the following grabbers:
-	- Facebook
-	- FlickR
-	- Instagram
-	- Picasa
-	- iPhone/iPad
+* Initial version, non ARC, with the following grabbers:
+	* Facebook
+	* FlickR
+	* Instagram
+	* Picasa
+	* iPhone/iPad
 	
 
 License
