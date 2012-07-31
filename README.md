@@ -21,7 +21,13 @@ So far, GrabKit supports :
 - iPhone/iPad
 
 
-GrabKit is an ARC project.  Run the demo to see it working :)
+GrabKit is an ARC project.  
+
+
+Screenshots of the Demo application
+-------------
+
+[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/screenshots_demo.png]]
 
 
 Quick Examples
