@@ -105,8 +105,8 @@ The demo application included in the project is ready to use.
 
 To use GrabKit in your own applications, there are two steps :
 
-_ The installation, described in the wiki [here](https://github.com/pierrotsmnrd/grabKit/wiki/)
-_ The configuration
+* The installation, described in the wiki [here](https://github.com/pierrotsmnrd/grabKit/wiki/)
+* The configuration
 
                     
 ### Configuration                    
