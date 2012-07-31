@@ -27,7 +27,7 @@ GrabKit is an ARC project.
 Screenshots of the Demo application
 -------------
 
-[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/screenshots_demo.png|screenshot of the demo application]]
+![screenshot of the demo application](https://github.com/pierrotsmnrd/grabKit/raw/master/doc/screenshots_demo.png)
 
 
 Quick Examples
