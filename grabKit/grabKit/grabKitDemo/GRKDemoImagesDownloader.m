@@ -21,8 +21,10 @@
  * to promote the sale, use or other dealings in this Software without prior written authorization from (the )Author.
  */
 
+
 #import "GRKDemoImagesDownloader.h"
 #import "AsyncURLConnection.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 
 // A global NSCache instance, used to store the downloaded images
@@ -35,7 +37,6 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
 
 @interface GRKDemoImagesDownloader()
     -(void) downloadNextImage;
-    -(void) updateImageView:(UIImageView*)imageView withData:(NSData*)data;
     -(void) cancelAllConnections;
 @end
 
@@ -70,41 +71,71 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
     
     if ( sharedDemoCache == nil ){
         sharedDemoCache = [[NSCache alloc] init];
+        sharedDemoCache.countLimit = 100;
+        sharedDemoCache.totalCostLimit = 1024*1024; // 1 MB cache size
     }
     
     return sharedDemoCache;
 }
 
--(void) updateImageView:(UIImageView*)imageView withData:(NSData*)data {
-    
-    // build the image
-    UIImage * image = [UIImage imageWithData:data];
-    
-    // UI updates must be done 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [imageView setImage:image];
-        [imageView setContentMode:UIViewContentModeScaleAspectFit];
-    });
-}
 
--(void) downloadImageAtURL:(NSURL*)imageURL forImageView:(UIImageView*)imageView {
+-(void) downloadImageAtURL:(NSURL*)imageURL forThumbnail:(GRKDemoThumbnail*)thumbnail {
     
     
     NSData * cachedData = [[GRKDemoImagesDownloader cache] objectForKey:imageURL];
     
     // If the image has already been cached
     if ( cachedData != nil ){
+         
+        [thumbnail updateThumbnailWithData:cachedData];
+        return;
+    }
+
+    
+    // Special case for the assets images
+    if ( [[imageURL absoluteString] hasPrefix:@"assets-library://"] ){
         
-        [self updateImageView:imageView withData:cachedData];
-                
+        ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+        [library assetForURL:imageURL resultBlock:^(ALAsset *asset) {
+            
+            // You can also load a "fullResolutionImage", but it's heavy ...
+            CGImageRef imgRef = [asset aspectRatioThumbnail];
+            
+            UIImage * thumbnailImage = [UIImage imageWithCGImage:imgRef];
+
+            
+            int height = thumbnailImage.size.height;
+            int width = thumbnailImage.size.width;
+            int bytesPerRow = 4*width;
+            if (bytesPerRow % 16)
+                bytesPerRow = ((bytesPerRow / 16) + 1) * 16;
+            int thumbnailCost = height*bytesPerRow;
+
+            
+            [[GRKDemoImagesDownloader cache] setObject:UIImagePNGRepresentation(thumbnailImage)
+                                                forKey:imageURL
+                                                  cost:thumbnailCost];
+            
+            [thumbnail updateThumbnailWithImage:thumbnailImage];
+            
+        } failureBlock:^(NSError *error) {
+            
+            [thumbnail setBackgroundColor:[UIColor redColor]];
+            
+        }];
+        
         return;
     }
     
-    // else, store it with its image view and download the next image
-    NSDictionary * nextImageAndImageView = [NSDictionary dictionaryWithObjectsAndKeys:imageURL, @"url",
-                                            imageView, @"imageView", nil];
     
-    [urlsOfImagesToDownload addObject:nextImageAndImageView];
+    
+    
+    
+    // else, store it with its thumbnail and download the next image
+    NSDictionary * nextImageURLAndThumbnail = [NSDictionary dictionaryWithObjectsAndKeys:imageURL, @"url",
+                                            thumbnail, @"imageView", nil];
+    
+    [urlsOfImagesToDownload addObject:nextImageURLAndThumbnail];
     
     [self downloadNextImage];
 
@@ -129,7 +160,7 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
     //retrieve the next URL and the imageView to fill
     
     NSURL * nextImageURL = [[urlsOfImagesToDownload objectAtIndex:0] objectForKey:@"url"];
-    UIImageView * imageView = [[urlsOfImagesToDownload objectAtIndex:0] objectForKey:@"imageView"];
+    GRKDemoThumbnail * thumbnail = [[urlsOfImagesToDownload objectAtIndex:0] objectForKey:@"imageView"];
 
     
     __block AsyncURLConnection * connection = nil;
@@ -140,10 +171,12 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
                                              completeBlock:^(NSData *data) {
                                               
                                               // store the data in the cache
-                                              [[GRKDemoImagesDownloader cache] setObject:data forKey:nextImageURL];
-                                              
+                                              [[GRKDemoImagesDownloader cache] setObject:data forKey:nextImageURL cost:[data length]];
+
+                                                 
+                                                [thumbnail updateThumbnailWithData:data];
                                               // update the image view
-                                              [self updateImageView:imageView withData:data];
+
                                               
                                               //numberOfImagesDownloading--;
                                               [connections removeObject:connection];
@@ -152,8 +185,11 @@ NSUInteger maxNumberOfImagesToDownloadSimultaneously = 5;
                                               
                                           } errorBlock:^(NSError *error) {
                                               
+                                              
+                                              NSLog(@" error while downloading content at url %@ :\n %@", nextImageURL, error);
+                                              
                                               // oops !
-                                              [imageView setBackgroundColor:[UIColor redColor]];
+                                              [thumbnail setBackgroundColor:[UIColor redColor]];
                                               
                                              // numberOfImagesDownloading--;
                                               [connections removeObject:connection];                                              

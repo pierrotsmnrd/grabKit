@@ -24,7 +24,7 @@
 
 #import "GRKFacebookSingleton.h"
 #import "GRKConstants.h"
-#import <FBiOSSDK/FBSession.h>
+#import <FacebookSDK/FBSession.h>
 
 static GRKFacebookSingleton * sharedFacebook = nil;
 

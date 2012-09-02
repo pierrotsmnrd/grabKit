@@ -37,6 +37,11 @@ NSUInteger kNumberOfPhotosPerPage = 7 * 4;
 
 @implementation GRKDemoPhotosList
 
+-(void)dealloc{
+    
+    [_album removeObserver:self forKeyPath:@"count"];
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -98,12 +103,14 @@ NSUInteger kNumberOfPhotosPerPage = 7 * 4;
     [super viewWillAppear:animated];
     
     [self fillAlbumWithMorePhotos];
-    
+        
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.navigationItem.title = _album.name;
 
 }
 
@@ -133,13 +140,29 @@ NSUInteger kNumberOfPhotosPerPage = 7 * 4;
 
 
 
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    if ( [keyPath isEqualToString:@"count"] && object == _album ){
+        
+        [self.tableView reloadData];
+    }
+    
+}
+
 
 -(void) setState:(GRKDemoPhotosListState)newState {
  
  state = newState;
  
  switch (newState) {
- 
+
+     case GRKDemoPhotosListStateInitial:{
+         
+         [_album addObserver:self forKeyPath:@"count" options:NSKeyValueObservingOptionNew context:nil];
+         
+     }
+     break;
+         
      // When some photos are grabbed, reload the tableView    
      case GRKDemoPhotosListStatePhotosGrabbed:{
          dispatch_async(dispatch_get_main_queue(), ^{
@@ -172,6 +195,7 @@ NSUInteger kNumberOfPhotosPerPage = 7 * 4;
     NSMutableArray * photosAtIndexPath = [NSMutableArray array];
     [photosAtIndexPath addObjectsFromArray:[_album photosAtPageIndex:rowIndex withNumberOfPhotosPerPage:kNumberOfPhotosPerCell]];
     
+    
     // let's remove some NSNull...
     for ( int i = 0; i < [photosAtIndexPath count]; i++ ){
         
@@ -182,6 +206,7 @@ NSUInteger kNumberOfPhotosPerPage = 7 * 4;
     }
     
     return [NSArray arrayWithArray:photosAtIndexPath];
+    
 }
 
 -(void) fillAlbumWithMorePhotos {
@@ -225,6 +250,13 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     
+    if ( state > GRKDemoPhotosListStatePhotosGrabbed ){
+        
+        NSUInteger numberOfPhotos = [[_album photosAtPageIndex:section withNumberOfPhotosPerPage:kNumberOfPhotosPerPage] count];
+        
+        return [NSString stringWithFormat:@"Page %d ( %d photos )", section, numberOfPhotos];
+    }
+    
     return [NSString stringWithFormat:@"Page %d", section];
 }
 
@@ -233,7 +265,7 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
     // Return the number of rows in the section.
     
     NSUInteger res = 0;
-    
+        
     if ( state == GRKDemoPhotosListStateAllPhotosGrabbed && section == _lastLoadedPageIndex ) {
         
         NSUInteger photosCount = [_album count];
@@ -327,6 +359,8 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];

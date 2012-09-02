@@ -28,3 +28,6 @@
 #define GRKCONFIG [GRKConfiguration sharedInstance].configurator 
 
 extern const NSString * defaultTokenStoreClassName;
+
+extern const NSUInteger kMaximumSimultaneousQueriesForFlickrQueriesQueue;
+extern const NSUInteger kMaximumSimultaneousQueriesForPicasaQueriesQueue;

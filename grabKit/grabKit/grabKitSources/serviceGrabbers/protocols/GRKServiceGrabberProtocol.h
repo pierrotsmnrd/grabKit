@@ -28,8 +28,20 @@
 #define kGRKMaximumNumberOfAlbumsPerPage 500
 #define kGRKMaximumNumberOfPhotosPerPage 500
 
+// Block passed to a grabber and performed after a successful operation.
+typedef void (^GRKServiceGrabberCompleteBlock)(id result);
 
-typedef void (^GRKServiceGrabberCompleteBlock)(NSArray * results);
+// Block passed to a query and performed when it successes
+typedef void (^GRKQueryResultBlock)(id query, id result);
+
+// Block passed to a query performed in a queue or in a batch. 
+//  This block is performed by the subquery and must return an object.
+//  The results of all subqueries (i.e. each result returned by the GRKSubqueryResultBlock of each subquery)
+//  are returned to the caller (typically a grabber)
+typedef id (^GRKSubqueryResultBlock)(id queueOrBatchObject, id resultOrNil, NSError * errorOrNil);
+
+
+// Generic error block. 
 typedef void (^GRKErrorBlock)(NSError * error);
 
 /**
@@ -143,6 +155,48 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
             andErrorBlock:(GRKErrorBlock)errorBlock;
 
 
+
+/** @name Setting the cover of a GRKAlbum */
+
+/** Asks the grabber to retrieve the cover of a GRKAlbum. The cover of an album is an instance of GRKPhoto.
+ The cover can be a specific photo or the first photo of the album, according to the service.
+
+ @param album GRKAlbum object to fill the cover of
+ @param completeBlock a GRKServiceGrabberCompleteBlock  performed once the cover is retrieved. the GRKPhoto result is given to that block
+ @param errorBlock a GRKErrorBlock  performed if an error occured 
+ */
+-(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album
+            andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+               andErrorBlock:(GRKErrorBlock)errorBlock;
+
+/** Asks the grabber to retrieve the cover of several GRKAlbum. 
+ 
+ The cover of an album is an instance of GRKPhoto.
+ The cover can be a specific photo or the first photo of the album, according to the service.
+
+ The goal of this method is to be implemented using batch methods of the service. 
+ If the service doesn't offer a proper batch method, this method must then implement a queue to perform the calls.
+ 
+ @param albums NSArray array of GRKAlbum to fill the cover of
+ @param completeBlock a GRKServiceGrabberCompleteBlock  performed once the covers are retrieved. 
+        A NSArray containing the updated GRKAlbum objects are given to that block.
+ @param errorBlock a GRKErrorBlock  performed if an error occured 
+ */
+-(void) fillCoverPhotoOfAlbums:(NSArray *)albums 
+              withCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                 andErrorBlock:(GRKErrorBlock)errorBlock;
+
+/**
+ Asks the grabber to retrieve the cover for the given GRKAlbum. 
+ Basically, this method must call [self fillCoverPhotoOfAlbums:withCompleteBlock:andErrorBlock], giving a NSArray containing the given album as first parameter
+ 
+ @param album GRKAlbum album to fill the cover of
+ @param completeBlock a GRKServiceGrabberCompleteBlock  performed once the cover is retrieved. the GRKPhoto result is given to that block
+ @param errorBlock a GRKErrorBlock  performed if an error occured  
+*/
+-(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album 
+             andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                andErrorBlock:(GRKErrorBlock)errorBlock;
 
 
 /** @name Manage the loading queries */

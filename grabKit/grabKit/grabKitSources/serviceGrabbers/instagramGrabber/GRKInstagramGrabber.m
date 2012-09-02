@@ -347,6 +347,54 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 }
 
 
+-(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album 
+             andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+    
+    [self fillAlbum:album withPhotosAtPageIndex:0 withNumberOfPhotosPerPage:1 andCompleteBlock:^(id result) {
+       
+        if ( [result isKindOfClass:[NSArray class]] && [result count] > 0){
+            
+            album.coverPhoto = [result objectAtIndex:0];
+            completeBlock( [NSArray arrayWithObject:album] );
+            
+        } else {
+            completeBlock([NSArray array]);  
+        }
+        
+
+    } andErrorBlock:^(NSError *error) {
+
+        
+        
+    }];
+    
+}
+
+// Shouldn't be called for more than one album, as Instagram doens't organize content in albums...
+-(void) fillCoverPhotoOfAlbums:(NSArray *)albums
+             withCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                andErrorBlock:(GRKErrorBlock)errorBlock  {
+    
+
+    if ( [albums count] > 0 ){
+    
+        [self fillCoverPhotoOfAlbum:[albums objectAtIndex:0]
+                   andCompleteBlock:^(id result) {
+                       
+                       completeBlock(result);
+                       
+                   } andErrorBlock:^(NSError *error) {
+                       
+                   }];
+        
+    }
+    
+    
+}
+
+
 
 -(void)resetAndRebuildConnector;
 {
@@ -427,7 +475,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 /** Build and return a GRKPhoto from the given dictionary.
  
  @param rawPhoto a NSDictionary representing the photo to build, as returned by Instagram's API
- @return an autoreleased GRKPhoto
+ @return a GRKPhoto
  */
 -(GRKPhoto *) photoWithRawPhoto:(NSDictionary*)rawPhoto;
 {
@@ -481,7 +529,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
  
  @param rawImage a NSDictionary representing the image to build, as returned by Instagram's API
  @param isOriginal a BOOL value to specify if the build GRKImage is original or not.
- @return an autoreleased GRKImage
+ @return a GRKImage
  */
 -(GRKImage *) imageWithRawImage:(NSDictionary*)rawImage isOriginal:(BOOL)isOriginal;
 {

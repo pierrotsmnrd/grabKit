@@ -36,7 +36,7 @@
 
 -(id) initWithFeedURL:(NSURL *)_feedURL 
            andParams:(NSMutableDictionary *)_params
-   withHandlingBlock:(GRKPicasaQueryHandlingBlock)_handlingBlock
+   withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
        andErrorBlock:(GRKErrorBlock)_errorBlock;
 {
     if ((self = [super init]) != nil){
@@ -69,30 +69,75 @@
 
 +(GRKPicasaQuery*) queryWithFeedURL:(NSURL *)_feedURL 
 			            andParams:(NSMutableDictionary *)_params
-                withHandlingBlock:(GRKPicasaQueryHandlingBlock)_handlingBlock
+                withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
                     andErrorBlock:(GRKErrorBlock)_errorBlock;
 {
     
-    GRKPicasaQuery * query = [[GRKPicasaQuery alloc] initWithFeedURL:_feedURL 
+    GRKPicasaQuery * queryToReturn = [[GRKPicasaQuery alloc] initWithFeedURL:_feedURL 
 							                              andParams:_params
                                                  withHandlingBlock:_handlingBlock 
                                                        andErrorBlock:_errorBlock];
     
-    return query;
+    return queryToReturn;
     
     
 }
 
 
--(void) perform {
+-(id) initWithQuery:(GDataQuery *)_query
+  withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
+      andErrorBlock:(GRKErrorBlock)_errorBlock; {
     
-	    
-    GDataServiceGooglePhotos * service = [GRKPicasaSingleton sharedInstance].service;
- 
-    ticket = [service fetchFeedWithURL:feedURL
-                               delegate:self
-                               didFinishSelector:@selector(ticket:finishedWithFeed:error:)];
+    self = [super init];
+    if ( self ){
+        
+        query = _query;
+        NSLog(@"query in init : %@", query);
+        
+        handlingBlock = [_handlingBlock copy];
+        errorBlock = [_errorBlock copy];       
+        
+    }
+    
+    
+    return self;    
+}
 
++(GRKPicasaQuery*) queryWithQuery:(GDataQuery *)_query
+                withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
+                    andErrorBlock:(GRKErrorBlock)_errorBlock; {
+    
+    GRKPicasaQuery * queryToReturn = [[GRKPicasaQuery alloc] initWithQuery:_query 
+                                                 withHandlingBlock:_handlingBlock 
+                                                     andErrorBlock:_errorBlock];
+    return queryToReturn;
+    
+}
+
+
+
+-(void) perform {
+
+    GDataServiceGooglePhotos * service = [GRKPicasaSingleton sharedInstance].service;
+    
+    if ( query == nil ){
+	    
+        ticket = [service fetchFeedWithURL:feedURL
+                                  delegate:self
+                         didFinishSelector:@selector(ticket:finishedWithFeed:error:)];
+        
+    } else {
+        
+        
+        NSLog(@" query : %@", query);
+        
+        
+        ticket = [service fetchFeedWithQuery:query 
+                                    delegate:self 
+                           didFinishSelector:@selector(ticket:finishedWithFeed:error:)];
+        
+    }
+     
 }
 
 - (void)ticket:(GDataServiceTicket *)_ticket finishedWithFeed:(id)feed error:(NSError *)error;
@@ -101,7 +146,12 @@
         if ( errorBlock != nil ){
             errorBlock(error);
         }
-    } else {
+    } else if (handlingBlock != nil) {
+        
+        
+        NSLog(@" query : %@", query);
+        
+        
         handlingBlock(self, feed);
     }
    
@@ -112,6 +162,9 @@
 
 -(void) cancel {
     
+    NSLog(@" cancel %@", self);
+    handlingBlock = nil;
+    errorBlock = nil;
     [ticket cancelTicket];
 
 }

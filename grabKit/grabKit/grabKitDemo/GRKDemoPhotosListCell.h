@@ -22,21 +22,22 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "GRKDemoThumbnail.h"
 
 @interface GRKDemoPhotosListCell : UITableViewCell {
     
     NSArray * _photos;
     
-    IBOutlet UIImageView * photoThumbnail0;
-    IBOutlet UIImageView * photoThumbnail1;
-    IBOutlet UIImageView * photoThumbnail2;
-    IBOutlet UIImageView * photoThumbnail3;
+    IBOutlet GRKDemoThumbnail * photoThumbnail0;
+    IBOutlet GRKDemoThumbnail * photoThumbnail1;
+    IBOutlet GRKDemoThumbnail * photoThumbnail2;
+    IBOutlet GRKDemoThumbnail * photoThumbnail3;
     
 }
 
 @property (nonatomic, retain) NSArray * photos;
 
-
 -(void) updateThumbnails;
+
 
 @end

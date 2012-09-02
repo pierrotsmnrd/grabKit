@@ -23,7 +23,7 @@
 
 
 #import <Foundation/Foundation.h>
-#import <FBiOSSDK/FBRequest.h>
+#import <FacebookSDK/FBRequest.h>
 
 @interface GRKFacebookSingleton : NSObject {
     

@@ -30,7 +30,7 @@
 
 -(id) initWithMethod:(NSString *)_method 
 			 andParams:(NSMutableDictionary *)_params
-      withHandlingBlock:(GRKFlickrQueryHandlingBlock)_handlingBlock
+      withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
           andErrorBlock:(GRKErrorBlock)_errorBlock;
 {
     if ((self = [super init]) != nil){
@@ -49,7 +49,7 @@
 
 +(GRKFlickrQuery*) queryWithMethod:(NSString *)_method 
                         andParams:(NSMutableDictionary *)_params
-                 withHandlingBlock:(GRKFlickrQueryHandlingBlock)_handlingBlock
+                 withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
                      andErrorBlock:(GRKErrorBlock)_errorBlock;
 {
    
@@ -87,7 +87,11 @@
 
 
 -(void) cancel {
+    
     [request cancel];
+    handlingBlock = nil;
+    errorBlock = nil;
+    
 }
 
 #pragma mark OFFlickrAPIRequestDelegate methods

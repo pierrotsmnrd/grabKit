@@ -174,7 +174,7 @@ NSString * const kGRKPhotoDatePropertyDateTaken = @"kGRKPhotoDatePropertyDateTak
     [_dates setObject:newDate forKey:dateProperty];
 }
 
--(NSDate *) getDateForProperty:(GRKPhotoDateProperty *)dateProperty;
+-(NSDate *) dateForProperty:(GRKPhotoDateProperty *)dateProperty;
 {
     return [_dates objectForKey:dateProperty];
 }

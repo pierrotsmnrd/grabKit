@@ -26,3 +26,6 @@
 
 const NSString * defaultTokenStoreClassName = @"GRKTokenStoreUserDefaults";
 
+
+const NSUInteger kMaximumSimultaneousQueriesForFlickrQueriesQueue = 5;
+const NSUInteger kMaximumSimultaneousQueriesForPicasaQueriesQueue = 3;

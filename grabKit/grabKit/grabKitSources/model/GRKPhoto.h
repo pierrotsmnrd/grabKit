@@ -53,7 +53,7 @@ extern GRKPhotoDateProperty * const kGRKPhotoDatePropertyDateTaken;
  - kGRKPhotoDatePropertyDateUpdated : represents the date of last update of the photo.
  - kGRKPhotoDatePropertyDateTaken : represents the date when the photo was taken on the camera
  
- You can access these dates using the method dates, or getDateForProperty: .
+ You can access these dates using the method dates, or dateForProperty: .
  
  The dates stored in a GRKPhoto may vary according to the service : 
  
@@ -186,7 +186,7 @@ extern GRKPhotoDateProperty * const kGRKPhotoDatePropertyDateTaken;
  @param dateProperty to date property to set. @see GRKPhotoDateProperty
  @return the date for the property, or nil if not found
  */
--(NSDate*) getDateForProperty:(GRKPhotoDateProperty*)dateProperty;
+-(NSDate*) dateForProperty:(GRKPhotoDateProperty*)dateProperty;
 
 /** Returns all the dates of the photo in a NSDictionary
  @return a NSDictionary containing all the dates of the photo

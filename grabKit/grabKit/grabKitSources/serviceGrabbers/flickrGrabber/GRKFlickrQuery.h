@@ -26,10 +26,6 @@
 #import "GRKServiceGrabberProtocol.h"
 #import "GRKServiceQueryProtocol.h"
 
-@class GRKFlickrQuery;
-
-typedef void (^GRKFlickrQueryHandlingBlock)(GRKFlickrQuery * query, id result);
-
 
 /** GRKFlickrQuery is an object conforming to GRKServiceQueryProtocol, used by a GRKFlickrGrabber, representing a single call to FlickR's webservices.
  */
@@ -39,7 +35,7 @@ typedef void (^GRKFlickrQueryHandlingBlock)(GRKFlickrQuery * query, id result);
     NSString * method;
     NSMutableDictionary * params;
     
-    GRKFlickrQueryHandlingBlock handlingBlock;
+    GRKQueryResultBlock handlingBlock;
     GRKErrorBlock errorBlock;
     
     
@@ -47,12 +43,12 @@ typedef void (^GRKFlickrQueryHandlingBlock)(GRKFlickrQuery * query, id result);
 
 -(id) initWithMethod:(NSString *)_method 
            andParams:(NSMutableDictionary *)_params
-   withHandlingBlock:(GRKFlickrQueryHandlingBlock)_handlingBlock
+   withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
        andErrorBlock:(GRKErrorBlock)_errorBlock;
 
 +(GRKFlickrQuery*) queryWithMethod:(NSString *)_method 
                        andParams:(NSMutableDictionary *)_params
-                withHandlingBlock:(GRKFlickrQueryHandlingBlock)_handlingBlock
+                withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
                     andErrorBlock:(GRKErrorBlock)_errorBlock;
 
 

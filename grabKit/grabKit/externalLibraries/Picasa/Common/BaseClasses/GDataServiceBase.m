@@ -892,6 +892,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   NSData *data = [fetcher downloadedData];
   NSUInteger dataLength = [data length];
 
+   // NSLog(@" DEBUG : %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    
   // if we created the object (or we got empty data back, as from a GData
   // delete resource request) then we succeeded
   if (object != nil || dataLength == 0) {

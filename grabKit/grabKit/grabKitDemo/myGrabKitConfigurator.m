@@ -25,6 +25,10 @@
 
 @implementation myGrabKitConfigurator
 
+
+// Connection to services
+
+
 // Facebook - https://developers.facebook.com/apps
 
 - (NSString*)facebookAppId {
@@ -72,5 +76,14 @@
 }
 
 
+
+// Others
+
+// The name of the album "Tagged photos" on Facebook, as you want GrabKit to return it.
+// Hint : use localization here.
+- (NSString*)facebookTaggedPhotosAlbumName {
+    
+ return @"Tagged photos";   
+}
 
 @end

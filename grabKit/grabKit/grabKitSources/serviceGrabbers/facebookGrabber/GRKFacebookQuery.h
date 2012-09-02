@@ -27,18 +27,12 @@
 #import "GRKServiceGrabberProtocol.h"
 #import "GRKServiceQueryProtocol.h"
 
-#import <FBiOSSDK/FBRequest.h>
+#import <FacebookSDK/FBRequest.h>
 
-//#import "FBRequestConnection.h"
-//#import "FBRequest.h"
-
-@class GRKFacebookQuery;
-
-typedef void (^GRKFacebookQueryHandlingBlock)(GRKFacebookQuery * query, id result);
 
 /** GRKFacebookQuery is an object conforming to GRKServiceQueryProtocol, used by a GRKFacebookGrabber, representing a single call to Facebook's webservices.
 */
-@interface GRKFacebookQuery : NSObject </*FBRequestDelegate,*/ GRKServiceQueryProtocol> {
+@interface GRKFacebookQuery : NSObject <GRKServiceQueryProtocol> {
 	
     
     FBRequestConnection * requestConnection;
@@ -46,7 +40,7 @@ typedef void (^GRKFacebookQueryHandlingBlock)(GRKFacebookQuery * query, id resul
     NSString * graphPath;
     NSMutableDictionary * params;
     
-    GRKFacebookQueryHandlingBlock handlingBlock;
+    GRKQueryResultBlock handlingBlock;
     GRKErrorBlock errorBlock;
 	
 }
@@ -54,13 +48,13 @@ typedef void (^GRKFacebookQueryHandlingBlock)(GRKFacebookQuery * query, id resul
 
 -(id) initWithGraphPath:(NSString *)_graphPath 
 			 withParams:(NSMutableDictionary *)_params
-      withHandlingBlock:(GRKFacebookQueryHandlingBlock)_handlingBlock
+      withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
           andErrorBlock:(GRKErrorBlock)_errorBlock;
 
 
 +(GRKFacebookQuery*) queryWithGraphPath:(NSString *)_graphPath 
 					    withParams:(NSMutableDictionary *)_params
-                 withHandlingBlock:(GRKFacebookQueryHandlingBlock)_handlingBlock
+                 withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
                      andErrorBlock:(GRKErrorBlock)_errorBlock;
 
 

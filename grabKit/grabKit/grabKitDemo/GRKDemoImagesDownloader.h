@@ -22,7 +22,7 @@
  */
 
 #import <Foundation/Foundation.h>
-
+#import "GRKDemoThumbnail.h"
 
 @interface GRKDemoImagesDownloader : NSObject {
     
@@ -34,7 +34,7 @@
 
 +(GRKDemoImagesDownloader*)sharedInstance;
 +(NSCache *) cache;
--(void) downloadImageAtURL:(NSURL*)imageURL forImageView:(UIImageView*)imageView;
+-(void) downloadImageAtURL:(NSURL*)imageURL forThumbnail:(GRKDemoThumbnail*)thumbnail;
 
 -(void) removeAllURLsOfImagesToDownload;
 -(void) cancelAllConnections;

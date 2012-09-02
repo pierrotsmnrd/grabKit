@@ -25,7 +25,7 @@
 #import "GRKFacebookQuery.h"
 #import "GRKFacebookSingleton.h"
 
-#import <FBiOSSDK/FBSession.h>
+#import <FacebookSDK/FBSession.h>
 
 @interface GRKFacebookQuery()
 -(void) requestConnectionCompleted:(FBRequestConnection *)connection withResult:(id)result orError:(NSError*)error;
@@ -37,7 +37,7 @@
 
 -(id) initWithGraphPath:(NSString *)_graphPath 
 			 withParams:(NSMutableDictionary *)_params
-      withHandlingBlock:(GRKFacebookQueryHandlingBlock)_handlingBlock
+      withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
           andErrorBlock:(GRKErrorBlock)_errorBlock;
 {
     if ((self = [super init]) != nil){
@@ -60,7 +60,7 @@
 
 +(GRKFacebookQuery*) queryWithGraphPath:(NSString *)_graphPath 
             withParams:(NSMutableDictionary *)_params
-      withHandlingBlock:(GRKFacebookQueryHandlingBlock)_handlingBlock
+      withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
          andErrorBlock:(GRKErrorBlock)_errorBlock;
 {
 
@@ -76,8 +76,6 @@
 
 -(void) perform;
 {
-    //request = [[[GRKFacebookSingleton sharedInstance] facebook] requestWithGraphPath:graphPath andParams:params andDelegate:self];
-    
     
     // create the connection object
     requestConnection = [[FBRequestConnection alloc] init];
@@ -98,6 +96,7 @@
 
 -(void) cancel {
     
+    handlingBlock = nil;
     errorBlock = nil;
     [requestConnection cancel];
 

@@ -24,10 +24,11 @@
 
 #import "GRKFacebookGrabber.h"
 #import "GRKConnectorsDispatcher.h"
+#import "GRKFacebookBatchQuery.h"
 #import "GRKFacebookQuery.h"
 #import "GRKAlbum.h"
 #import "ISO8601DateFormatter.h"
-
+#import "GRKConstants.h"
 
 
 @interface GRKFacebookGrabber()
@@ -165,74 +166,231 @@
                                   userInfo:nil];
         @throw exception;
     }
+    
+/* 
+ Internal implementation details : 
+ Problem : 
+        We want to give access to the tagged photos of the user. 
+        This must be done by making specific calls to Facebook's Graph API.
+ 
+        We can't consider a "tagged photos" album as last album, because we don't know by advance how many albums the user has.
+        We could assume that when we ask for N albums and we receive less than N, then we reached the last albums, so we could make
+            an extra call for the tagged photos. But it forces us to make an extra call. 
 
+ Solution : Let's consider the first album as the "tagged photos" album.
+            When asking for the first page of N albums, ask for "N-1 albums" and "tagged photos", in one call of batch queries.
     
-    NSMutableDictionary * params = [NSMutableDictionary  dictionaryWithObjectsAndKeys:@"id,name,count,updated_time,created_time,location", @"fields", nil];
-    
-    NSNumber * offset = [NSNumber numberWithInt:(pageIndex * numberOfAlbumsPerPage )];
-    [params setObject:[offset stringValue] forKey:@"offset"];	
-    [params setObject:[NSString stringWithFormat:@"%d", numberOfAlbumsPerPage] forKey:@"limit"];
+        This implies to shift the parameter "offset" built in every requests.
+ */
     
     
-   __block GRKFacebookQuery * albumsQuery = nil;
-    
-    albumsQuery = [GRKFacebookQuery queryWithGraphPath:@"me/albums"
-                                 withParams:params
-                  withHandlingBlock:^(GRKFacebookQuery * fbquery, id result){
-                      
-                      if ( ! [self isResultForAlbumsInTheExpectedFormat:result] ){
-                          if ( errorBlock != nil ) {
+    // asking for the first page of albums ? 
+    if ( pageIndex == 0 ){
+        
+        // then we know we'll ask for one less album
+        numberOfAlbumsPerPage -= 1 ;
+        
+        //Create a batchQuery to ask for : 
+        // _ the tagged photos (with a FQL query)
+        // _ the photo albums (with a graph path query)
+       __block GRKFacebookBatchQuery * batchQuery = [[GRKFacebookBatchQuery alloc] init];
+        
+        
+        //  First query of the batch : the tagged photos
+        NSString * graphPathFQL = @"fql";
+        NSMutableDictionary *paramsFQL = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                          @"SELECT '' FROM photo_tag WHERE subject=me()", @"q",
+                                          nil];
+        
+        [batchQuery addQueryWithGraphPath:graphPathFQL 
+                               withParams:paramsFQL 
+                                  andName:@"taggedPhotos" 
+                         andHandlingBlock:^id(GRKFacebookBatchQuery *query, id result, NSError *error) {
+            
+            // Build the GRKAlbum of the tagged photos from the result, and return it. Or return the error if needed.
+            
+            if ( error ) {
+                return error;
+            }
+            
+            if ( [result objectForKey:@"data"] == nil ) {
 
-                              // Create an error for "bad format result" and call the errorBlock
-                              NSError * error = [self errorForBadFormatResultForAlbumsOperation];
+                NSError * error = [self errorForBadFormatResultForAlbumsOperation];
+                return error;
+            }
+            
+
+            GRKAlbum * taggedPhotosAlbum = [[GRKAlbum alloc] initWithId:@"me" // do NOT change this value 
+                                                                andName:[GRKCONFIG facebookTaggedPhotosAlbumName]
+                                                               andCount:[[result objectForKey:@"data"] count] 
+                                                               andDates:nil];
+            
+            return taggedPhotosAlbum;
+            
+        } ];
+        
+        
+        // Second query of the batch : the albums
+        NSString * graphPath = @"me/albums";
+        NSMutableDictionary * params = [NSMutableDictionary  dictionaryWithObjectsAndKeys:@"id,name,count,updated_time,created_time,location", @"fields", nil];
+        
+        NSNumber * offset = [NSNumber numberWithInt:(pageIndex * numberOfAlbumsPerPage )]; 
+        // minus one : refer to the implementation details above
+        
+        [params setObject:[offset stringValue] forKey:@"offset"];	
+        [params setObject:[NSString stringWithFormat:@"%d", numberOfAlbumsPerPage] forKey:@"limit"];
+        
+        [batchQuery addQueryWithGraphPath:graphPath withParams:params andName:@"albums"  andHandlingBlock:^id(GRKFacebookBatchQuery *query, id result, NSError *error) {
+            
+            // Build the array of GRKAlbum from the result, and return it. Or return the error if needed.
+            
+            if ( error ) {
+                return error;
+            }
+            
+            if ( ! [self isResultForAlbumsInTheExpectedFormat:result] ){
+
+                // Create an error for "bad format result" and call the errorBlock
+                NSError * badFormatError = [self errorForBadFormatResultForAlbumsOperation];
+                
+                return badFormatError;
+            }
+            
+            // handle each album data to build a NSMutableDictionary of GRKAlbum objects
+            NSArray * rawAlbums = [(NSDictionary *)result objectForKey:@"data"];
+            NSMutableArray * albums = [NSMutableArray arrayWithCapacity:[rawAlbums count]];
+            
+            for( NSDictionary * rawAlbum in rawAlbums ){
+                
+                @autoreleasepool {
+                    GRKAlbum * album = [self albumWithRawAlbum:rawAlbum];
+                    [albums addObject:album];
+                }
+                
+            }
+         
+            
+            return albums;
+            
+        }];
+        
+        
+        [self registerQueryAsLoading:batchQuery];
+        [batchQuery performWithFinalBlock:^(GRKFacebookBatchQuery * batchQuery, id results) {
+
+            // if the result is not in the expected format ...
+            if ( [results objectForKey:@"taggedPhotos"] == nil 
+                || [results objectForKey:@"albums"] == nil
+            || [[results objectForKey:@"taggedPhotos"] isKindOfClass:[NSError class]] 
+            || [[results objectForKey:@"albums"] isKindOfClass:[NSError class]]     
+                ){
+                if ( errorBlock != nil ) {
+                    // Create an error for "bad format result" and call the errorBlock
+                    NSError * error = [self errorForBadFormatResultForAlbumsOperation];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        errorBlock(error);
+                    });
+                }
+                [self unregisterQueryAsLoading:batchQuery];
+                batchQuery = nil;
+                
+                return;
+            }
+                
+            // else, reorganize results and call the completion block
+            NSMutableArray * albums = [NSMutableArray array];
+            [albums addObject:[results objectForKey:@"taggedPhotos"]];
+            [albums addObjectsFromArray:[results objectForKey:@"albums"]];
+             
+            if ( completeBlock != nil ) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completeBlock(albums);
+                });
+            }
+            
+            [self unregisterQueryAsLoading:batchQuery];
+            batchQuery = nil;
+            return;
+
+            
+        }];
+
+        
+    // asking for page above 1 ? 
+    } else {
+            
+        
+        NSMutableDictionary * params = [NSMutableDictionary  dictionaryWithObjectsAndKeys:@"id,name,count,updated_time,created_time,location", @"fields", nil];
+        
+        NSNumber * offset = [NSNumber numberWithInt:(pageIndex * numberOfAlbumsPerPage ) -1 ]; 
+                    // minus one : refer to the implementation details above
+            
+        [params setObject:[offset stringValue] forKey:@"offset"];	
+        [params setObject:[NSString stringWithFormat:@"%d", numberOfAlbumsPerPage] forKey:@"limit"];
+        
+        
+       __block GRKFacebookQuery * albumsQuery = nil;
+        
+        albumsQuery = [GRKFacebookQuery queryWithGraphPath:@"me/albums"
+                                     withParams:params
+                      withHandlingBlock:^(GRKFacebookQuery * fbquery, id result){
+                          
+                          if ( ! [self isResultForAlbumsInTheExpectedFormat:result] ){
+                              if ( errorBlock != nil ) {
+
+                                  // Create an error for "bad format result" and call the errorBlock
+                                  NSError * error = [self errorForBadFormatResultForAlbumsOperation];
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      errorBlock(error);
+                                  });
+                              }
+                              [self unregisterQueryAsLoading:albumsQuery];
+                              albumsQuery = nil;
+                              
+                              return;
+                          }
+                          
+                          // handle each album data to build a NSMutableDictionary of GRKAlbum objects
+                          
+                          NSArray * rawAlbums = [(NSDictionary *)result objectForKey:@"data"];
+                          NSMutableArray * albums = [NSMutableArray arrayWithCapacity:[rawAlbums count]];
+                          
+                          for( NSDictionary * rawAlbum in rawAlbums ){
+                         
+                              @autoreleasepool {
+                                  GRKAlbum * album = [self albumWithRawAlbum:rawAlbum];
+                                  [albums addObject:album];
+                              }
+                              
+                          }
+                          
+                          if ( completeBlock != nil ) {
                               dispatch_async(dispatch_get_main_queue(), ^{
-                                  errorBlock(error);
+                              completeBlock(albums);
                               });
                           }
                           [self unregisterQueryAsLoading:albumsQuery];
                           albumsQuery = nil;
                           
-                          return;
-                      }
-                      
-                      // handle each album data to build a NSMutableDictionary of GRKAlbum objects
-                      
-                      NSArray * rawAlbums = [(NSDictionary *)result objectForKey:@"data"];
-                      NSMutableArray * albums = [NSMutableArray arrayWithCapacity:[rawAlbums count]];
-                      
-                      for( NSDictionary * rawAlbum in rawAlbums ){
-                     
-                          @autoreleasepool {
-                              GRKAlbum * album = [self albumWithRawAlbum:rawAlbum];
-                              [albums addObject:album];
-                          }
+                      }andErrorBlock:^(NSError * error){
                           
-                      }
-                      
-                      if ( completeBlock != nil ) {
-                          dispatch_async(dispatch_get_main_queue(), ^{
-                          completeBlock(albums);
-                          });
-                      }
-                      [self unregisterQueryAsLoading:albumsQuery];
-                      albumsQuery = nil;
-                      
-                  }andErrorBlock:^(NSError * error){
-                      
-                      if ( errorBlock != nil) {
-                          NSError * GRKError = [self errorForAlbumsOperationWithOriginalError:error];
-                          dispatch_async(dispatch_get_main_queue(), ^{
-                              errorBlock(GRKError);
-                          });
-                      }
-                      [self unregisterQueryAsLoading:albumsQuery];
-                      albumsQuery = nil;
-                      
-                  }] ;
-    
-    [self registerQueryAsLoading:albumsQuery];
-    [albumsQuery perform];
-    
+                          if ( errorBlock != nil) {
+                              NSError * GRKError = [self errorForAlbumsOperationWithOriginalError:error];
+                              dispatch_async(dispatch_get_main_queue(), ^{
+                                  errorBlock(GRKError);
+                              });
+                          }
+                          [self unregisterQueryAsLoading:albumsQuery];
+                          albumsQuery = nil;
+                          
+                      }] ;
+        
+        [self registerQueryAsLoading:albumsQuery];
+        [albumsQuery perform];
+        
+        
+    }
+
 }
 
 
@@ -261,7 +419,8 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
     NSNumber * offset = [NSNumber numberWithInt:(pageIndex * numberOfPhotosPerPage )];
     [params setObject:[offset stringValue] forKey:@"offset"];	
     [params setObject:[NSString stringWithFormat:@"%d", numberOfPhotosPerPage] forKey:@"limit"];
-    
+    [params setObject:@"id,name,created_time,updated_time,images,height,width" forKey:@"fields"];    
+
     __block GRKFacebookQuery * fillAlbumQuery = nil;
     
     fillAlbumQuery = [GRKFacebookQuery queryWithGraphPath:[NSString stringWithFormat:@"%@/photos", album.albumId ]
@@ -331,6 +490,102 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 }
 
 
+-(void) fillCoverPhotoOfAlbums:(NSArray *)albums 
+             withCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+    
+    
+    __block GRKFacebookBatchQuery * batchQuery = [[GRKFacebookBatchQuery alloc] init];
+
+    //for each album
+    for( GRKAlbum * album in albums ){
+    
+        // 1) build a subquery to retrieve album's cover photo id
+        
+        NSString * graphPathCoverPhotoId = album.albumId;
+        
+        NSString* queryNameCoverPhotoId = [NSString stringWithFormat:@"coverPhotoId_%@", album.albumId];
+        
+        NSMutableDictionary *paramsCoverPhotoId = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                          @"cover_photo", @"fields",
+                                          nil];
+        
+        [batchQuery addQueryWithGraphPath:graphPathCoverPhotoId 
+                               withParams:paramsCoverPhotoId 
+                                  andName:queryNameCoverPhotoId 
+                         andHandlingBlock:^id(GRKFacebookBatchQuery *query, id result, NSError *error) {
+                          
+                             /*
+                             if ( error != nil ){
+                                 NSLog(@" error for album id %@", album.albumId);
+                             } */
+                             
+                             return nil;
+                         }]; // no need to store the result for this query
+        
+        
+        // 2) build a second subquery, using result from the first one, to get cover photo's data
+
+            // Specifying dependencies between queries in a batch request, thank you Facebook for implementing JSONPath :)
+        NSString * graphPathCoverPhotoData = [NSString stringWithFormat:@"{result=%@:$.cover_photo}", queryNameCoverPhotoId]; 
+        
+        NSMutableDictionary * paramsCoverPhotoData = [NSMutableDictionary  dictionaryWithObjectsAndKeys:@"id,name,created_time,updated_time,images,height,width", @"fields", nil];    
+
+        [batchQuery addQueryWithGraphPath:graphPathCoverPhotoData 
+                               withParams:paramsCoverPhotoData 
+                                  andName:[NSString stringWithFormat:@"coverPhotoData_%@", graphPathCoverPhotoId]  
+                         andHandlingBlock:^id(GRKFacebookBatchQuery *query, id result, NSError *error) {
+
+        
+                             if (error !=nil ) {
+                               
+                                 //NSLog(@" error for cover data album %@", album.albumId);
+                                 // don't return error. it just failed, the album won't have its cover updated
+                                 return nil;
+                             } else if ( result != nil ){
+                                    
+                                 GRKPhoto * coverPhoto = [self photoWithRawPhoto:result];
+                                 [album setCoverPhoto:coverPhoto];
+                                 
+                             }
+                             
+                             return album;
+            
+                         }];
+    }
+    
+    [self registerQueryAsLoading:batchQuery];
+    [batchQuery performWithFinalBlock:^(GRKFacebookQuery *query, id results) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completeBlock([results allObjects]);    
+        });
+
+        [self unregisterQueryAsLoading:batchQuery];
+        batchQuery = nil;
+        
+        
+    }];
+    
+    return;
+    
+    
+}
+
+
+/* @see refer to GRKServiceGrabberProtocol documentation
+ */
+-(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album 
+             andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+    [self fillCoverPhotoOfAlbums:[NSArray arrayWithObject:album] 
+                withCompleteBlock:completeBlock 
+                   andErrorBlock:errorBlock];
+}
+
+
 /* @see refer to GRKServiceGrabberProtocol documentation
  */
 -(void) cancelAll {
@@ -386,7 +641,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 /** Build and return a GRKAlbum from the given dictionary.
 
  @param rawAlbum a NSDictionary representing the album to build, as returned by Facebook's API
- @return an autoreleased GRKAlbum
+ @return a GRKAlbum
 */
 -(GRKAlbum *) albumWithRawAlbum:(NSDictionary*)rawAlbum;
 {
@@ -441,7 +696,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 /** Build and return a GRKPhoto from the given dictionary.
  
  @param rawPhoto a NSDictionary representing the photo to build, as returned by Facebook's API
- @return an autoreleased GRKPhoto
+ @return a GRKPhoto
  */
 -(GRKPhoto *) photoWithRawPhoto:(NSDictionary*)rawPhoto;
 {
@@ -450,20 +705,30 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 	// on Facebook, the "name" value of a photo is its caption
     NSString * photoCaption = [rawPhoto objectForKey:@"name"]  ;
     
-    // raw dates stored as strings in the FB result. 
-    // they are ISO 8601 dates, looking like : 2010-09-08T21:11:25+0000
-    NSString * dateCreatedDatetimeISO8601String = [rawPhoto objectForKey:@"created_time"];
-    NSString * dateUpdatedDatetimeISO8601String = [rawPhoto objectForKey:@"updated_time"];
-    
-    // convert the string dates to NSDate
-    ISO8601DateFormatter *formatter = [[ISO8601DateFormatter alloc] init];
-    NSDate * dateCreated = [formatter dateFromString:dateCreatedDatetimeISO8601String];
-    NSDate * dateUpdated = [formatter dateFromString:dateUpdatedDatetimeISO8601String];
-    
-    
     NSMutableDictionary * dates = [NSMutableDictionary dictionary];
-    if (dateCreated != nil) [dates setObject:dateCreated forKey:kGRKPhotoDatePropertyDateCreated];
-    if (dateUpdated != nil) [dates setObject:dateUpdated forKey:kGRKPhotoDatePropertyDateUpdated];
+    ISO8601DateFormatter *formatter = [[ISO8601DateFormatter alloc] init];
+    
+    if ( [rawPhoto objectForKey:@"created_time"] != nil){
+    
+        // raw dates stored as strings in the FB result. 
+        // they are ISO 8601 dates, looking like : 2010-09-08T21:11:25+0000
+        NSString * dateCreatedDatetimeISO8601String = [rawPhoto objectForKey:@"created_time"];
+        
+        // convert the string dates to NSDate
+        NSDate * dateCreated = [formatter dateFromString:dateCreatedDatetimeISO8601String];
+    
+        if (dateCreated != nil)
+            [dates setObject:dateCreated forKey:kGRKPhotoDatePropertyDateCreated];
+    }
+    
+    if ( [rawPhoto objectForKey:@"updated_time"] != nil ){
+        
+        NSString * dateUpdatedDatetimeISO8601String = [rawPhoto objectForKey:@"updated_time"];
+        NSDate * dateUpdated = [formatter dateFromString:dateUpdatedDatetimeISO8601String];
+        
+        if (dateUpdated != nil) 
+            [dates setObject:dateUpdated forKey:kGRKPhotoDatePropertyDateUpdated];
+    }
     
     
     // Width and Height of the original image. will be used to set the isOriginal value when we build images
@@ -489,7 +754,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
  @param rawImage a NSDictionary representing the image to build, as returned by Facebook's API
  @param originalWidth the width of the original photo. it is used to define if the result GRKImage is original or not.
  @param originalHeight the height of the original photo. it is used to define if the result GRKImage is original or not.
- @return an autoreleased GRKImage
+ @return a GRKImage
  */
 -(GRKImage *) imageWithRawImage:(NSDictionary*)rawImage originalWidth:(NSDecimalNumber*)originalWidth originalHeight:(NSDecimalNumber*)originalHeight;
 {

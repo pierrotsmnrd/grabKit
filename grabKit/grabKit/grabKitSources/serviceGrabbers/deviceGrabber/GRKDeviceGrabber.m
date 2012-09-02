@@ -291,6 +291,103 @@ Then : we have to fetch from "(page index) * (number of photo per page)" to "ran
 
 
 
+-(void) fillCoverPhotoOfAlbums:(NSArray *)albums 
+              withCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                 andErrorBlock:(GRKErrorBlock)errorBlock; {
+    
+    
+    cancelAllFlag = NO;
+
+    for( GRKAlbum * album in albums ){
+        
+       [self fillCoverPhotoOfAlbum:album 
+                  andCompleteBlock:^(id result) {
+           
+       } andErrorBlock:^(NSError *error) {
+           
+       } ];
+    }
+    
+    
+    
+}
+
+-(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album 
+             andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+    
+    ALAssetsGroup * groupForThisAlbum = [assetsGroupsById objectForKey:album.albumId];
+    if ( groupForThisAlbum == nil ) {
+        
+        if ( errorBlock != nil ){
+            
+            
+            [self errorForFillAlbumOperationWithOriginalError:nil];
+            
+            NSString * errorDomain = [NSString stringWithFormat:@"com.grabKit.%@.albums", _serviceName];
+            NSError * error = [NSError errorWithDomain:errorDomain code:0 userInfo:nil];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorBlock(error);
+            });
+        }
+        
+        return;
+    }
+    
+    
+    /* We could retrieve the "posterImage" property of the ALAssetsGroup object.
+     BUT the model to fit every services specifies we must set a GRKPhoto, and this object doesn't store any image data.
+     
+     So, let's retrieve an asset. 
+     If the group is "Library", retrieve the last asset of the group.
+     Else, retrieve the first one. 
+     (it seems to be the way it works on the Photo application ...)
+     
+     If you ever want to modify this grabber and access to the image directly :         
+     [UIImage imageWithCGImage:groupForThisAlbum.posterImage]  
+     */
+    
+    NSIndexSet * indexSetOfAssetToRetrieve;
+    
+    if ( ALAssetsGroupSavedPhotos == [[groupForThisAlbum valueForProperty:ALAssetsGroupPropertyType] intValue] ){
+        
+        indexSetOfAssetToRetrieve = [NSIndexSet indexSetWithIndex:album.count-1];
+        
+    } else {
+        
+        indexSetOfAssetToRetrieve = [NSIndexSet indexSetWithIndex:0];
+        
+    }
+    
+    [self incrementQueriesCount];
+    [groupForThisAlbum  enumerateAssetsAtIndexes:indexSetOfAssetToRetrieve
+                                         options:0 
+                                      usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                                          
+                                          // check if the cancelAll flag has been set 
+                                          if ( cancelAllFlag == YES ){
+                                              *stop = YES;
+                                              [self decrementQueriesCount];
+                                              return;
+                                          }
+                                          
+                                          // when enumeration is finished, a nil group is passed to this block
+                                          if ( result == nil ){
+                                              [self decrementQueriesCount];                                             
+                                              return;
+                                          }
+                                          
+                                          
+                                          album.coverPhoto = [self photoFromALAsset:result atIndex:index];
+                                          
+                                          
+                                      }];
+    
+}
+
+
 
 
 /* @see refer to GRKServiceGrabberProtocol documentation

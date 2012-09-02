@@ -31,7 +31,7 @@
 #import "GRKFacebookSingleton.h"
 #import "GRKTokenStore.h"
 
-#import <FBiOSSDK/FBSession.h>
+#import <FacebookSDK/FBSession.h>
 
 static NSString * accessTokenKey = @"AccessTokenKey";
 static NSString * expirationDateKey = @"ExpirationDateKey";
@@ -67,8 +67,25 @@ static NSString * expirationDateKey = @"ExpirationDateKey";
             
         
             [FBSession setDefaultAppID:[GRKCONFIG facebookAppId]];
-            NSArray *permissions = [NSArray arrayWithObjects:@"user_photos", nil];
+            NSArray *permissions = [NSArray arrayWithObjects:@"user_photos", @"user_photo_video_tags", nil];
         
+        
+            [FBSession openActiveSessionWithPermissions:permissions 
+                                           allowLoginUI:YES 
+                                      completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                                          
+                                          if (FB_ISSESSIONOPENWITHSTATE(status)) {
+                                              
+                                              [GRKFacebookSingleton sharedInstance].facebookSession = session;
+                                              completeBlock(YES);
+                                              
+                                          }else if (error) {
+                                              
+                                              errorBlock(error);
+                                              
+                                          }
+                                      }];
+        /*
             [FBSession sessionOpenWithPermissions:permissions
                                     completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
 
@@ -83,7 +100,7 @@ static NSString * expirationDateKey = @"ExpirationDateKey";
          
                     }
          }];
-
+         */
         
 
         

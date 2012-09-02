@@ -32,7 +32,7 @@
  
  // photos getters
  
- // returns an autoreleased array containing the GRKPhoto already loaded, and containing [NSNull null] for photos not loaded yet
+ // returns an  array containing the GRKPhoto already loaded, and containing [NSNull null] for photos not loaded yet
  // Objects in the returned array follow the order in which they have been added to the album
  -(NSArray*) orderedPhotos;	
  
@@ -43,12 +43,12 @@
  // returns an array containing all the GRKPhoto already loaded, without specific order
  -(NSArray*) photos; 
  
- // returns an autoreleased array containing the GRKPhoto for the given page index, with the given number of photos per page. 
+ // returns an array containing the GRKPhoto for the given page index, with the given number of photos per page. 
  // Objects in the returned array follow the order in which they have been added to the album
  // the returned array is filled with NSNull objects if some photos in the album has not been totally filled
  -(NSArray*) photosAtPageIndex:(NSUInteger)pageIndex withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage;
  
- // returns an autoreleased array containing the ids of the GRKPhoto for the given page index, with the given number of photos per page. 
+ // returns an array containing the ids of the GRKPhoto for the given page index, with the given number of photos per page. 
  // Objects in the returned array follow the order in which they have been added to the album
  -(NSArray*) photosIdsAtPageIndex:(NSUInteger)pageIndex withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage;
  

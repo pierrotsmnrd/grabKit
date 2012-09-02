@@ -25,10 +25,6 @@
 #import "GRKServiceGrabberProtocol.h"
 #import "GRKServiceQueryProtocol.h"
 
-@class GRKInstagramQuery;
-
-typedef void (^GRKInstagramQueryHandlingBlock)(GRKInstagramQuery * query, id result);
-
 
 /** GRKInstagramQuery is an object conforming to GRKServiceQueryProtocol, used by a GRKInstagraGrabber, representing a single call to Instagram's webservices.
  */
@@ -41,7 +37,7 @@ typedef void (^GRKInstagramQueryHandlingBlock)(GRKInstagramQuery * query, id res
     NSString * endpoint;
     NSMutableDictionary * params;
     
-    GRKInstagramQueryHandlingBlock handlingBlock;
+    GRKQueryResultBlock handlingBlock;
     GRKErrorBlock errorBlock;
 	
 }
@@ -49,13 +45,13 @@ typedef void (^GRKInstagramQueryHandlingBlock)(GRKInstagramQuery * query, id res
 
 -(id) initWithEndpoint:(NSString *)_endpoint 
 			 withParams:(NSMutableDictionary *)_params
-      withHandlingBlock:(GRKInstagramQueryHandlingBlock)_handlingBlock
+      withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
           andErrorBlock:(GRKErrorBlock)_errorBlock;
 
 
 +(GRKInstagramQuery*) queryWithEndpoint:(NSString *)_endpoint 
                             withParams:(NSMutableDictionary *)_params
-                     withHandlingBlock:(GRKInstagramQueryHandlingBlock)_handlingBlock
+                     withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
                          andErrorBlock:(GRKErrorBlock)_errorBlock;
 
 

@@ -27,13 +27,11 @@
 #import "GRKServiceQueryProtocol.h"
 
 
-@class GRKPicasaQuery;
-
-typedef void (^GRKPicasaQueryHandlingBlock)(GRKPicasaQuery * query, id result);
-
 /** GRKPicasaQuery is an object conforming to GRKServiceQueryProtocol, used by a GRKPicasaGrabber, representing a single call to Picasa's webservices.
  */
 @interface GRKPicasaQuery : NSObject <GRKServiceQueryProtocol> {
+    
+    __strong GDataQuery * query;
     
     NSURL * feedURL;
     NSMutableDictionary * params;
@@ -41,7 +39,7 @@ typedef void (^GRKPicasaQueryHandlingBlock)(GRKPicasaQuery * query, id result);
 	GDataServiceTicket *ticket;
 
     
-    GRKPicasaQueryHandlingBlock handlingBlock;
+    GRKQueryResultBlock handlingBlock;
     GRKErrorBlock errorBlock;
     
     
@@ -49,13 +47,25 @@ typedef void (^GRKPicasaQueryHandlingBlock)(GRKPicasaQuery * query, id result);
 
 -(id) initWithFeedURL:(NSURL *)_feedURL 
             andParams:(NSMutableDictionary *)_params
-    withHandlingBlock:(GRKPicasaQueryHandlingBlock)_handlingBlock
+    withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
         andErrorBlock:(GRKErrorBlock)_errorBlock;
 
 +(GRKPicasaQuery*) queryWithFeedURL:(NSURL *)_feedURL 
                          andParams:(NSMutableDictionary *)_params
-                 withHandlingBlock:(GRKPicasaQueryHandlingBlock)_handlingBlock
+                 withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
                      andErrorBlock:(GRKErrorBlock)_errorBlock;
+
+
+
+-(id) initWithQuery:(GDataQuery *)_query
+    withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
+        andErrorBlock:(GRKErrorBlock)_errorBlock;
+
++(GRKPicasaQuery*) queryWithQuery:(GDataQuery *)_query
+                  withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
+                      andErrorBlock:(GRKErrorBlock)_errorBlock;
+
+
 
 -(void) perform;
 -(void) cancel;

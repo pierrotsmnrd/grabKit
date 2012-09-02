@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F0167AE15D2D796003C3C1C /* GRKDemoAlbumsListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0167AD15D2D796003C3C1C /* GRKDemoAlbumsListCell.m */; };
+		5F0167B115D2D825003C3C1C /* GRKDemoAlbumsListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F0167B015D2D825003C3C1C /* GRKDemoAlbumsListCell.xib */; };
+		5F0167B415D9732A003C3C1C /* GRKFlickrQueriesQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F0167B215D97329003C3C1C /* GRKFlickrQueriesQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F0167B515D9732A003C3C1C /* GRKFlickrQueriesQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0167B315D97329003C3C1C /* GRKFlickrQueriesQueue.m */; };
+		5F0167B615D9732A003C3C1C /* GRKFlickrQueriesQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F0167B315D97329003C3C1C /* GRKFlickrQueriesQueue.m */; };
+		5F28F80315CE733300E0E64D /* GRKFacebookBatchQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F28F80115CE733200E0E64D /* GRKFacebookBatchQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F28F80415CE733300E0E64D /* GRKFacebookBatchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F28F80215CE733300E0E64D /* GRKFacebookBatchQuery.m */; };
+		5F28F80515CE733300E0E64D /* GRKFacebookBatchQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F28F80215CE733300E0E64D /* GRKFacebookBatchQuery.m */; };
 		5F3C2B4F15B9F7FC008D894A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3C2B4E15B9F7FC008D894A /* UIKit.framework */; };
 		5F3C2B5115B9F7FC008D894A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3C2B5015B9F7FC008D894A /* Foundation.framework */; };
 		5F3C2B5315B9F7FC008D894A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3C2B5215B9F7FC008D894A /* CoreGraphics.framework */; };
@@ -285,12 +293,14 @@
 		5F7793DC15C4200F00A08712 /* GDataPhotos.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3C2C9B15B9F945008D894A /* GDataPhotos.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F7793DD15C4200F00A08712 /* GDataQueryGooglePhotos.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3C2C9C15B9F945008D894A /* GDataQueryGooglePhotos.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F7793DE15C4200F00A08712 /* GDataServiceGooglePhotos.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3C2C9E15B9F945008D894A /* GDataServiceGooglePhotos.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F89BAFB15C85D990098F1D7 /* thumbnail_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F89BAF915C85D990098F1D7 /* thumbnail_placeholder.png */; };
+		5F89BAFC15C85D990098F1D7 /* thumbnail_placeholder@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F89BAFA15C85D990098F1D7 /* thumbnail_placeholder@2X.png */; };
+		5F89BB0015C902870098F1D7 /* GRKDemoThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F89BAFF15C902860098F1D7 /* GRKDemoThumbnail.m */; };
 		5F89F1D315BFC1BC00B8739D /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F3C2C7C15B9F945008D894A /* GTMOAuth2ViewTouch.xib */; };
 		5F8CB3D415C5346500393EE5 /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8CB3D015C5346500393EE5 /* facebook.png */; };
 		5F8CB3D515C5346500393EE5 /* flickr.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8CB3D115C5346500393EE5 /* flickr.png */; };
 		5F8CB3D615C5346500393EE5 /* instagram.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8CB3D215C5346500393EE5 /* instagram.png */; };
 		5F8CB3D715C5346500393EE5 /* picasa.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8CB3D315C5346500393EE5 /* picasa.png */; };
-		5FA490C115C3B4E70000DADB /* FBiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA490C015C3B4E70000DADB /* FBiOSSDK.framework */; };
 		5FA4911415C3C3540000DADB /* GrabKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FA4911315C3C3540000DADB /* GrabKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC684D015BB5625001F5929 /* GRKConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC684CE15BB5625001F5929 /* GRKConfiguration.m */; };
 		5FC684D315BC6C88001F5929 /* myGrabKitConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC684D215BC6C88001F5929 /* myGrabKitConfigurator.m */; };
@@ -426,6 +436,10 @@
 		5FD39ABA15BF1EAA0063542C /* GDataPhotoElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3C2C9A15B9F945008D894A /* GDataPhotoElements.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5FD39ABD15BF1EAA0063542C /* GDataQueryGooglePhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3C2C9D15B9F945008D894A /* GDataQueryGooglePhotos.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5FD39ABF15BF1EAA0063542C /* GDataServiceGooglePhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3C2C9F15B9F945008D894A /* GDataServiceGooglePhotos.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5FEE9DED15DF6CC900C44501 /* GRKPicasaQueriesQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FEE9DEB15DF6CC900C44501 /* GRKPicasaQueriesQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FEE9DEE15DF6CC900C44501 /* GRKPicasaQueriesQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FEE9DEC15DF6CC900C44501 /* GRKPicasaQueriesQueue.m */; };
+		5FEE9DEF15DF6CC900C44501 /* GRKPicasaQueriesQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FEE9DEC15DF6CC900C44501 /* GRKPicasaQueriesQueue.m */; };
+		5FEE9DF215E11AF400C44501 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEE9DF115E11AF400C44501 /* FacebookSDK.framework */; };
 		5FF1FF1515BF21FF00EF2CE4 /* GRKConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3C2CBB15B9F945008D894A /* GRKConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FF1FF1615BF21FF00EF2CE4 /* GRKConfiguratorProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC684CB15BB5625001F5929 /* GRKConfiguratorProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FF1FF1715BF21FF00EF2CE4 /* GRKConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC684CD15BB5625001F5929 /* GRKConfiguration.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -476,6 +490,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5F0167AC15D2D796003C3C1C /* GRKDemoAlbumsListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKDemoAlbumsListCell.h; sourceTree = "<group>"; };
+		5F0167AD15D2D796003C3C1C /* GRKDemoAlbumsListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRKDemoAlbumsListCell.m; sourceTree = "<group>"; };
+		5F0167B015D2D825003C3C1C /* GRKDemoAlbumsListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GRKDemoAlbumsListCell.xib; sourceTree = "<group>"; };
+		5F0167B215D97329003C3C1C /* GRKFlickrQueriesQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKFlickrQueriesQueue.h; sourceTree = "<group>"; };
+		5F0167B315D97329003C3C1C /* GRKFlickrQueriesQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRKFlickrQueriesQueue.m; sourceTree = "<group>"; };
+		5F28F80115CE733200E0E64D /* GRKFacebookBatchQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKFacebookBatchQuery.h; sourceTree = "<group>"; };
+		5F28F80215CE733300E0E64D /* GRKFacebookBatchQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRKFacebookBatchQuery.m; sourceTree = "<group>"; };
 		5F3C2B4A15B9F7FC008D894A /* grabKit Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "grabKit Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F3C2B4E15B9F7FC008D894A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5F3C2B5015B9F7FC008D894A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -624,7 +645,7 @@
 		5F3C2C3915B9F945008D894A /* GDataMediaContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataMediaContent.m; sourceTree = "<group>"; };
 		5F3C2C3A15B9F945008D894A /* GDataMediaCredit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataMediaCredit.h; sourceTree = "<group>"; };
 		5F3C2C3B15B9F945008D894A /* GDataMediaCredit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataMediaCredit.m; sourceTree = "<group>"; };
-		5F3C2C3C15B9F945008D894A /* GDataMediaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataMediaGroup.h; sourceTree = "<group>"; };
+		5F3C2C3C15B9F945008D894A /* GDataMediaGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GDataMediaGroup.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5F3C2C3D15B9F945008D894A /* GDataMediaGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataMediaGroup.m; sourceTree = "<group>"; };
 		5F3C2C3E15B9F945008D894A /* GDataMediaKeywords.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataMediaKeywords.h; sourceTree = "<group>"; };
 		5F3C2C3F15B9F945008D894A /* GDataMediaKeywords.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataMediaKeywords.m; sourceTree = "<group>"; };
@@ -640,7 +661,7 @@
 		5F3C2C4915B9F945008D894A /* GDataNormalPlayTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataNormalPlayTime.m; sourceTree = "<group>"; };
 		5F3C2C4B15B9F945008D894A /* GDataAuthenticationFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataAuthenticationFetcher.h; sourceTree = "<group>"; };
 		5F3C2C4C15B9F945008D894A /* GDataAuthenticationFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataAuthenticationFetcher.m; sourceTree = "<group>"; };
-		5F3C2C4D15B9F945008D894A /* GDataServerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataServerError.h; sourceTree = "<group>"; };
+		5F3C2C4D15B9F945008D894A /* GDataServerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GDataServerError.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5F3C2C4E15B9F945008D894A /* GDataServerError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataServerError.m; sourceTree = "<group>"; };
 		5F3C2C5115B9F945008D894A /* GDataACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataACL.h; sourceTree = "<group>"; };
 		5F3C2C5215B9F945008D894A /* GDataACLKeyedRole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataACLKeyedRole.h; sourceTree = "<group>"; };
@@ -655,7 +676,7 @@
 		5F3C2C5B15B9F945008D894A /* GDataFeedACL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedACL.m; sourceTree = "<group>"; };
 		5F3C2C5C15B9F945008D894A /* GDataServiceACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataServiceACL.h; sourceTree = "<group>"; };
 		5F3C2C5D15B9F945008D894A /* GDataServiceACL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataServiceACL.m; sourceTree = "<group>"; };
-		5F3C2C5F15B9F945008D894A /* GDataAtomCategoryGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataAtomCategoryGroup.h; sourceTree = "<group>"; };
+		5F3C2C5F15B9F945008D894A /* GDataAtomCategoryGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = GDataAtomCategoryGroup.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5F3C2C6015B9F945008D894A /* GDataAtomCategoryGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataAtomCategoryGroup.m; sourceTree = "<group>"; };
 		5F3C2C6115B9F945008D894A /* GDataAtomCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataAtomCollection.h; sourceTree = "<group>"; };
 		5F3C2C6215B9F945008D894A /* GDataAtomCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataAtomCollection.m; sourceTree = "<group>"; };
@@ -750,7 +771,7 @@
 		5F3C2CCB15B9F945008D894A /* GRKPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKPhoto.h; sourceTree = "<group>"; };
 		5F3C2CCC15B9F945008D894A /* GRKPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRKPhoto.m; sourceTree = "<group>"; };
 		5F3C2CCF15B9F945008D894A /* GRKDeviceGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKDeviceGrabber.h; sourceTree = "<group>"; };
-		5F3C2CD015B9F945008D894A /* GRKDeviceGrabber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRKDeviceGrabber.m; sourceTree = "<group>"; };
+		5F3C2CD015B9F945008D894A /* GRKDeviceGrabber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = GRKDeviceGrabber.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5F3C2CD415B9F945008D894A /* GRKFacebookConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKFacebookConnector.h; sourceTree = "<group>"; };
 		5F3C2CD515B9F945008D894A /* GRKFacebookConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRKFacebookConnector.m; sourceTree = "<group>"; };
 		5F3C2CD815B9F945008D894A /* GRKFacebookGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKFacebookGrabber.h; sourceTree = "<group>"; };
@@ -805,12 +826,15 @@
 		5F3C2E3215BA06E3008D894A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5F3C2E3315BA06E3008D894A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		5F3C2E3715BA06F6008D894A /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		5F89BAF915C85D990098F1D7 /* thumbnail_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbnail_placeholder.png; sourceTree = "<group>"; };
+		5F89BAFA15C85D990098F1D7 /* thumbnail_placeholder@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "thumbnail_placeholder@2X.png"; sourceTree = "<group>"; };
+		5F89BAFE15C902860098F1D7 /* GRKDemoThumbnail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKDemoThumbnail.h; sourceTree = "<group>"; };
+		5F89BAFF15C902860098F1D7 /* GRKDemoThumbnail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRKDemoThumbnail.m; sourceTree = "<group>"; };
 		5F89F1C115BFC18B00B8739D /* GrabKitBundle.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GrabKitBundle.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F8CB3D015C5346500393EE5 /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
 		5F8CB3D115C5346500393EE5 /* flickr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = flickr.png; sourceTree = "<group>"; };
 		5F8CB3D215C5346500393EE5 /* instagram.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = instagram.png; sourceTree = "<group>"; };
 		5F8CB3D315C5346500393EE5 /* picasa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = picasa.png; sourceTree = "<group>"; };
-		5FA490C015C3B4E70000DADB /* FBiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBiOSSDK.framework; path = grabKit/externalLibraries/Facebook/FBiOSSDK.framework; sourceTree = "<group>"; };
 		5FA4911315C3C3540000DADB /* GrabKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrabKit.h; sourceTree = "<group>"; };
 		5FC684CB15BB5625001F5929 /* GRKConfiguratorProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKConfiguratorProtocol.h; sourceTree = "<group>"; };
 		5FC684CD15BB5625001F5929 /* GRKConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKConfiguration.h; sourceTree = "<group>"; };
@@ -818,6 +842,9 @@
 		5FC684D115BC6C88001F5929 /* myGrabKitConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myGrabKitConfigurator.h; sourceTree = "<group>"; };
 		5FC684D215BC6C88001F5929 /* myGrabKitConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myGrabKitConfigurator.m; sourceTree = "<group>"; };
 		5FD3999715BF1E2B0063542C /* GrabKitLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = GrabKitLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FEE9DEB15DF6CC900C44501 /* GRKPicasaQueriesQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GRKPicasaQueriesQueue.h; sourceTree = "<group>"; };
+		5FEE9DEC15DF6CC900C44501 /* GRKPicasaQueriesQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GRKPicasaQueriesQueue.m; sourceTree = "<group>"; };
+		5FEE9DF115E11AF400C44501 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = grabKit/externalLibraries/Facebook/FacebookSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -832,7 +859,7 @@
 				5F3C2B4F15B9F7FC008D894A /* UIKit.framework in Frameworks */,
 				5F3C2B5115B9F7FC008D894A /* Foundation.framework in Frameworks */,
 				5F3C2B5315B9F7FC008D894A /* CoreGraphics.framework in Frameworks */,
-				5FA490C115C3B4E70000DADB /* FBiOSSDK.framework in Frameworks */,
+				5FEE9DF215E11AF400C44501 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -888,7 +915,7 @@
 		5F3C2B4D15B9F7FC008D894A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5FA490C015C3B4E70000DADB /* FBiOSSDK.framework */,
+				5FEE9DF115E11AF400C44501 /* FacebookSDK.framework */,
 				5F3C2E3115BA06E3008D894A /* AssetsLibrary.framework */,
 				5F3C2E3715BA06F6008D894A /* CFNetwork.framework */,
 				5F3C2B5215B9F7FC008D894A /* CoreGraphics.framework */,
@@ -1372,12 +1399,17 @@
 				5F3C2CA715B9F945008D894A /* GRKDemoAlbumsList.h */,
 				5F3C2CA815B9F945008D894A /* GRKDemoAlbumsList.m */,
 				5F3C2CA915B9F945008D894A /* GRKDemoAlbumsList.xib */,
+				5F0167AC15D2D796003C3C1C /* GRKDemoAlbumsListCell.h */,
+				5F0167AD15D2D796003C3C1C /* GRKDemoAlbumsListCell.m */,
+				5F0167B015D2D825003C3C1C /* GRKDemoAlbumsListCell.xib */,
 				5F3C2CAE15B9F945008D894A /* GRKDemoPhotosList.h */,
 				5F3C2CAF15B9F945008D894A /* GRKDemoPhotosList.m */,
 				5F3C2CB015B9F945008D894A /* GRKDemoPhotosList.xib */,
 				5F3C2CB115B9F945008D894A /* GRKDemoPhotosListCell.h */,
 				5F3C2CB215B9F945008D894A /* GRKDemoPhotosListCell.m */,
 				5F3C2CB315B9F945008D894A /* GRKDemoPhotosListCell.xib */,
+				5F89BAFE15C902860098F1D7 /* GRKDemoThumbnail.h */,
+				5F89BAFF15C902860098F1D7 /* GRKDemoThumbnail.m */,
 				5F3C2CA115B9F945008D894A /* AsyncURLConnection.h */,
 				5F3C2CA215B9F945008D894A /* AsyncURLConnection.m */,
 				5F3C2CAA15B9F945008D894A /* GRKDemoCache.h */,
@@ -1443,15 +1475,15 @@
 		5F3C2CCD15B9F945008D894A /* serviceGrabbers */ = {
 			isa = PBXGroup;
 			children = (
-				5F3C2CCE15B9F945008D894A /* deviceGrabber */,
-				5F3C2CD115B9F945008D894A /* facebookGrabber */,
-				5F3C2CDE15B9F945008D894A /* flickrGrabber */,
 				5F3C2CE915B9F945008D894A /* GRKConnectorsDispatcher.h */,
 				5F3C2CEA15B9F945008D894A /* GRKConnectorsDispatcher.m */,
 				5F3C2CEB15B9F945008D894A /* GRKServiceConnector.h */,
 				5F3C2CEC15B9F945008D894A /* GRKServiceConnector.m */,
 				5F3C2CED15B9F945008D894A /* GRKServiceGrabber.h */,
 				5F3C2CEE15B9F945008D894A /* GRKServiceGrabber.m */,
+				5F3C2CCE15B9F945008D894A /* deviceGrabber */,
+				5F3C2CD115B9F945008D894A /* facebookGrabber */,
+				5F3C2CDE15B9F945008D894A /* flickrGrabber */,
 				5F3C2CEF15B9F945008D894A /* instagramGrabber */,
 				5F3C2CFA15B9F945008D894A /* picasaGrabber */,
 				5F3C2D0515B9F945008D894A /* protocols */,
@@ -1478,6 +1510,8 @@
 				5F3C2CD915B9F945008D894A /* GRKFacebookGrabber.m */,
 				5F3C2CDA15B9F945008D894A /* GRKFacebookQuery.h */,
 				5F3C2CDB15B9F945008D894A /* GRKFacebookQuery.m */,
+				5F28F80115CE733200E0E64D /* GRKFacebookBatchQuery.h */,
+				5F28F80215CE733300E0E64D /* GRKFacebookBatchQuery.m */,
 				5F3C2CDC15B9F945008D894A /* GRKFacebookSingleton.h */,
 				5F3C2CDD15B9F945008D894A /* GRKFacebookSingleton.m */,
 			);
@@ -1493,6 +1527,8 @@
 				5F3C2CE415B9F945008D894A /* GRKFlickrGrabber.m */,
 				5F3C2CE515B9F945008D894A /* GRKFlickrQuery.h */,
 				5F3C2CE615B9F945008D894A /* GRKFlickrQuery.m */,
+				5F0167B215D97329003C3C1C /* GRKFlickrQueriesQueue.h */,
+				5F0167B315D97329003C3C1C /* GRKFlickrQueriesQueue.m */,
 				5F3C2CE715B9F945008D894A /* GRKFlickrSingleton.h */,
 				5F3C2CE815B9F945008D894A /* GRKFlickrSingleton.m */,
 			);
@@ -1523,6 +1559,8 @@
 				5F3C2D0015B9F945008D894A /* GRKPicasaGrabber.m */,
 				5F3C2D0115B9F945008D894A /* GRKPicasaQuery.h */,
 				5F3C2D0215B9F945008D894A /* GRKPicasaQuery.m */,
+				5FEE9DEB15DF6CC900C44501 /* GRKPicasaQueriesQueue.h */,
+				5FEE9DEC15DF6CC900C44501 /* GRKPicasaQueriesQueue.m */,
 				5F3C2D0315B9F945008D894A /* GRKPicasaSingleton.h */,
 				5F3C2D0415B9F945008D894A /* GRKPicasaSingleton.m */,
 			);
@@ -1558,6 +1596,8 @@
 				5F8CB3D115C5346500393EE5 /* flickr.png */,
 				5F8CB3D215C5346500393EE5 /* instagram.png */,
 				5F8CB3D315C5346500393EE5 /* picasa.png */,
+				5F89BAF915C85D990098F1D7 /* thumbnail_placeholder.png */,
+				5F89BAFA15C85D990098F1D7 /* thumbnail_placeholder@2X.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1729,6 +1769,9 @@
 				5F7793DC15C4200F00A08712 /* GDataPhotos.h in Headers */,
 				5F7793DD15C4200F00A08712 /* GDataQueryGooglePhotos.h in Headers */,
 				5F7793DE15C4200F00A08712 /* GDataServiceGooglePhotos.h in Headers */,
+				5F28F80315CE733300E0E64D /* GRKFacebookBatchQuery.h in Headers */,
+				5F0167B415D9732A003C3C1C /* GRKFlickrQueriesQueue.h in Headers */,
+				5FEE9DED15DF6CC900C44501 /* GRKPicasaQueriesQueue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1851,6 +1894,9 @@
 				5F8CB3D515C5346500393EE5 /* flickr.png in Resources */,
 				5F8CB3D615C5346500393EE5 /* instagram.png in Resources */,
 				5F8CB3D715C5346500393EE5 /* picasa.png in Resources */,
+				5F89BAFB15C85D990098F1D7 /* thumbnail_placeholder.png in Resources */,
+				5F89BAFC15C85D990098F1D7 /* thumbnail_placeholder@2X.png in Resources */,
+				5F0167B115D2D825003C3C1C /* GRKDemoAlbumsListCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2050,6 +2096,11 @@
 				5F3C2DB615B9FC5F008D894A /* GrabKitDemoAppDelegate.m in Sources */,
 				5FC684D015BB5625001F5929 /* GRKConfiguration.m in Sources */,
 				5FC684D315BC6C88001F5929 /* myGrabKitConfigurator.m in Sources */,
+				5F89BB0015C902870098F1D7 /* GRKDemoThumbnail.m in Sources */,
+				5F28F80415CE733300E0E64D /* GRKFacebookBatchQuery.m in Sources */,
+				5F0167AE15D2D796003C3C1C /* GRKDemoAlbumsListCell.m in Sources */,
+				5F0167B515D9732A003C3C1C /* GRKFlickrQueriesQueue.m in Sources */,
+				5FEE9DEE15DF6CC900C44501 /* GRKPicasaQueriesQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2207,6 +2258,9 @@
 				5FD39ABA15BF1EAA0063542C /* GDataPhotoElements.m in Sources */,
 				5FD39ABD15BF1EAA0063542C /* GDataQueryGooglePhotos.m in Sources */,
 				5FD39ABF15BF1EAA0063542C /* GDataServiceGooglePhotos.m in Sources */,
+				5F28F80515CE733300E0E64D /* GRKFacebookBatchQuery.m in Sources */,
+				5F0167B615D9732A003C3C1C /* GRKFlickrQueriesQueue.m in Sources */,
+				5FEE9DEF15DF6CC900C44501 /* GRKPicasaQueriesQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

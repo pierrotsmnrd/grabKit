@@ -24,6 +24,7 @@
 #import "GRKDemoAlbumsList.h"
 #import "GRKServiceGrabberConnectionProtocol.h"
 #import "GRKDemoPhotosList.h"
+#import "GRKDemoAlbumsListCell.h"
 
 @interface GRKDemoAlbumsList()
     -(void)grabMoreAlbums;
@@ -36,6 +37,13 @@ NSUInteger kNumberOfAlbumsPerPage = 8;
 
 @implementation GRKDemoAlbumsList
 
+-(void) dealloc {
+    
+    for( GRKAlbum * album in _albums ){
+        [album removeObserver:self forKeyPath:@"count"];
+    }
+
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -256,15 +264,15 @@ NSUInteger kNumberOfAlbumsPerPage = 8;
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"GRKDemoAlbumsListCell" owner:nil options:nil] objectAtIndex:0];
         }
         
         GRKAlbum * albumAtIndexPath = (GRKAlbum*)[_albums objectAtIndex:indexPath.row];
-        cell.textLabel.text = albumAtIndexPath.name;
-        cell.textLabel.font = [UIFont fontWithName:@"System" size:12];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%d photos", albumAtIndexPath.count];
-       
+
+        
+        [(GRKDemoAlbumsListCell*)cell setAlbum:albumAtIndexPath];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
         
     }
 
@@ -337,6 +345,48 @@ NSUInteger kNumberOfAlbumsPerPage = 8;
 
 #pragma mark - 
 
+
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    
+    
+    if ( [keyPath isEqualToString:@"count"] ){
+        
+        NSInteger indexOfAlbum = [_albums indexOfObject:object];
+
+        if ( indexOfAlbum != NSNotFound ){
+            
+            NSArray * indexPathsToReload = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexOfAlbum inSection:0]];
+            [self.tableView reloadRowsAtIndexPaths:indexPathsToReload withRowAnimation:UITableViewRowAnimationNone];    
+        }
+        
+    }
+    
+}
+
+-(void) loadCoverPhotoForAlbums:(NSArray*)albums {
+    
+    
+    NSMutableArray * albumsWithoutCover = [NSMutableArray array];
+    for( GRKAlbum * album in albums ){
+        if ( album.coverPhoto == nil ){
+            [albumsWithoutCover addObject:album];
+        }
+    }
+    
+    [_grabber fillCoverPhotoOfAlbums:albumsWithoutCover withCompleteBlock:^(id result) {
+
+        //NSLog(@" finished ! %@", result);
+        
+        [self.tableView reloadData]; 
+        
+    } andErrorBlock:^(NSError *error) {
+        
+        
+    }];
+    
+    
+}
+
 -(void) grabMoreAlbums {
     
     
@@ -350,6 +400,12 @@ NSUInteger kNumberOfAlbumsPerPage = 8;
                                 _lastLoadedPageIndex+=1;
                                 [_albums addObjectsFromArray:results];
                                 
+                                for( GRKAlbum * newAlbum in results ){
+                                    
+                                    [newAlbum addObserver:self forKeyPath:@"count" options:NSKeyValueObservingOptionNew context:nil];
+                                }
+                                
+                                [self loadCoverPhotoForAlbums:results];
                                 
                                 // Update the state. the tableView is reloaded in this method.
                                 if ( [results count] < kNumberOfAlbumsPerPage ){

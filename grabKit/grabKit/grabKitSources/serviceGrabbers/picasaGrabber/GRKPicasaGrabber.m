@@ -26,6 +26,7 @@
 #import "GRKPicasaQuery.h"
 #import "GRKPicasaConnector.h"
 #import "GRKPicasaSingleton.h"
+#import "GRKPicasaQueriesQueue.h"
 
 #import "GDataServiceGooglePhotos.h"
 #import "GDataBaseElements.h"
@@ -234,13 +235,6 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
                                   userInfo:nil];
         @throw exception;
     }
-
-    GDataFeedPhotoAlbum * albumFeed = [GDataFeedPhotoAlbum albumFeed];
-    
-    GDataBatchOperation *op;
-    op = [GDataBatchOperation batchOperationWithType:kGDataBatchOperationQuery];
-    [albumFeed setBatchOperation:op];    
-    
     
     // use pageIndex+1 because Picasa starts at page 1, and we start at page 0
 	NSUInteger startIndex = (pageIndex * numberOfPhotosPerPage)+1;
@@ -250,14 +244,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
                        "220u,288u,320u,400u,512u,576u,"
 					   "640u,720u,800u,912u,1024u,"
                        "1152u,1280u,1440u,1600u";
-    
-    NSMutableDictionary * paramsDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                 				[NSNumber numberWithInt:numberOfPhotosPerPage], @"max-results", 
-                                 				[NSNumber numberWithInt:startIndex], @"start-index",
-			                                 	sizes,@"thumbsize",
-                                 nil];
-	
-    
+
     NSString * userId = [GRKPicasaSingleton sharedInstance].userEmailAdress;
 
     
@@ -268,11 +255,20 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 																	  kind:nil 
 																	access:nil];
    
+    
+    GDataQueryGooglePhotos * gDataPhotosQuery = [GDataQueryGooglePhotos queryWithFeedURL:photosFeedURL] ;
+   
+    // we want only one photo
+    [gDataPhotosQuery setStartIndex:startIndex];
+    [gDataPhotosQuery setMaxResults:numberOfPhotosPerPage];
+    [gDataPhotosQuery addCustomParameterWithName:@"thumbsize" value:sizes];
+   
+    
+    
     __block GRKPicasaQuery * fillAlbumQuery = nil;
     
-    fillAlbumQuery = [GRKPicasaQuery queryWithFeedURL:photosFeedURL 
-                                  andParams:paramsDict
-                          withHandlingBlock:^(GRKPicasaQuery *query, id result) {
+    fillAlbumQuery = [GRKPicasaQuery queryWithQuery:gDataPhotosQuery
+                                  withHandlingBlock:^(GRKPicasaQuery *query, id result) {
                              
                               if ( ! [result isKindOfClass:[GDataFeedPhotoAlbum class]] ){
 
@@ -336,6 +332,91 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
     
 }
 
+
+-(void) fillCoverPhotoOfAlbums:(NSArray *)albums withCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+    
+   // GDataServiceGooglePhotos * service = [GRKPicasaSingleton sharedInstance].service;
+    
+    NSString * userId = [GRKPicasaSingleton sharedInstance].userEmailAdress;
+    
+    NSString * sizes = @"32u,48u,64u,72u,104u,144u,150u,160u,94u,110u,128u,200u," 
+    "220u,288u,320u,400u,512u,576u,640u,720u,800u,912u,1024u,1152u,1280u,1440u,1600u";
+    
+    
+    
+    
+    GRKPicasaQueriesQueue * queriesQueue = [[GRKPicasaQueriesQueue alloc] init];
+    
+    for ( GRKAlbum * album in albums ){
+    
+        NSURL *photosFeedURL = [GDataServiceGooglePhotos photoFeedURLForUserID:userId
+                                                                       albumID:album.albumId 
+                                                                     albumName:nil 
+                                                                       photoID:nil 
+                                                                          kind:nil 
+                                                                        access:nil];
+    
+
+        __block GDataQueryGooglePhotos * photosQuery = [GDataQueryGooglePhotos queryWithFeedURL:photosFeedURL] ;
+    
+        // we want only one photo
+        [photosQuery setStartIndex:1];
+        [photosQuery setMaxResults:1];
+    
+        [photosQuery addCustomParameterWithName:@"thumbsize" value:sizes];
+    
+        NSLog(@" photo query at top : %@", photosQuery);
+        
+        __block GRKSubqueryResultBlock handlingBLockForThisQuery = ^id(id queue, id result, NSError *error) {
+            
+            // NSLog(@" result : %@", result);
+            
+            if ( [[(GDataFeedPhotoAlbum *)result entries] count] > 0 ){
+                
+                GDataEntryPhoto * firstEntry = [[(GDataFeedPhotoAlbum *)result entries] objectAtIndex:0];
+                GRKPhoto * photo = [self photoFromGDataEntryPhoto:firstEntry];
+                album.coverPhoto = photo;
+                
+                // if the album's cover has been set, return the album...
+                return album;
+            }
+            
+            // ... else, return nil. 
+            // that way, in the final handling block of the queue, the results will contain all the updated albums
+            return nil;
+            
+        };
+        
+        [queriesQueue addQuery:photosQuery 
+                      withName:album.albumId
+              andHandlingBlock:handlingBLockForThisQuery];
+        
+    }
+
+    [queriesQueue performWithFinalBlock:^(id query, id results) {
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completeBlock(results);
+        });
+        
+    }];
+    
+    
+    
+}
+
+-(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+    
+    [self fillCoverPhotoOfAlbums:[NSArray arrayWithObject:album] 
+                withCompleteBlock:completeBlock 
+                   andErrorBlock:errorBlock];
+    
+}
+
+
+
 /* @see refer to GRKServiceGrabberProtocol documentation
  */
 -(void) cancelAll {
@@ -371,7 +452,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 /** Build and return a GRKAlbum from the given GDataEntryPhotoAlbum.
  
  @param entry a GDataEntryPhotoAlbum representing the album to build, as returned by Picasa's API
- @return an autoreleased GRKAlbum
+ @return a GRKAlbum
  */
 -(GRKAlbum *) albumFromGDataEntryPhotoAlbum:(GDataEntryPhotoAlbum *) entry;
 {
@@ -400,7 +481,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 /** Build and return a GRKPhoto from the given GDataEntryPhoto.
  
  @param entry a GDataEntryPhoto representing the photo to build, as returned by Picasa's API
- @return an autoreleased GRKPhoto
+ @return a GRKPhoto
  */
 -(GRKPhoto *) photoFromGDataEntryPhoto:(GDataEntryPhoto *) entry;
 {

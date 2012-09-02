@@ -169,6 +169,34 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
     NSAssert(false, @" the object %@ doesn't mask the method [%@ fillAlbum:withPhotosAtPageIndex:withNumberOfPhotosPerPage:andCompleteBlock:andErrorBlock:]", [self class]);
 }
 
+
+/** As GRKServiceGrabber is the parentClass of all grabbers, this method must be subclassed.
+ * Refer to GRKServiceGrabberProtocol documentation.
+ */
+-(void) fillCoverPhotoOfAlbums:(NSArray *)albums 
+             withCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+    NSAssert(false, @" the object %@ doesn't mask the method [%@ fillCoverPhotoOfAlbums:withCompleteBlock:andErrorBlock:]", [self class]);
+    
+}
+
+
+/** As GRKServiceGrabber is the parentClass of all grabbers, this method must be subclassed.
+ * Refer to GRKServiceGrabberProtocol documentation.
+ */
+-(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album 
+             andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
+                andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+    NSAssert(false, @" the object %@ doesn't mask the method [%@ fillCoverPhotoOfAlbum:andCompleteBlock:andErrorBlock:]", [self class]);
+    
+}
+
+
+
+
+
 /** As GRKServiceGrabber is the parentClass of all grabbers, this method must be subclassed.
  * Refer to GRKServiceGrabberProtocol documentation.
  */

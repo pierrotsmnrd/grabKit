@@ -52,7 +52,7 @@ extern GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated;
  - kGRKAlbumDatePropertyDateCreated : represents the date of the creation of the album.
  - kGRKAlbumDatePropertyDateUpdated : represents the date of last update of the album.
  
- You can access these dates using the method dates, or getDateForProperty: .
+ You can access these dates using the method dates, or dateForProperty: .
  
  The dates stored in a GRKAlbum may vary according to the service : 
  
@@ -88,6 +88,8 @@ extern GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated;
     // Mutable Dictionary of NSDate, representing various dates for the Album (date of creation, date of the last update, ...). 
     NSMutableDictionary * _dates; 
    
+    // Cover photo of the album. is nil when not loaded yet 
+    GRKPhoto * _coverPhoto;
 }
 
 
@@ -103,10 +105,16 @@ extern GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated;
 /** Total number of photos for this Album, as indicated by the service
  
  Services indicates how much photos an Album contains. This value is stored in this property.
- @warning Some services may indicate a **wrong** count, mainly because services cache data. Relying on this value is not safe.
+ @warning Some services may indicate a **wrong** count, mainly because services cache data. Relying on this value is not safe. 
+ You can use KVO to be notified of changes.
  */ 
 @property (nonatomic, readonly) NSUInteger count;
 
+/** Cover photo of the album 
+ 
+ This property is nil as long as the cover photo has not been loaded.
+ */
+@property (nonatomic, strong) GRKPhoto * coverPhoto;
 
 /** @name Creating a GRKAlbum */
 
@@ -211,7 +219,7 @@ extern GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated;
  @param dateProperty to date property to set. @see GRKAlbumDateProperty
  @return the date for the property, or nil if not found
  */
--(NSDate*) getDateForProperty:(GRKAlbumDateProperty*)dateProperty;
+-(NSDate*) dateForProperty:(GRKAlbumDateProperty*)dateProperty;
 
 /** Returns all the dates of the album in a NSDictionary
  @return a NSDictionary containing all the dates of the album

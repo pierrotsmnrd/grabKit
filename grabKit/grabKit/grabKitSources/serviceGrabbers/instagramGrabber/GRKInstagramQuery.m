@@ -38,7 +38,7 @@ NSString * kInstagramApiEndpoint = @"https://api.instagram.com/v1";
 
 -(id) initWithEndpoint:(NSString *)_endpoint 
             withParams:(NSMutableDictionary *)_params
-     withHandlingBlock:(GRKInstagramQueryHandlingBlock)_handlingBlock
+     withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
          andErrorBlock:(GRKErrorBlock)_errorBlock;
 {
     
@@ -79,7 +79,7 @@ NSString * kInstagramApiEndpoint = @"https://api.instagram.com/v1";
 
 +(GRKInstagramQuery*) queryWithEndpoint:(NSString *)_endpoint 
                             withParams:(NSMutableDictionary *)_params
-                     withHandlingBlock:(GRKInstagramQueryHandlingBlock)_handlingBlock
+                     withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
                          andErrorBlock:(GRKErrorBlock)_errorBlock;
 {
     
@@ -106,6 +106,10 @@ NSString * kInstagramApiEndpoint = @"https://api.instagram.com/v1";
 -(void) cancel;
 {
     [cnx cancel];
+    
+    errorBlock = nil;
+    handlingBlock = nil;
+    
 }
 
 
@@ -126,13 +130,20 @@ NSString * kInstagramApiEndpoint = @"https://api.instagram.com/v1";
     
     if ( jsonDecodingError != nil ){
         
-        errorBlock(jsonDecodingError);
+        if ( errorBlock != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                errorBlock(jsonDecodingError);
+            });
+        }
+        
         return;
     }
     
     
     if ( handlingBlock != nil ){
-        handlingBlock(self, result);
+        dispatch_async(dispatch_get_main_queue(), ^{
+                handlingBlock(self, result);
+        });
     }
     
 }
@@ -141,7 +152,9 @@ NSString * kInstagramApiEndpoint = @"https://api.instagram.com/v1";
 {
     
     if ( errorBlock != nil ){
-        errorBlock(error);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            errorBlock(error);
+        });
     }
 }
 

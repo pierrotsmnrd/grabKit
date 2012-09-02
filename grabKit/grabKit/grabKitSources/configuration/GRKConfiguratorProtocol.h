@@ -32,6 +32,8 @@
 
 @required
 
+// Connection to services
+
 // Facebook
 - (NSString*)facebookAppId;
 
@@ -50,6 +52,11 @@
 - (NSString*)picasaClientSecret;
 
 
+// Others
+
+// The name of the album "Tagged photos" on Facebook, as you want GrabKit to return it.
+// Hint : use localization here.
+- (NSString*) facebookTaggedPhotosAlbumName;
 
 @end
 

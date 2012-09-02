@@ -26,8 +26,6 @@
 #import "GRKDemoImagesDownloader.h"
 #import "GRKPhoto.h"
 #import "GRKImage.h"
-#import <AssetsLibrary/AssetsLibrary.h>
-
 
 @interface GRKDemoPhotosListCell()
 -(void) updateThumbnails;
@@ -62,6 +60,13 @@
 - (void)prepareForReuse {
     
     _photos = nil;
+    
+    [photoThumbnail3 setHidden:NO];
+    [photoThumbnail2 setHidden:NO];                
+    [photoThumbnail1 setHidden:NO];
+    [photoThumbnail0 setHidden:NO];
+
+    
 }
 
 -(void) setPhotos:(NSArray*)newPhotos;
@@ -69,11 +74,26 @@
     
     _photos = newPhotos;
     
+
+    // Hide some thumbnails if the row is incomplete
+    switch ([_photos count]) {
+        case 0:
+            [photoThumbnail0 setHidden:YES];
+        case 1:
+            [photoThumbnail1 setHidden:YES];
+        case 2:
+            [photoThumbnail2 setHidden:YES];                
+        case 3:
+           [photoThumbnail3 setHidden:YES];
+            break;
+    }
+    
+    
     [self updateThumbnails];
     
 }
 
--(void) updateThumbnail:(UIImageView*)thumbnail withPhoto:(GRKPhoto*)photo {
+-(void) updateThumbnail:(GRKDemoThumbnail*)thumbnail withPhoto:(GRKPhoto*)photo {
     
     NSURL * thumbnailURL = nil;
     
@@ -89,57 +109,30 @@
         }
     }
     
-    
-    // Special case for the assets images
-    if ( [[thumbnailURL absoluteString] hasPrefix:@"assets-library://"] ){
-        
-        ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
-        [library assetForURL:thumbnailURL resultBlock:^(ALAsset *asset) {
 
-            // You can also load a "fullResolutionImage", but it's heavy ...
-            CGImageRef imgRef = [[asset defaultRepresentation] fullScreenImage];
-            [thumbnail setImage:[UIImage imageWithCGImage:imgRef]];
-            
-        } failureBlock:^(NSError *error) {
-           
-            [thumbnail setBackgroundColor:[UIColor redColor]];
-            
-        }];
-        
-    } else {
-    
-        [[GRKDemoImagesDownloader sharedInstance] downloadImageAtURL:thumbnailURL forImageView:thumbnail];
-    
-    }
+    [[GRKDemoImagesDownloader sharedInstance] downloadImageAtURL:thumbnailURL forThumbnail:thumbnail];    
+
 
 }
 
 -(void) updateThumbnails {
     
-    if ( [_photos count] == 0 ) return;
+     switch ([_photos count]) {
     
-    GRKPhoto * photoForThumbnail0 = [_photos objectAtIndex:0];
-    [self updateThumbnail:photoThumbnail0 withPhoto:photoForThumbnail0];
-    
-    
-    if ( [_photos count] == 1 ) return;
-    
-    GRKPhoto * photoForThumbnail1 = [_photos objectAtIndex:1];
-    [self updateThumbnail:photoThumbnail1 withPhoto:photoForThumbnail1];
-    
-    
-    if ( [_photos count] == 2 ) return;
-    
-    GRKPhoto * photoForThumbnail2 = [_photos objectAtIndex:2];
-    [self updateThumbnail:photoThumbnail2 withPhoto:photoForThumbnail2];
-    
-    
-    if ( [_photos count] == 3 ) return;
-    
-    GRKPhoto * photoForThumbnail3 = [_photos objectAtIndex:3];
-    [self updateThumbnail:photoThumbnail3 withPhoto:photoForThumbnail3];
-    
+         case 4:
+             [self updateThumbnail:photoThumbnail3 withPhoto:[_photos objectAtIndex:3]];                     
+         case 3:
+             [self updateThumbnail:photoThumbnail2 withPhoto:[_photos objectAtIndex:2]];        
+         case 2:
+             [self updateThumbnail:photoThumbnail1 withPhoto:[_photos objectAtIndex:1]];        
+         case 1:
+             [self updateThumbnail:photoThumbnail0 withPhoto:[_photos objectAtIndex:0]];        
 
+             break;
+     
+     }
+    
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

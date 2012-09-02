@@ -35,7 +35,7 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
 @synthesize albumId = _albumId;
 @synthesize name = _name;
 @synthesize count = _count; 
-
+@synthesize coverPhoto = _coverPhoto;
 
 #pragma mark -
 #pragma Constructors
@@ -77,7 +77,14 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
 	[_photos setObject:newPhoto forKey:newPhoto.photoId];
     
     // sometimes, some API returns a 'count' value lower than the actual number of photos. (happened with FlickR several times)
-    if ( [_photos count] > _count ) _count = [_photos count]; 
+    if ( [_photos count] > _count ){
+        
+        [self willChangeValueForKey:@"count"];
+        
+        _count = [_photos count]; 
+        
+        [self didChangeValueForKey:@"count"];
+    }
     
 }
 
@@ -90,15 +97,30 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
         startIndex++;
     }
     
+    BOOL countDidChange = NO;
     
     // If we have added less photos that what was expected, then we can assume that the _count value is wrong. 
     // let's update it.
     if ( [newPhotos count] < numberOfPhotosPerPage ){
-         _count = [_photos count];
+        [self willChangeValueForKey:@"count"];
+        _count = [_photos count];
+        countDidChange = YES;
     }
     
     // sometimes, some API returns a 'count' value lower than the actual number of photos. (happened with FlickR several times)
-    if ( [_photos count] > _count ) _count = [_photos count]; 
+    if ( [_photos count] > _count ) {
+
+        if ( ! countDidChange ){
+            [self willChangeValueForKey:@"count"];
+        }
+        _count = [_photos count]; 
+        countDidChange = YES;
+    }
+    
+    if (countDidChange ){
+
+        [self didChangeValueForKey:@"count"];
+    }
     
 }
 
@@ -108,7 +130,7 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
 #pragma photos getters
 
 
-// returns an autoreleased array containing the GRKPhoto already loaded, and containing [NSNull null] for photos not loaded yet
+// returns an array containing the GRKPhoto already loaded, and containing [NSNull null] for photos not loaded yet
 // Objects in the returned array follow the order in which they have been added to the album
 -(NSArray*) orderedPhotos;
 {
@@ -129,7 +151,7 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
     return [NSArray arrayWithArray:orderedPhotos];
 }
 
-// returns an autoreleased array containing all the GRKPhoto already loaded.
+// returns an array containing all the GRKPhoto already loaded.
 // Objects in the returned array follow the order in which they have been added to the album
 -(NSArray*) orderedPhotosWithoutBlanks;	
 {
@@ -152,7 +174,7 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
     
 }
 
-// returns an autoreleased array containing the GRKPhoto for the given page index, with the given number of photos per page. 
+// returns an array containing the GRKPhoto for the given page index, with the given number of photos per page. 
 // Objects in the returned array follow the order in which they have been added to the album
 // the returned array is filled with NSNull objects if some photos in the album has not been totally filled
 -(NSArray*) photosAtPageIndex:(NSUInteger)pageIndex withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage;
@@ -165,7 +187,7 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
     
 }
 
-// returns an autoreleased array containing the ids of the GRKPhoto for the given page number, with the given number of photos per page. 
+// returns an array containing the ids of the GRKPhoto for the given page number, with the given number of photos per page. 
 // Objects in the returned array follow the order in which they have been added to the album
 -(NSArray*) photosIdsAtPageIndex:(NSUInteger)pageIndex withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage;
 {
@@ -175,11 +197,12 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
     // return an array filled with NSNull.
     if(  pageIndex*numberOfPhotosPerPage >= [_photosIds count] ){
 
-        NSMutableArray * result = [NSMutableArray arrayWithCapacity:numberOfPhotosPerPage];
+        /*NSMutableArray * result = [NSMutableArray arrayWithCapacity:numberOfPhotosPerPage];
         while ([result count] < numberOfPhotosPerPage )
             [result addObject:[NSNull null]];
         
-        return [NSArray arrayWithArray:result];
+        return [NSArray arrayWithArray:result];*/
+        return [NSArray array];
     }
     
     
@@ -217,9 +240,9 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
     
     // If there are less keys for this page than what was asked, fill with NSNull.
     // This can happen when numberOfPhotosPerPage has been corrected 
-    while ( [keysForThisPage count] < numberOfPhotosPerPage ){
-        [keysForThisPage addObject:[NSNull null]];
-    }
+    //while ( [keysForThisPage count] < numberOfPhotosPerPage ){
+    //    [keysForThisPage addObject:[NSNull null]];
+    //}
     
     
 	return [NSArray arrayWithArray:keysForThisPage];    
@@ -236,7 +259,7 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
     [_dates setObject:newDate forKey:dateProperty];
 }
 
--(NSDate *) getDateForProperty:(GRKAlbumDateProperty *)dateProperty;
+-(NSDate *) dateForProperty:(GRKAlbumDateProperty *)dateProperty;
 {
     return [_dates objectForKey:dateProperty];
 }

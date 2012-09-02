@@ -27,12 +27,18 @@
 #import "GRKAlbum.h"
 #import "NSString+date.h"
 
+#import "GRKFlickrQueriesQueue.h"
+
 @interface GRKFlickrGrabber()
 -(BOOL) isResultForAlbumsInTheExpectedFormat:(id)result;
 -(GRKAlbum *) albumWithRawAlbum:(NSDictionary*)rawAlbum;
 
 -(BOOL) isResultForPhotosInTheExpectedFormat:(id)result;
--(GRKPhoto *) photoWithRawPhoto:(NSDictionary*)rawPhoto;
+-(GRKPhoto *) photoWithRawPhotoFromPhotosetsGetPhotos:(NSDictionary*)rawPhoto;
+
+
+-(GRKPhoto *) photoWithRawDataFromPhotosGetInfos:(NSDictionary*)rawDataPhotosGetInfos andRawDataFromPhotosGetSizes:(NSDictionary*)rawDataPhotosGetSizes;
+
 
 -(GRKImage *) imageWithRawPhotoDictionary:(NSDictionary*)rawPhoto forSizeKey:(NSString*)sizeKey;
 
@@ -174,6 +180,8 @@
     [params setObject:[[NSNumber numberWithInt:pageIndex+1] stringValue] forKey:@"page"];  
     [params setObject:[[NSNumber numberWithInt:numberOfAlbumsPerPage] stringValue] forKey:@"per_page"];   
     
+    //#warning for dev only
+    //[params setObject:@"35591378@N03" forKey:@"user_id"];
     
     __block GRKFlickrQuery * albumsQuery = nil;
     
@@ -327,7 +335,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
                               for( NSDictionary * rawPhoto in rawPhotos ){
                                 
                                   @autoreleasepool {
-                                      GRKPhoto * photo = [self photoWithRawPhoto:rawPhoto];
+                                      GRKPhoto * photo = [self photoWithRawPhotoFromPhotosetsGetPhotos:rawPhoto];
                                       [newPhotos addObject:photo];
                                   }
                               }
@@ -360,6 +368,168 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
     [self registerQueryAsLoading:fillAlbumQuery];
     [fillAlbumQuery perform];
 }
+
+-(void) fillCoverPhotoOfAlbums:(NSArray *)albums withCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock andErrorBlock:(GRKErrorBlock)errorBlock {
+
+    
+    /* To retrieve the coverPhoto of ONE album, there are 3 queries to perform :
+     1) One query to get the id of the cover photo for the given photo album  (i.e, in Flickr's language, get the id of the primary photo of the given photoset)
+        Once we have this id, we can perform ...
+     
+     2) ... one query to get infos for the cover photo (with the FlickR API method flickr.photos.getInfo)
+     3) ... and one query to get images for the cover photo (with the FlickR API method flickr.photos.getSizes)
+     
+     Then, we can build a GRKPhoto from the results of these queries
+    
+     
+     So, for SEVERAL albums, the plan is : 
+     _ First, retrieve the id of the coverPhoto of ALL the given albums. That'll be a first queriesQueue.
+     _ Then, retrieve data (infos+images) to build GRKPhoto and update the albums. That'll be a second queriesQueue
+     
+     */
+    
+    
+    
+    //First, build and execute a queriesQueue to retrieve the cover photo ids of the given albums
+    
+    __block GRKFlickrQueriesQueue * queueForCoverPhotoIds = [[GRKFlickrQueriesQueue alloc] init];
+    
+
+    for( GRKAlbum * album in albums ){
+        
+        NSMutableDictionary * params = [NSMutableDictionary dictionaryWithObject:album.albumId forKey:@"photoset_id"];
+        
+         // We use the album_id as query name. that'll be useful later ;)
+        
+        [queueForCoverPhotoIds addQueryWithMethod:@"flickr.photosets.getInfo"
+                                        andParams:params 
+                                          andName:album.albumId
+                                 andHandlingBlock:^id(GRKFlickrQueriesQueue *queue, id result, NSError *error) {
+
+                                     // If the result is not in the expected format, ...
+                                     if ( error != nil 
+                                         ||  ! [result isKindOfClass:[NSDictionary class]]
+                                         ||  [result objectForKey:@"photoset"] == nil 
+                                         ||  [[result objectForKey:@"photoset"] objectForKey:@"primary"] == nil ){
+                                         
+                                         // .. just return nil. this album won't have its coverPhoto set
+                                         return nil;
+                                     }
+                                     
+                                     // else return the coverPhoto id
+                                     return [[result objectForKey:@"photoset"] objectForKey:@"primary"];
+                                     
+                                 }];
+        
+    }
+    
+    [self registerQueryAsLoading:queueForCoverPhotoIds];
+    
+    // Perform the queue to retrieve the cover photo ids of the given albums
+    [queueForCoverPhotoIds performWithFinalBlock:^(id query, id results) {
+       
+        
+         // at this point, result is a dictionary with the albums ids as keys, and their coverPhoto id as value.
+   
+         // Let's make another queue to get data for each of these coverPhotos ...
+         __block GRKFlickrQueriesQueue * subQueueForCoverPhotosData = [[GRKFlickrQueriesQueue alloc] init];
+         
+         
+          for( NSString * albumId in [results allKeys] ){
+          
+            NSString * coverPhotoId = [results objectForKey:albumId];
+            NSMutableDictionary * params = [NSMutableDictionary dictionaryWithObject:coverPhotoId forKey:@"photo_id"];
+              
+            // ... First, retrieve the photo's informations ...
+            [subQueueForCoverPhotosData addQueryWithMethod:@"flickr.photos.getInfo"
+                                          andParams:params 
+                                            andName:[NSString stringWithFormat:@"flickr.photos.getInfo_%@", albumId]
+                                   andHandlingBlock:^id(GRKFlickrQueriesQueue *queue, id result, NSError *error) {
+                                       
+                                       if ( error != nil || [result objectForKey:@"photo"] == nil){
+                                           // if an error occur, just return nil. this album won't have its coverPhoto set
+                                           return nil;
+                                       }
+                                       
+                                       return [result objectForKey:@"photo"];
+                                   }];
+            
+            // ... then the sizes (i.d. the images) of the photo
+            [subQueueForCoverPhotosData addQueryWithMethod:@"flickr.photos.getSizes" 
+                                          andParams:params 
+                                            andName:[NSString stringWithFormat:@"flickr.photos.getSizes_%@", albumId]
+                                   andHandlingBlock:^id(GRKFlickrQueriesQueue *queue, id result, NSError *error) {
+                                       
+                                       if ( error != nil || [result objectForKey:@"sizes"] == nil ){
+                                        // if an error occur, just return nil. this album won't have its coverPhoto set
+                                           return nil;
+                                       }
+                                       
+                                       return [result objectForKey:@"sizes"];
+                                   }];
+            
+              
+              // If we use the coverPhotoId in the name of the queries, 
+              // it'll be impossible to know which result is needed to build a GRKPhoto for an album.
+              // The trick is to use the albumId in the names of the queries, for the loop in the handling block below.
+
+            
+        }
+        
+        
+        [self registerQueryAsLoading:subQueueForCoverPhotosData];
+        
+        // at this point, the queriesQueue is ready to be run
+        [subQueueForCoverPhotosData performWithFinalBlock:^(id query, id results) {
+           
+            // at this point, result is a dictionary with keys like "flickr.photo.method_photoId" and with data as values.
+            // let's handle these data to build GRKPhoto and set albums' coverPhoto
+            
+            NSMutableArray * updatedAlbums = [NSMutableArray array];
+            
+            for( GRKAlbum * album in albums ){
+             
+                NSString * getInfosKey = [NSString stringWithFormat:@"flickr.photos.getInfo_%@", album.albumId];
+                NSString * getSizesKey = [NSString stringWithFormat:@"flickr.photos.getSizes_%@", album.albumId];
+                
+                if ( [results objectForKey:getInfosKey] != nil && [results objectForKey:getSizesKey] != nil){
+
+                    album.coverPhoto = [self photoWithRawDataFromPhotosGetInfos:[results objectForKey:getInfosKey] 
+                                                   andRawDataFromPhotosGetSizes:[results objectForKey:getSizesKey]];
+                    [updatedAlbums addObject:album];
+                }
+                
+            }
+            
+            if ( completeBlock != nil ){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completeBlock(updatedAlbums);
+                });
+            }
+            
+            [self unregisterQueryAsLoading:subQueueForCoverPhotosData];
+            subQueueForCoverPhotosData = nil;
+
+            
+        }];
+        
+        [self unregisterQueryAsLoading:queueForCoverPhotoIds];
+        queueForCoverPhotoIds = nil;
+        
+        
+    }];
+    
+}
+
+
+-(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+    [self fillCoverPhotoOfAlbums:[NSArray arrayWithObject:album] 
+                withCompleteBlock:completeBlock 
+                   andErrorBlock:errorBlock];
+        
+}
+
 
 
 
@@ -427,7 +597,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 /** Build and return a GRKAlbum from the given dictionary.
  
  @param rawAlbum a NSDictionary representing the album to build, as returned by FlickR's API
- @return an autoreleased GRKAlbum
+ @return a GRKAlbum
  */
 -(GRKAlbum *) albumWithRawAlbum:(NSDictionary*)rawAlbum;
 {
@@ -483,10 +653,10 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
 
 /** Build and return a GRKPhoto from the given dictionary.
  
- @param rawPhoto a NSDictionary representing the photo to build, as returned by FlickR's API
- @return an autoreleased GRKPhoto
+ @param rawPhoto a NSDictionary representing the photo to build, as returned by FlickR's API method "flickr.photosets.getPhotos"
+ @return a GRKPhoto
  */
--(GRKPhoto *) photoWithRawPhoto:(NSDictionary*)rawPhoto;
+-(GRKPhoto *) photoWithRawPhotoFromPhotosetsGetPhotos:(NSDictionary*)rawPhoto;
 {
     
     NSString * photoId = [rawPhoto objectForKey:@"id"];
@@ -536,7 +706,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
  
  @param rawPhoto a NSDictionary representing the image to build, as returned by FlickR's API
  @param sizeKey a string representing the category of size, according to FlickR's API. s:small, sq:square, ..., o:original, l:large
- @return an autoreleased GRKImage
+ @return a GRKImage
  */
 -(GRKImage *) imageWithRawPhotoDictionary:(NSDictionary*)rawPhoto forSizeKey:(NSString*)sizeKey;
 {
@@ -560,6 +730,75 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
     return nil;
 }
 
+
+
+/** Build and return a GRKPhoto from the given dictionaries.
+ 
+ @param rawDataPhotosGetInfos a NSDictionary containing general infos to build the photo, as returned by FlickR's API method "flickr.photos.getInfos"
+ @param rawDataPhotosGetSizes a NSDictionary containing data about the photo's images, as returned by FlickR's API method "flickr.photos.getSizes"
+ @return a GRKPhoto 
+ */
+-(GRKPhoto *) photoWithRawDataFromPhotosGetInfos:(NSDictionary*)rawDataPhotosGetInfos andRawDataFromPhotosGetSizes:(NSDictionary*)rawDataPhotosGetSizes {
+    
+    // First, handle the data for "getInfos"
+    NSString * photoId = [rawDataPhotosGetInfos objectForKey:@"id"];
+    NSString * photoName = [[rawDataPhotosGetInfos objectForKey:@"title"] objectForKey:@"_text"];
+    
+    NSString * caption = @"";
+    if  ( [[rawDataPhotosGetInfos objectForKey:@"description"] isKindOfClass:[NSDictionary class]] )
+        caption = [[rawDataPhotosGetInfos objectForKey:@"description"] objectForKey:@"_text"];
+    
+    NSMutableDictionary * dates = [NSMutableDictionary dictionary];
+    
+    if ( [rawDataPhotosGetInfos objectForKey:@"dates"] != nil ){
+
+        NSDictionary * rawDates = [rawDataPhotosGetInfos objectForKey:@"dates"];
+    
+        // raw dates stored as timestamps in the FlickR's result. 
+        NSTimeInterval dateCreatedTimestamp = [[rawDates objectForKey:@"posted"] doubleValue];
+        NSTimeInterval dateUpdatedTimestamp = [[rawDates objectForKey:@"lastupdate"] doubleValue];                                  
+        // The "date Taken" value is stored as formated date string like : "2011-12-17 18:31:40"
+        NSString * dateTakenDatetimeString = [rawDates objectForKey:@"taken"];
+        
+        NSDate * dateCreated = [NSDate dateWithTimeIntervalSince1970:dateCreatedTimestamp];
+        NSDate * dateUpdated = [NSDate dateWithTimeIntervalSince1970:dateUpdatedTimestamp]; 
+        NSDate * dateTaken = [dateTakenDatetimeString dateWithFormat:@"YYYY-MM-dd HH:mm:ss"];
+        
+        if (dateCreated != nil) [dates setObject:dateCreated forKey:kGRKPhotoDatePropertyDateCreated];
+        if (dateUpdated != nil) [dates setObject:dateUpdated forKey:kGRKPhotoDatePropertyDateUpdated];
+        if (dateTaken != nil) [dates setObject:dateTaken forKey:kGRKPhotoDatePropertyDateTaken];
+        
+
+    }
+
+    // Then, handle the data for the images
+    
+    NSMutableArray * images = [NSMutableArray array];
+    NSUInteger numberOfImages = [[rawDataPhotosGetSizes objectForKey:@"size"] count];
+    
+    [[rawDataPhotosGetSizes objectForKey:@"size"] enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id rawImageDictionary, NSUInteger idx, BOOL *stop) {
+    
+        if( rawImageDictionary != nil && [rawImageDictionary isKindOfClass:[NSDictionary class]] ){    
+
+            NSString * URLstring = [rawImageDictionary objectForKey:@"source"];
+            NSUInteger width = [[rawImageDictionary objectForKey:@"width"] intValue];
+            NSUInteger height = [[rawImageDictionary objectForKey:@"height"] intValue];
+            
+            // The last returned image is the original, or at least the biggest one
+            BOOL isOrignal = (idx == numberOfImages - 1);
+        
+            GRKImage * newImage = [GRKImage imageWithURLString:URLstring andWidth:width andHeight:height isOriginal:isOrignal];
+            [images addObject:newImage];
+        
+        }
+        
+    }];
+    
+    
+    GRKPhoto * result = [GRKPhoto photoWithId:photoId andCaption:caption andName:photoName andImages:images andDates:dates];
+    return result;
+    
+}
 
 
 
