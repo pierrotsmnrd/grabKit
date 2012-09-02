@@ -175,6 +175,30 @@ Feel free to help and contribute :)
 Changelog
 -------
 
+
+GrabKit v1.2 changelog :
+
+* All Grabbers can now grab the data of the Cover of an album, and build a GRKPhoto from it. 
+  Use the Two methods added to the GRKServiceGrabberProtocol, and implemented in every grabber :
+	* [GRKServiceGrabber fillCoverPhotoOfAlbum:andCompleteBlock:andErrorBlock:];
+	* [GRKServiceGrabber fillCoverPhotoOfAlbums:andCompleteBlock:andErrorBlock:];					                 
+* GRKAlbum : Adding the property GRKPhoto * coverPhoto
+* Facebook grabber : added grabbing of the "tagged photos" of the user.
+* Facebook grabber : now uses batched queries
+* Facebbok grabber : optimization when retrieving data of a photo (loading only the needed data)
+* GrabKit now includes the official release of Facebook iOS SDK 3.0 (not the beta version anymore)
+* FlickR grabber : uses queued queries to retrieve covers of albums (FlickR API doens't offer batch methods)
+* GrabKit now includes the last version of ObjectiveFlickR project (fixing issue #5)
+* Picasa grabber : uses queued queries to retrieve covers of albums (Picasa API offers batch methods but they are totally unusable)
+* Removed each specific kind of blocks to handle queries results (GRKFacebookQueryHandlingBlock, GRKFlickrQueryHandlingBlock, ...). These blocks are replaced by GRKQueryResultBlock.
+* GRKAlbum : the method "getDateForProperty:" is now "dateForProperty:"
+* GRKPhoto : the method "getDateForProperty:" is now "dateForProperty:"
+* adding KVO on property "count" of GRKAlbum (useful to notify changes of this value, as services may return a wrong value)
+* Update in Demo : more elegant squared cells with gray background when a thumbnail is loading
+* Update in Demo : list of albums now displays the albums' covers.
+
+	
+	
 GrabKit v1.1 changelog :
 * Project re-organized : 1 project, 3 targets : demo application, static library and bundle.
 * GrabKit is ARC
