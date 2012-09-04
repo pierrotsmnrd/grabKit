@@ -95,9 +95,9 @@ Model
 * an **album** is an instance of a ``GRKAlbum``, having the following properties :
 	* ``albumId`` : id of the album according to the service
 	* ``count`` : total number of photos for the album, according to the service. 
-	* ``name`` : nome of the album
-
-
+	* ``name`` : name of the album
+	* ``coverPhoto`` : an instance of a ``GRKPhoto`` representing the cover photo of the album
+	
 * a **photo** is an instance of a ``GRKPhoto``. It has a ``name`` (title of the photo), a ``caption``(its description). 
 A ``GRKPhoto`` has several **images** which represent the photo in different sizes.
 
