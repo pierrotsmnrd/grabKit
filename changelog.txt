@@ -1,5 +1,6 @@
 
 GrabKit v1.2 changelog :
+Release Date : Sept 02, 2012
 
 * All Grabbers can now grab the data of the Cover of an album, and build a GRKPhoto from it. 
   Use the Two methods added to the GRKServiceGrabberProtocol, and implemented in every grabber :
@@ -24,6 +25,7 @@ GrabKit v1.2 changelog :
 	
 	
 GrabKit v1.1 changelog :
+Release Date : Jul 30, 2012
 
 * Project re-organized : 1 project, 3 targets : demo application, static library and bundle.
 * GrabKit is ARC
@@ -43,6 +45,7 @@ GrabKit v1.1 changelog :
 
 
 GrabKit v1.0 changelog : 
+Release Date : Jul 02, 2012
 
 * Initial version, non ARC, with the following grabbers:
 	* Facebook
