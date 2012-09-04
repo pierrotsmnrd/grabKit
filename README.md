@@ -173,6 +173,18 @@ The FlickR Grabber uses the ObjectiveFlickR project :  https://github.com/lukhno
 The Picasa Grabber uses "Google Data APIs Objective-C Client Library" : https://code.google.com/p/gdata-objectivec-client/
 
 
+Donations
+-------
+
+GrabKit is \***100% free**\* .
+However, developing and supporting this project is hard work and costs real money. Please help support the development of GrabKit !
+
+**10%** of your donations is donated to the **Free Software Foundation**.
+
+[![donation](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=GEHQ8UX5RR298&lc=US&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
+
+
+
 Contact
 -------
 
