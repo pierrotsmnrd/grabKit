@@ -14,6 +14,7 @@ In your target settings, go to Build Phase -> Target Dependencies -> click on +
 ***
 
 Under the "GrabKit" sub project, select "GrabKitLib" and "GrabKitBundle". 
+
 [[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/installation/03.png]]
 
 ***
@@ -48,9 +49,9 @@ In your Target settings -> Build Settings, search for "Other linker flags", and 
 
 ***
 
-_ Still in "Build Settings", search for "header search path" and add the following values : 
-	$(TARGET_BUILD_DIR)/include/GrabKitLib
-	/usr/include/libxml2
+Still in "Build Settings", search for "header search path" and add the following values : 
+  * $(TARGET_BUILD_DIR)/include/GrabKitLib
+  * /usr/include/libxml2
 	
 [[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/installation/08.png]]	
 

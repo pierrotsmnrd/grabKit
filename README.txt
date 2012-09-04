@@ -116,48 +116,9 @@ To install and setup GrabKit in your project, follow the [detailled instructions
                     
 ### Configuration                    
                     
-In order to grab content from each service, you need to register your app and get an API key from each service
+In order to grab content from each service, you need to register your app and get an API key from each service. 
 
-#### Facebook :
-* go to https://developers.facebook.com/apps/ and click on "+ Create new app"
-* enter a name for your app, and proceed
-* Once you have completed the process, you'll access the page of your app.
-  It shows an App Id : that's what we need.
-
-* Open your application's App-Info.plist and in "URL Types" -> "item N" -> "URL Schemes", add "fb" + your App Id (like "fb350975928312519" for example)
-* Report your App Id into your configurator file, in the method facebookAppId
-    
-
-
-#### Instagram :
-* go to http://instagram.com/developer/clients/register/
-* fill the form. In the "OAuth redirect_uri" field, enter a lowercase url like "mygreatapplication://". 
-* Report your Client ID and your Redirect URI  into your configurator file, respectively in the methods instagramAppId and instagramRedirectUri
-* Open your application's App-Info.plist and in "URL Types" -> "item N" -> "URL Schemes", add your redirect URI (without the "://")
-
-    
-#### FlickR :
-* go to http://www.flickr.com/services/apps/create/apply/ and choose the kind of key you want (Commercial or non-commercial)
-* Process the form and report your Api Key and your Api Secret into your configurator file, in the methods flickrApiKey and flickrApiSecret.
-* Click on "Edit auth flow for this app", 
-    * in App type, select "web application" (yes, web application ;))
-    * in Callback URL, add a custom and unique url, like "mygreatappusinggrabkit://" or "flickr"+your app id+"://"
-    Report your callback url into your configurator file in the method flickrRedirectUri
-	* Open your application's App-Info.plist and in "URL Types" -> "item N" -> "URL Schemes", add your redirect URI (without the "://")
-        
-    
-
-#### Picasa : 
-* go to https://code.google.com/apis/console/   
-    If you have never used Google APIs console before, click on "Create project".
-    A default project named "API Project" is created
-
-* Select your project, go to the "API Access" item, and click on "Create an OAUth 2.0 client ID ..."
-* Enter your application's name and other informations if you need
-* in Application type, select "Installed application"
-* in "Installed application type", select "other" (don't select "iOS", it's buggy ...)
-* Report your Client ID and Client secret into your configurator file in the methods picasaClientId and picasaClientSecret. 
-            
+Please follow the [detailled instructions in the wiki](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-configure-GrabKit) 
 
 
 Coming soon
@@ -172,11 +133,8 @@ Coming soon
 Feel free to help and contribute :)
 
 
-Changelog
+GrabKit v1.2 changes
 -------
-
-
-GrabKit v1.2 changelog :
 
 * All Grabbers can now grab the data of the Cover of an album, and build a GRKPhoto from it. 
   Use the Two methods added to the GRKServiceGrabberProtocol, and implemented in every grabber :
@@ -197,31 +155,7 @@ GrabKit v1.2 changelog :
 * Update in Demo : more elegant squared cells with gray background when a thumbnail is loading
 * Update in Demo : list of albums now displays the albums' covers.
 
-	
-	
-GrabKit v1.1 changelog :
-* Project re-organized : 1 project, 3 targets : demo application, static library and bundle.
-* GrabKit is ARC
-* GrabKit uses Facebook iOS SDK 3.0
-* Update in the Instagram grabber to use NSJSONSerialization (no need of SBJSon anymore)
-* Fix in the FlickR Grabber for connection 
-* Fix in the Picasa Grabber related to Gdata lib's intern cache mechanism
-* Update in connectors to allow canceling connections
-* Adding a configuration protocol (GRKConfiguratorProtocol)
-* Udpate in demo : 
-	* Fix to make GRKDeviceGrabber work
-	* In the list of photos, each page of result is now a TableView section
-	* A logout button is now available
-	* Icons for each service
-
-
-GrabKit v1.0 changelog : 
-* Initial version, non ARC, with the following grabbers:
-	* Facebook
-	* FlickR
-	* Instagram
-	* Picasa
-	* iPhone/iPad
+[check the full changelog](https://github.com/pierrotsmnrd/grabKit/blob/master/changelog.txt)
 	
 
 License
