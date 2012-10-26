@@ -124,6 +124,8 @@
 
 -(void)performWithFinalBlock:(GRKQueryResultBlock)handlingBlock {
     
+    if (!_numberOfAddedRequests) return; /* prevent "Must have at least one request or urlRequest not specified" exception */
+    
     _finalHandlingBlock = [handlingBlock copy];
         
     _numberOfRunningRequests = _numberOfAddedRequests;
