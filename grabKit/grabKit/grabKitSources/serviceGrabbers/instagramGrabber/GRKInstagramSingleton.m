@@ -56,7 +56,16 @@ static GRKInstagramSingleton * sharedInstagram = nil;
 
 -(void) setAccess_token:(NSString *)new_access_token {
 
-    access_token = new_access_token;
+    access_token = [new_access_token stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+     NSRange range = [access_token rangeOfString:@"access_token="];
+
+     if(range.location != NSNotFound)
+     {
+        access_token = [access_token substringFromIndex:range.location+range.length];
+     
+     }
+    
 }
 
 @end
