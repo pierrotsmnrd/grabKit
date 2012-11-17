@@ -153,7 +153,7 @@
                       andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
                          andErrorBlock:(GRKErrorBlock)errorBlock {
     
-    NSAssert(false, @" the object %@ doesn't mask the method [%@ albumsOfCurrentUserAtPageIndex:withNumberOfAlbumsPerPage:andCompleteBlock:andErrorBlock:]", [self class]);
+    NSAssert(false, @" the object %@ doesn't mask the method [%@ albumsOfCurrentUserAtPageIndex:withNumberOfAlbumsPerPage:andCompleteBlock:andErrorBlock:]", self, [self class]);
     
 }
 
@@ -166,7 +166,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
  andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
     andErrorBlock:(GRKErrorBlock)errorBlock {
 
-    NSAssert(false, @" the object %@ doesn't mask the method [%@ fillAlbum:withPhotosAtPageIndex:withNumberOfPhotosPerPage:andCompleteBlock:andErrorBlock:]", [self class]);
+    NSAssert(false, @" the object %@ doesn't mask the method [%@ fillAlbum:withPhotosAtPageIndex:withNumberOfPhotosPerPage:andCompleteBlock:andErrorBlock:]", self, [self class]);
 }
 
 
@@ -177,7 +177,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
              withCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
                 andErrorBlock:(GRKErrorBlock)errorBlock {
     
-    NSAssert(false, @" the object %@ doesn't mask the method [%@ fillCoverPhotoOfAlbums:withCompleteBlock:andErrorBlock:]", [self class]);
+    NSAssert(false, @" the object %@ doesn't mask the method [%@ fillCoverPhotoOfAlbums:withCompleteBlock:andErrorBlock:]", self, [self class]);
     
 }
 
@@ -189,7 +189,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
              andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
                 andErrorBlock:(GRKErrorBlock)errorBlock {
     
-    NSAssert(false, @" the object %@ doesn't mask the method [%@ fillCoverPhotoOfAlbum:andCompleteBlock:andErrorBlock:]", [self class]);
+    NSAssert(false, @" the object %@ doesn't mask the method [%@ fillCoverPhotoOfAlbum:andCompleteBlock:andErrorBlock:]", self, [self class]);
     
 }
 
@@ -202,7 +202,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
  */
 -(void) cancelAll {
 
-    NSAssert(false, @" the object %@ doesn't mask the method [%@ cancelAll]", [self class]);
+    NSAssert(false, @" the object %@ doesn't mask the method [%@ cancelAll]", self, [self class]);
     
 }
 
@@ -212,7 +212,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
  */
 -(void) cancelAllWithCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock {
 
-    NSAssert(false, @" the object %@ doesn't mask the method [%@ cancelAllWithCompleteBlock:]", [self class]);    
+    NSAssert(false, @" the object %@ doesn't mask the method [%@ cancelAllWithCompleteBlock:]", self, [self class]);
 }
 
 
