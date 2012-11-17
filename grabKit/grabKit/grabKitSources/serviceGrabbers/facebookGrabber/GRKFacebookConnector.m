@@ -70,7 +70,7 @@ static NSString * expirationDateKey = @"ExpirationDateKey";
             NSArray *permissions = [NSArray arrayWithObjects:@"user_photos", @"user_photo_video_tags", nil];
         
         
-            [FBSession openActiveSessionWithPermissions:permissions 
+            [FBSession openActiveSessionWithReadPermissions:permissions
                                            allowLoginUI:YES 
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
                                           
