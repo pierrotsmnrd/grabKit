@@ -133,8 +133,13 @@ Coming soon
 Feel free to help and contribute :)
 
 
-GrabKit v1.2 changes
+Last changes
 -------
+
+GrabKit v1.2.1
+* Merging a pull request from zrqx, fixing minor bugs for the Facebook grabber.
+
+GrabKit v1.2
 
 * All Grabbers can now grab the data of the Cover of an album, and build a GRKPhoto from it. 
   Use the Two methods added to the GRKServiceGrabberProtocol, and implemented in every grabber :

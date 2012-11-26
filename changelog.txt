@@ -1,3 +1,10 @@
+GrabKit v1.2.1 changelog :
+Release Date : Nov 26, 2012
+
+* Merging a pull request from zrqx, fixing minor bugs for the Facebook grabber.
+
+
+
 
 GrabKit v1.2 changelog :
 Release Date : Sept 02, 2012
