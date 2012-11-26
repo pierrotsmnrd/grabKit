@@ -188,7 +188,7 @@
     if ( pageIndex == 0 ){
         
         // then we know we'll ask for one less album
-        numberOfAlbumsPerPage -= 1 ;
+        numberOfAlbumsPerPage -= 1;
         
         //Create a batchQuery to ask for : 
         // _ the tagged photos (with a FQL query)
@@ -230,49 +230,51 @@
         } ];
         
         
-        // Second query of the batch : the albums
-        NSString * graphPath = @"me/albums";
-        NSMutableDictionary * params = [NSMutableDictionary  dictionaryWithObjectsAndKeys:@"id,name,count,updated_time,created_time,location", @"fields", nil];
-        
-        NSNumber * offset = [NSNumber numberWithInt:(pageIndex * numberOfAlbumsPerPage )]; 
-        // minus one : refer to the implementation details above
-        
-        [params setObject:[offset stringValue] forKey:@"offset"];	
-        [params setObject:[NSString stringWithFormat:@"%d", numberOfAlbumsPerPage] forKey:@"limit"];
-        
-        [batchQuery addQueryWithGraphPath:graphPath withParams:params andName:@"albums"  andHandlingBlock:^id(GRKFacebookBatchQuery *query, id result, NSError *error) {
+        if (numberOfAlbumsPerPage != 0) { /* if pageIndex == 0 && numberOfAlbumsPerPage == 1 then we're already done here */
+            // Second query of the batch : the albums
+            NSString * graphPath = @"me/albums";
+            NSMutableDictionary * params = [NSMutableDictionary  dictionaryWithObjectsAndKeys:@"id,name,count,updated_time,created_time,location", @"fields", nil];
             
-            // Build the array of GRKAlbum from the result, and return it. Or return the error if needed.
+            NSNumber * offset = [NSNumber numberWithInt:(pageIndex * numberOfAlbumsPerPage )];
+            // minus one : refer to the implementation details above
             
-            if ( error ) {
-                return error;
-            }
+            [params setObject:[offset stringValue] forKey:@"offset"];
+            [params setObject:[NSString stringWithFormat:@"%d", numberOfAlbumsPerPage] forKey:@"limit"];
             
-            if ( ! [self isResultForAlbumsInTheExpectedFormat:result] ){
-
-                // Create an error for "bad format result" and call the errorBlock
-                NSError * badFormatError = [self errorForBadFormatResultForAlbumsOperation];
+            [batchQuery addQueryWithGraphPath:graphPath withParams:params andName:@"albums"  andHandlingBlock:^id(GRKFacebookBatchQuery *query, id result, NSError *error) {
                 
-                return badFormatError;
-            }
-            
-            // handle each album data to build a NSMutableDictionary of GRKAlbum objects
-            NSArray * rawAlbums = [(NSDictionary *)result objectForKey:@"data"];
-            NSMutableArray * albums = [NSMutableArray arrayWithCapacity:[rawAlbums count]];
-            
-            for( NSDictionary * rawAlbum in rawAlbums ){
+                // Build the array of GRKAlbum from the result, and return it. Or return the error if needed.
                 
-                @autoreleasepool {
-                    GRKAlbum * album = [self albumWithRawAlbum:rawAlbum];
-                    [albums addObject:album];
+                if ( error ) {
+                    return error;
                 }
                 
-            }
-         
-            
-            return albums;
-            
-        }];
+                if ( ! [self isResultForAlbumsInTheExpectedFormat:result] ){
+                    
+                    // Create an error for "bad format result" and call the errorBlock
+                    NSError * badFormatError = [self errorForBadFormatResultForAlbumsOperation];
+                    
+                    return badFormatError;
+                }
+                
+                // handle each album data to build a NSMutableDictionary of GRKAlbum objects
+                NSArray * rawAlbums = [(NSDictionary *)result objectForKey:@"data"];
+                NSMutableArray * albums = [NSMutableArray arrayWithCapacity:[rawAlbums count]];
+                
+                for( NSDictionary * rawAlbum in rawAlbums ){
+                    
+                    @autoreleasepool {
+                        GRKAlbum * album = [self albumWithRawAlbum:rawAlbum];
+                        [albums addObject:album];
+                    }
+                    
+                }
+                
+                
+                return albums;
+                
+            }];
+        } /*-if numberOfAlbumsPerPage != 0 */
         
         
         [self registerQueryAsLoading:batchQuery];
@@ -280,7 +282,7 @@
 
             // if the result is not in the expected format ...
             if ( [results objectForKey:@"taggedPhotos"] == nil 
-                || [results objectForKey:@"albums"] == nil
+                || (numberOfAlbumsPerPage != 0 && [results objectForKey:@"albums"] == nil)
             || [[results objectForKey:@"taggedPhotos"] isKindOfClass:[NSError class]] 
             || [[results objectForKey:@"albums"] isKindOfClass:[NSError class]]     
                 ){
@@ -300,7 +302,7 @@
             // else, reorganize results and call the completion block
             NSMutableArray * albums = [NSMutableArray array];
             [albums addObject:[results objectForKey:@"taggedPhotos"]];
-            [albums addObjectsFromArray:[results objectForKey:@"albums"]];
+            if (numberOfAlbumsPerPage !=0 ) [albums addObjectsFromArray:[results objectForKey:@"albums"]];
              
             if ( completeBlock != nil ) {
                 dispatch_async(dispatch_get_main_queue(), ^{
