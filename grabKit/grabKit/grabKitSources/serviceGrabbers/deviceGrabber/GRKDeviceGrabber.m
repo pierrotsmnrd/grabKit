@@ -312,12 +312,13 @@ Then : we have to fetch from "(page index) * (number of photo per page)" to "ran
     
 }
 
--(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album 
+-(void) fillCoverPhotoOfAlbum:(GRKAlbum *)album
              andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock 
                 andErrorBlock:(GRKErrorBlock)errorBlock {
     
     
     ALAssetsGroup * groupForThisAlbum = [assetsGroupsById objectForKey:album.albumId];
+
     if ( groupForThisAlbum == nil ) {
         
         if ( errorBlock != nil ){
@@ -351,13 +352,13 @@ Then : we have to fetch from "(page index) * (number of photo per page)" to "ran
     
     NSIndexSet * indexSetOfAssetToRetrieve;
     
-    if ( ALAssetsGroupSavedPhotos == [[groupForThisAlbum valueForProperty:ALAssetsGroupPropertyType] intValue] ){
+    if ( ALAssetsGroupSavedPhotos == [[groupForThisAlbum valueForProperty:ALAssetsGroupPropertyType] intValue] && album.count > 0){
         
         indexSetOfAssetToRetrieve = [NSIndexSet indexSetWithIndex:album.count-1];
         
     } else {
         
-        indexSetOfAssetToRetrieve = [NSIndexSet indexSetWithIndex:0];
+        indexSetOfAssetToRetrieve = [NSIndexSet indexSet];
         
     }
     
