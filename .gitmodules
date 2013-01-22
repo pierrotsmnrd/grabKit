@@ -1,0 +1,6 @@
+[submodule "grabKit/grabKit/submodules/ISO8601DateFormatter"]
+	path = grabKit/grabKit/submodules/ISO8601DateFormatter
+	url = git://github.com/keithpitt/ISO8601DateFormatter.git
+[submodule "grabKit/grabKit/submodules/objectiveflickr"]
+	path = grabKit/grabKit/submodules/objectiveflickr
+	url = git://github.com/lukhnos/objectiveflickr.git

@@ -69,7 +69,6 @@ static NSString * expirationDateKey = @"ExpirationDateKey";
             [FBSession setDefaultAppID:[GRKCONFIG facebookAppId]];
             NSArray *permissions = [NSArray arrayWithObjects:@"user_photos", @"user_photo_video_tags", nil];
         
-        
             [FBSession openActiveSessionWithReadPermissions:permissions
                                            allowLoginUI:YES 
                                       completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
