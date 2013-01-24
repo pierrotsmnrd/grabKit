@@ -1,6 +1,11 @@
 This document explains how to use GrabKit in your own project.
 
 
+First, be sure you have [followed the instructions](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-run-GrabKit's-demo-application)  to run GrabKit's demo application. This step is necessary to solve dependancies.
+
+
+***
+
 Drag'n'drop GrabKit's xcodeproj in your own project
 
 [[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/installation/01.png]]
@@ -25,9 +30,12 @@ In your target settings, go to Build Phase -> link binary with libraries -> clic
 ***
 
 Under the workspace section, select "GrabKitLib.a".  Also add the following frameworks :
+  * Accounts.framework (for Facebook SDK)
+  * AdSupport.framework (for Facebook SDK)
   * AssetsLibrary.framework (for the Device Grabber)
   * CFNetwork.framework (for the FlickR Lib)
   * Security.framework (for the Picasa Lib)
+  * Social.framework (for Facebook SDK)
   * SystemConfiguration.framework (for the Picasa Lib)
 
 [[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/installation/05.png]]
@@ -110,6 +118,6 @@ Still in your AppDelegate, add the following method :
 	
 	
 	
-You're done ! :) your project is now ready to be configured !	
+You're done ! :) your project is now ready to be [configured](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-configure-GrabKit)  !	
 	
 	

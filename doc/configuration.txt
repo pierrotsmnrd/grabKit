@@ -8,9 +8,10 @@ In order to grab content from each service, you need to register your app and ge
   It shows an App Id : that's what we need.
 
 * Open your application's App-Info.plist and in "URL Types" -> "item N" -> "URL Schemes", add "fb" + your App Id (like "fb350975928312519" for example)
+* Still in the App-Info.plist file, add an entry with the key "FacebookAppID", and your App Id as value (like "350975928312519" for example)
 * Report your App Id into your configurator file, in the method facebookAppId
     
-
+( You can find more informations about configuring your application with Facebook SDK here : https://developers.facebook.com/docs/getting-started/facebook-sdk-for-ios/3.1/  )
 
 #### Instagram :
 * go to http://instagram.com/developer/clients/register/

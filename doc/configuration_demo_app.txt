@@ -1,0 +1,65 @@
+
+To run GrabKit's demo application, you have first to download and install the specific libraries for each service.
+
+There are 2 single steps :
+ * download and install Facebook SDK
+ * download and install the other libraries
+
+
+### Download and install Facebook SDK
+
+
+FacebookSDK 3.1.1 is the last version tested and used with GrabKit. You can download it here :
+https://github.com/downloads/facebook/facebook-ios-sdk/FacebookSDK-3.1.1.pkg
+
+( You can find other versions here http://developers.facebook.com/ios/downloads/ but the only version GrabKit has been tested with is the 3.1.1 )
+
+
+The default install location is ~/Documents/FacebookSDK
+
+
+Add Facebook SDK to the demo application by dragging the FacebookSDK.framework folder from the SDK installation folder into the Frameworks section of the demo application
+
+[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/configuration_demo_app/add_framework.png]]
+
+
+Add the Facebook SDK for iOS resource bundle by dragging the FacebookSDKResources.bundle file from the FacebookSDK.framework/Resources folder into the Frameworks section of your Project Navigator.
+
+[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/configuration_demo_app/add_bundle.png]]
+
+
+GrabKit's demo application is already configured with a default Facebook App Id.
+
+
+###  Download and install the other libraries
+
+This step will make you install ISO8601DateFormatter and ObjectiveFlickR from Github, and parts of several projects of Google for Picasa.
+
+If you cloned GrabKit with the method "git clone", you can install ISO8601DateFormatter and ObjectiveFlickR using submodules methods :
+
+ #refer to http://git-scm.com/book/en/Git-Tools-Submodules
+ git submodule init
+ git submodule update
+
+This step is optionnal, and makes you install only 2 libraries out of the 3 needed. Proceed with the following step also :
+
+
+
+Run the bash script grabKit/grabKit/submodules/installSubmodules.sh
+Ensure that you have the write permision in this directory.
+
+This script will download ISO8601DateFormatter and ObjectiveFlickR from github, then unzip and install them. 
+They will be ignored if they already exist (i.e. if you used submodules)
+It will also import specific files from Google's svn repositories.
+
+
+Have a look to GrabKit's project, and unfold the grabKit/submodules group : Files must have turned from red to black, and the demo application should compile.
+
+
+[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/configuration_demo_app/submodules.png]]
+
+
+The "grabKitDemo" target should now compile and run properly.
+
+ 
+
