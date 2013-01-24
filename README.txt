@@ -13,26 +13,47 @@ Unfortunately, the websites hosting these images offer different APIs and differ
 
 GrabKit is made to wrap these differences into a simple library. Retrieve photo albums the same way for Facebook, FlickR, or any other implemented service !
 
-So far, GrabKit supports :
-- Facebook
-- FlickR
-- Instagram
-- Picasa
-- iPhone/iPad
+So far, Grabkit allows you to retrieve photos from the following sources :
+
+* Facebook
+* FlickR
+* Picasa
+* Instagram
+* iPhone/iPad
+
 
 
 GrabKit is an ARC project.  
 
 
-Screenshots of the Demo application
+Demo application
 -------------
 
 ![screenshot of the demo application](https://github.com/pierrotsmnrd/grabKit/raw/master/doc/screenshots_demo.png)
 
 
-Quick Examples
+A few steps are needed to run GrabKit's demo application, please follow the [detailled instructions in the wiki](https://github.com/pierrotsmnrd/grabKit/wiki/Run-GrabKits-demo-application)
+
+
+How to use Grabkit in your app
 -------------
-### First example : retrieve 10 albums on user's Facebook account.
+
+
+### Installation
+
+To install and setup GrabKit in your project, follow the [detailled instructions in the wiki](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-install-GrabKit)
+
+                    
+### Configuration                    
+                    
+In order to grab content from each service, you need to register your app and get an API key from each service. 
+
+Please follow the [detailled instructions in the wiki](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-configure-GrabKit) 
+
+
+### Examples 
+
+#### First example : retrieve 10 albums on user's Facebook account.
 
     #import "GRKFacebookGrabber.h"
     
@@ -60,7 +81,7 @@ Quick Examples
         
     }];
 
-### Second example : Fill an album with its 10 first photos
+#### Second example : Fill an album with its 10 first photos
 	
 	GRKAlbum * firstAlbum = [albums objectAtIndex:0];
 	
@@ -78,20 +99,9 @@ Quick Examples
 	
 	
 
-Features
---------
-
-Grabkit allows you to grab these photo albums for the following services :
-
-* Facebook
-* FlickR
-* Picasa
-* Instagram
-* iPhone/iPad
-
-
 Model 
 -------------
+
 * an **album** is an instance of a ``GRKAlbum``, having the following properties :
 	* ``albumId`` : id of the album according to the service
 	* ``count`` : total number of photos for the album, according to the service. 
@@ -102,23 +112,6 @@ Model
 A ``GRKPhoto`` has several **images** which represent the photo in different sizes.
 
 * an **image** is an instance of ``GRKImage``. it has a ``width``, a ``height``, an ``URL``, and a flag (``isOriginal``) notifying if this image is the original image uploaded by the user. 
-
-
-How To Use GrabKit
--------------
-
-The demo application included in the project is ready to use.
-
-### Installation
-
-To install and setup GrabKit in your project, follow the [detailled instructions in the wiki](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-install-GrabKit)
-
-                    
-### Configuration                    
-                    
-In order to grab content from each service, you need to register your app and get an API key from each service. 
-
-Please follow the [detailled instructions in the wiki](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-configure-GrabKit) 
 
 
 Coming soon
@@ -133,13 +126,23 @@ Coming soon
 Feel free to help and contribute :)
 
 
-Last changes
+
+GrabKit v1.2.2 changes
 -------
+* The "external libraries" directory has been replaced by submodules
+* A bash script has been added to download and install submodules
+* The icons for each service in the demo App have been updated
+* The documentation has been updated
+* Fixed a bug in GRKDeviceGrabber when there is 0 album on the device
+
 
 GrabKit v1.2.1
+-------
 * Merging a pull request from zrqx, fixing minor bugs for the Facebook grabber.
 
-GrabKit v1.2
+
+GrabKit v1.2 changes
+-------
 
 * All Grabbers can now grab the data of the Cover of an album, and build a GRKPhoto from it. 
   Use the Two methods added to the GRKServiceGrabberProtocol, and implemented in every grabber :

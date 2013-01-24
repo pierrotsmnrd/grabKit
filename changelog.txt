@@ -1,9 +1,17 @@
+GrabKit v1.2.2 changelog :
+Release Date : January 24, 2013
+
+* The "external libraries" directory has been replaced by submodules
+* A bash script has been added to download and install submodules
+* The icons for each service in the demo App have been updated
+* The documentation has been updated
+* Fixed a bug in GRKDeviceGrabber when there is 0 album on the device
+
+
 GrabKit v1.2.1 changelog :
 Release Date : Nov 26, 2012
 
 * Merging a pull request from zrqx, fixing minor bugs for the Facebook grabber.
-
-
 
 
 GrabKit v1.2 changelog :
