@@ -32,7 +32,7 @@ Demo application
 ![screenshot of the demo application](https://github.com/pierrotsmnrd/grabKit/raw/master/doc/screenshots_demo.png)
 
 
-A few steps are needed to run GrabKit's demo application, please follow the [detailled instructions in the wiki](https://github.com/pierrotsmnrd/grabKit/wiki/Run-GrabKits-demo-application)
+A few steps are needed to run GrabKit's demo application, please follow the [detailled instructions in the wiki](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-run-GrabKit's-demo-application)
 
 
 How to use Grabkit in your app
