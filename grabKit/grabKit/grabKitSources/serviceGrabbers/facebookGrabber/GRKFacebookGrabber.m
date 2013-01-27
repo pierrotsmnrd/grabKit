@@ -286,9 +286,23 @@
             || [[results objectForKey:@"taggedPhotos"] isKindOfClass:[NSError class]] 
             || [[results objectForKey:@"albums"] isKindOfClass:[NSError class]]     
                 ){
+               
                 if ( errorBlock != nil ) {
                     // Create an error for "bad format result" and call the errorBlock
-                    NSError * error = [self errorForBadFormatResultForAlbumsOperation];
+                    
+                    NSError * error = nil;
+                    
+                    if ([[results objectForKey:@"taggedPhotos"] isKindOfClass:[NSError class]]) {
+                        error = [self errorForBadFormatResultForAlbumsOperationWithOriginalError:[results objectForKey:@"taggedPhotos"]];
+                        
+                    } else if ( [[results objectForKey:@"albums"] isKindOfClass:[NSError class]] ){
+                        error = [self errorForBadFormatResultForAlbumsOperationWithOriginalError:[results objectForKey:@"taggedPhotos"]];
+                        
+                    } else {
+                        error = [self errorForBadFormatResultForAlbumsOperation];
+                        
+                    }
+                    
                     dispatch_async(dispatch_get_main_queue(), ^{
                         errorBlock(error);
                     });
