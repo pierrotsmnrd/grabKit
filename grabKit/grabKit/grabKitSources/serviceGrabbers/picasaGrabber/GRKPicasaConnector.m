@@ -34,6 +34,7 @@
     NSString * bundlePath = [[NSBundle mainBundle] pathForResource:@"GrabKitBundle" ofType:@"bundle"];
     return [NSBundle bundleWithPath:bundlePath];
 }
+
 @end
 
 
@@ -90,7 +91,7 @@ NSString * keychainItemName = @"GoogleOAuth2Keychain";
     
     UIViewController * presentingViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
     
-    
+    connectionIsCompleteBlock = [completeBlock copy];
 	
     GRKPicasaOAuth2ViewControllerTouch * authController = nil;
     
@@ -113,17 +114,39 @@ NSString * keychainItemName = @"GoogleOAuth2Keychain";
                      
                      if ( error ) {
                          
-                         NSLog(@" Error %@", error);
-                         if ( errorBlock != nil ){
-                             errorBlock(error);
+                         // errors -1000 and -1001 are thrown when the user refuses the connection (respectively before and after being logged in )
+                         if ( error.code == -1000 || error.code == -1001 ) {
+                             
+                             [presentingViewController dismissViewControllerAnimated:YES completion:^{
+                                 if ( completeBlock != nil ){
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                            completeBlock(NO);
+                                     });
+                                 }
+                             }];
+                             
+                         } else {
+                         
+                             [presentingViewController dismissViewControllerAnimated:YES completion:^{
+                                 if ( errorBlock != nil ){
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                         errorBlock(error);
+                                     });
+                                 }
+                             }];
+                             
                          }
                          
                      }else {
                       
-                         [presentingViewController dismissModalViewControllerAnimated:YES];
-                         if ( completeBlock != nil ){
-                             completeBlock(YES);
-                         }
+                         [presentingViewController dismissViewControllerAnimated:YES completion:^{
+                             if ( completeBlock != nil ){
+                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                     completeBlock(YES);
+                                 });
+                             }
+                         }];
+                     
                      }
                      
                      
@@ -131,10 +154,39 @@ NSString * keychainItemName = @"GoogleOAuth2Keychain";
     
 
     
-    [presentingViewController presentViewController:authController animated:YES completion:nil];
+    UINavigationController * navController = [[UINavigationController alloc] initWithRootViewController:authController];
+    
+    
+    authController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(didNotCompleteConnection)];
+    
+    
+    [presentingViewController presentViewController:navController animated:YES completion:nil];
  
     
 }
+
+
+/*  @see refer to GRKServiceConnectorProtocol documentation
+ */
+-(void) didNotCompleteConnection;
+{
+    
+    UIViewController * presentingViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    
+    [presentingViewController dismissViewControllerAnimated:YES completion:^{
+
+        if ( connectionIsCompleteBlock != nil ){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                connectionIsCompleteBlock(NO);
+                connectionIsCompleteBlock = nil;
+            });
+        }
+
+        
+    }];
+    
+}
+
 
 -(void) disconnectWithDisconnectionIsCompleteBlock:(GRKGrabberDisconnectionIsCompleteBlock)completeBlock;
 {

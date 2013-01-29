@@ -29,7 +29,9 @@
 
 /** a GRKPicasaConnector is an object responsible for authentifying the user on Picasa. 
  */
-@interface GRKPicasaConnector : GRKServiceConnector <GRKServiceConnectorProtocol>
+@interface GRKPicasaConnector : GRKServiceConnector <GRKServiceConnectorProtocol>{
 
-
+    GRKGrabberConnectionIsCompleteBlock connectionIsCompleteBlock;
+    
+}
 @end

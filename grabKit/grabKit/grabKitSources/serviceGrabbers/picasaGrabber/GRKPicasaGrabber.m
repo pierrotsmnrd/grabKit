@@ -202,14 +202,22 @@
                               albumsQuery = nil;
  
                           } andErrorBlock:^(NSError *error) {
-                              
-                              if ( errorBlock != nil ){
+
+                              if ( error.code == 404 && completeBlock != nil ){
+                                  // If the user doesn't have a Picasa account, the error code is 404.
+                                  // Let's NOT generate an error, let's consider the user has 0 album instead.
+                                  dispatch_async(dispatch_get_main_queue(), ^{
+                                      completeBlock([NSMutableArray array]);
+                                  });
+
+                              } else  if ( errorBlock != nil ){
                                   NSError * GRKError = [self errorForAlbumsOperationWithOriginalError:error];
                                   dispatch_async(dispatch_get_main_queue(), ^{
                                       errorBlock(GRKError);
                                   });
 
                               }
+                              
                               [self unregisterQueryAsLoading:albumsQuery];
                               albumsQuery = nil;
 

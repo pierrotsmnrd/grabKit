@@ -114,6 +114,16 @@ Still in your AppDelegate, add the following method :
 	    return NO;
 	}
 	
+
+
+Still in your AppDelegate, update the applicationDidBecomeActive: methods this way :
+	
+	- (void)applicationDidBecomeActive:(UIApplication *)application
+	{
+ 		[[GRKConnectorsDispatcher sharedInstance] applicationDidBecomeActive];
+    
+	}
+
 	
 	
 	

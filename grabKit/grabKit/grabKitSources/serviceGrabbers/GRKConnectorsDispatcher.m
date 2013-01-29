@@ -56,7 +56,16 @@ static GRKConnectorsDispatcher * sharedConnectorsDispatcher = nil;
 
 
 
-
+- (void)applicationDidBecomeActive;
+{
+    if ( serviceConnectorConnecting != nil ){
+        
+        [serviceConnectorConnecting didNotCompleteConnection];
+        [self unregisterServiceConnectorAsConnecting:serviceConnectorConnecting];
+        
+    }
+    
+}
 
 - (void)registerServiceConnectorAsConnecting:(id)serviceConnector;
 {

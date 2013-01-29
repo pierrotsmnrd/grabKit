@@ -329,6 +329,10 @@ NSUInteger kNumberOfAlbumsPerPage = 8;
                     
                 });
                 
+            } else {
+                
+                [self.navigationController popViewControllerAnimated:YES];
+                
             }
         
         } andErrorBlock:^(NSError *error) {

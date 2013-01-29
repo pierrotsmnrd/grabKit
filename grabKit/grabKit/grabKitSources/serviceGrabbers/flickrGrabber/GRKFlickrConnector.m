@@ -214,6 +214,19 @@ static NSString * secretKey = @"SecretKey";
     
 }
 
+
+/*  @see refer to GRKServiceConnectorProtocol documentation
+ */
+-(void) didNotCompleteConnection;{
+    
+    if ( connectionIsCompleteBlock != nil ){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            connectionIsCompleteBlock(NO);
+            connectionIsCompleteBlock = nil;
+        });
+    }
+}
+
 /*  @see refer to GRKServiceConnectorProtocol documentation
  */
 -(BOOL) canHandleURL:(NSURL*)url;
@@ -289,6 +302,7 @@ static NSString * secretKey = @"SecretKey";
     
     if ( connectionIsCompleteBlock != nil ){
         connectionIsCompleteBlock(YES);
+        connectionIsCompleteBlock = nil;
     }
     
     

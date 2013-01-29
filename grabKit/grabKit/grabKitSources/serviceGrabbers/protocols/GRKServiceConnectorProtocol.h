@@ -69,6 +69,12 @@
 -(void) cancelAll;
 
 
+/** When a user authentify with OAuth on Safari, but doesn't complete the process and returns to the app, this method is called on the connector.
+ Typically, this method must call the "connectionIsCompleteBlock" block given to the connector, passing the value NO
+*/
+-(void) didNotCompleteConnection;
+
+
 /** When a user authentify with OAuth on Safari, the page redirects the user to the application, calling a specific URL.
  This URL can contain token and other specific informations. 
  This method must return YES if the GRKServiceConnector can/must handle this URL an retrieve data from it

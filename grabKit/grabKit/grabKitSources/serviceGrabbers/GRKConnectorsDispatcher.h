@@ -34,6 +34,8 @@
 
 + (GRKConnectorsDispatcher *)sharedInstance; 
 
+- (void)applicationDidBecomeActive;
+
 - (BOOL)dispatchURLToConnectingServiceConnector:(NSURL *)url;
 
 - (void)registerServiceConnectorAsConnecting:(id)serviceConnector;
