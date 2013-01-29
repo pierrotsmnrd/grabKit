@@ -1,3 +1,13 @@
+GrabKit v1.2.3 changelog :
+Release Date : January 29, 2013
+
+* Update in GrabKit Demo's pbxproj to weakly link 2 frameworks ( Accounts and AdSupport, needed for Facebook )
+* Update in GrabKit's pbxproj for Xcode 4.6
+* Update in Facebook Grabber : better test to validate session, and improved handling of errors in some batch requests.
+* Fix for issue #12 (improvement) : Detection of cancelled authentication processes.
+
+
+
 GrabKit v1.2.2 changelog :
 Release Date : January 24, 2013
 
@@ -6,6 +16,7 @@ Release Date : January 24, 2013
 * The icons for each service in the demo App have been updated
 * The documentation has been updated
 * Fixed a bug in GRKDeviceGrabber when there is 0 album on the device
+
 
 
 GrabKit v1.2.1 changelog :

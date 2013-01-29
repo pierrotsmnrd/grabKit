@@ -22,8 +22,9 @@ So far, Grabkit allows you to retrieve photos from the following sources :
 * iPhone/iPad
 
 
+GrabKit is compatible with iOS 5.1 and further.
 
-GrabKit is an ARC project.  
+GrabKit is an ARC project.
 
 
 Demo application
@@ -126,6 +127,13 @@ Coming soon
 Feel free to help and contribute :)
 
 
+GrabKit v1.2.3 changes
+-------
+* Update in GrabKit Demo's pbxproj to weakly link 2 frameworks ( Accounts and AdSupport, needed for Facebook )
+* Update in GrabKit's pbxproj for Xcode 4.6
+* Update in Facebook Grabber : better test to validate session, and improved handling of errors in some batch requests.
+* Fix for issue #12 (improvement) : Detection of cancelled authentication processes.
+
 
 GrabKit v1.2.2 changes
 -------
@@ -143,25 +151,6 @@ GrabKit v1.2.1
 
 GrabKit v1.2 changes
 -------
-
-* All Grabbers can now grab the data of the Cover of an album, and build a GRKPhoto from it. 
-  Use the Two methods added to the GRKServiceGrabberProtocol, and implemented in every grabber :
-	* [GRKServiceGrabber fillCoverPhotoOfAlbum:andCompleteBlock:andErrorBlock:];
-	* [GRKServiceGrabber fillCoverPhotoOfAlbums:andCompleteBlock:andErrorBlock:];					                 
-* GRKAlbum : Adding the property GRKPhoto * coverPhoto
-* Facebook grabber : added grabbing of the "tagged photos" of the user.
-* Facebook grabber : now uses batched queries
-* Facebbok grabber : optimization when retrieving data of a photo (loading only the needed data)
-* GrabKit now includes the official release of Facebook iOS SDK 3.0 (not the beta version anymore)
-* FlickR grabber : uses queued queries to retrieve covers of albums (FlickR API doens't offer batch methods)
-* GrabKit now includes the last version of ObjectiveFlickR project (fixing issue #5)
-* Picasa grabber : uses queued queries to retrieve covers of albums (Picasa API offers batch methods but they are totally unusable)
-* Removed each specific kind of blocks to handle queries results (GRKFacebookQueryHandlingBlock, GRKFlickrQueryHandlingBlock, ...). These blocks are replaced by GRKQueryResultBlock.
-* GRKAlbum : the method "getDateForProperty:" is now "dateForProperty:"
-* GRKPhoto : the method "getDateForProperty:" is now "dateForProperty:"
-* adding KVO on property "count" of GRKAlbum (useful to notify changes of this value, as services may return a wrong value)
-* Update in Demo : more elegant squared cells with gray background when a thumbnail is loading
-* Update in Demo : list of albums now displays the albums' covers.
 
 [check the full changelog](https://github.com/pierrotsmnrd/grabKit/blob/master/changelog.txt)
 	
