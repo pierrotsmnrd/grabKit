@@ -154,7 +154,7 @@ NSUInteger kNumberOfAlbumsPerPage = 8;
             if ( ! connected ){
                 
                 
-                NSString * connectMessage = [NSString stringWithFormat:@"The Demo App needs to open Safari to authentificate you on %@. ", _grabber.serviceName ];
+                NSString * connectMessage = [NSString stringWithFormat:@"The Demo App needs to open Safari to authenticate you on %@. ", _grabber.serviceName ];
                 UIAlertView * grabberNeedToConnect = [[UIAlertView alloc] initWithTitle:@"Connection" 
                                                                                  message:connectMessage 
                                                                                 delegate:self 
