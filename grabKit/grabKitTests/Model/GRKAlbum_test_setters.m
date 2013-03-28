@@ -1,6 +1,6 @@
 /*
  * This file is part of the GrabKit package.
- * Copyright (c) 2012 Pierre-Olivier Simonard <pierre.olivier.simonard@gmail.com>
+ * Copyright (c) 2013 Pierre-Olivier Simonard <pierre.olivier.simonard@gmail.com>
  *  
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
  * associated documentation files (the "Software"), to deal in the Software without restriction, including 
@@ -23,7 +23,7 @@
 
 #import "GRKAlbum_test_setters.h"
 #import "GRKAlbum.h"
-
+#import "GRKAlbum+modify.h"
 
 @implementation GRKAlbum_test_setters
 
@@ -102,11 +102,11 @@
     
     for ( int i= 0; i < numberOfPhotosPerPage; i++ ){
 		
-        STAssertEquals([allPhotosAndNSNull objectAtIndex:i],[page0 objectAtIndex:i], @" method [GRKalbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
+        STAssertEquals([allPhotosAndNSNull objectAtIndex:i],[page0 objectAtIndex:i], @" method [GRKAlbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
         
-        STAssertEquals([allPhotosAndNSNull objectAtIndex:numberOfPhotosPerPage+i],[NSNull null], @" method [GRKalbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
+        STAssertEquals([allPhotosAndNSNull objectAtIndex:numberOfPhotosPerPage+i],[NSNull null], @" method [GRKAlbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
 
-        STAssertEquals([allPhotosAndNSNull objectAtIndex:numberOfPhotosPerPage*2+i],[page2 objectAtIndex:i], @" method [GRKalbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
+        STAssertEquals([allPhotosAndNSNull objectAtIndex:numberOfPhotosPerPage*2+i],[page2 objectAtIndex:i], @" method [GRKAlbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
 
     }
     
@@ -144,14 +144,14 @@
 	allPhotosAndNSNull = [album orderedPhotos];
     
     
-    STAssertEquals([allPhotosAndNSNull objectAtIndex:5],[NSNull null], @" method [GRKalbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
-    STAssertEquals([allPhotosAndNSNull objectAtIndex:9],[NSNull null], @" method [GRKalbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
+    STAssertEquals([allPhotosAndNSNull objectAtIndex:5],[NSNull null], @" method [GRKAlbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
+    STAssertEquals([allPhotosAndNSNull objectAtIndex:9],[NSNull null], @" method [GRKAlbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged");
     
     for ( int i = 0; i < 15; i++ ){
         
         if ( i != 5 && i != 9 ){
 
-            STAssertTrue( [[allPhotosAndNSNull objectAtIndex:i] isKindOfClass:[GRKPhoto class]], @" method [GRKalbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged (index:%d)", i);
+            STAssertTrue( [[allPhotosAndNSNull objectAtIndex:i] isKindOfClass:[GRKPhoto class]], @" method [GRKAlbum addPhotos:forPageIndex:withNumberOfPhotosPerPage:] is bugged (index:%d)", i);
             
         }
         

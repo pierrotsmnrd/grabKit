@@ -1,6 +1,6 @@
 /*
  * This file is part of the GrabKit package.
- * Copyright (c) 2012 Pierre-Olivier Simonard <pierre.olivier.simonard@gmail.com>
+ * Copyright (c) 2013 Pierre-Olivier Simonard <pierre.olivier.simonard@gmail.com>
  *  
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
  * associated documentation files (the "Software"), to deal in the Software without restriction, including 
@@ -23,7 +23,9 @@
 
 #import "GRKAlbum_test_getters.h"
 #import "GRKAlbum.h"
+#import "GRKAlbum+modify.h"
 #import "GRKPhoto.h"
+
 
 
 @implementation GRKAlbum_test_getters
@@ -212,7 +214,8 @@
     
     
     NSArray * page40 = [album photosAtPageIndex:40 withNumberOfPhotosPerPage:numberOfPhotosPerPage];
-    STAssertEquals([page40 count], (NSUInteger)numberOfPhotosPerPage, @"method [GRKAlbum photosAtPageIndex:withNumberOfPhotosPerPage:] is bugged (very far page has %d objects instead of %d)", [page40 count], numberOfPhotosPerPage );
+    STAssertEquals([page40 count], (NSUInteger)0, @"method [GRKAlbum photosAtPageIndex:withNumberOfPhotosPerPage:] is bugged (very far page has %d objects instead of %d)", [page40 count], 0 );
+    
     
 }
 
@@ -267,9 +270,9 @@
     
     NSArray * page2With7PhotosPerPage = [album photosIdsAtPageIndex:2 withNumberOfPhotosPerPage:7];
     
-    STAssertTrue([page2With7PhotosPerPage count] == 7, @"method [GRKAlbum photosIdsAtPageIndex:withNumberOfPhotosPerPage:] is bugged (returned only %d objects for page 2 with 7 photos per page" , [page2With7PhotosPerPage count]);
+    STAssertTrue([page2With7PhotosPerPage count] == 5, @"method [GRKAlbum photosIdsAtPageIndex:withNumberOfPhotosPerPage:] is bugged (returned only %d objects for page 2 with 7 photos per page" , [page2With7PhotosPerPage count]);
     
-    for ( int i = 0; i < 7; i++ ){
+    for ( int i = 0; i < 5; i++ ){
         
         id objectAtIndex = [page2With7PhotosPerPage objectAtIndex:i];
 
@@ -299,14 +302,7 @@
     
     
     NSArray * page40 = [album photosIdsAtPageIndex:40 withNumberOfPhotosPerPage:numberOfPhotosPerPage];
-    STAssertEquals([page40 count], (NSUInteger)numberOfPhotosPerPage, @"method [GRKAlbum photosIdsAtPageIndex:withNumberOfPhotosPerPage:] is bugged (very far page has %d objects instead of %d)", [page40 count], numberOfPhotosPerPage );
-    
-    for ( int i = 0; i < numberOfPhotosPerPage; i++ ){
-        
-        STAssertEquals([page40 objectAtIndex:i] , [NSNull null], @"method [GRKAlbum photosIdsAtPageIndex:withNumberOfPhotosPerPage:] is bugged (object at index %d is not NSNull, but a %@)" , i, [page40 objectAtIndex:i]);
-        
-    }
-    
+    STAssertEquals([page40 count], (NSUInteger)0, @"method [GRKAlbum photosIdsAtPageIndex:withNumberOfPhotosPerPage:] is bugged (very far page has %d objects instead of %d)", [page40 count], 0 );
     
     
 }

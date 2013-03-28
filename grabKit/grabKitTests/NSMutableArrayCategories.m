@@ -1,6 +1,6 @@
 /*
  * This file is part of the GrabKit package.
- * Copyright (c) 2012 Pierre-Olivier Simonard <pierre.olivier.simonard@gmail.com>
+ * Copyright (c) 2013 Pierre-Olivier Simonard <pierre.olivier.simonard@gmail.com>
  *  
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
  * associated documentation files (the "Software"), to deal in the Software without restriction, including 
@@ -35,7 +35,7 @@
     NSMutableArray * testArray = [NSMutableArray arrayWithObjects: @"0", @"1", @"2", @"3",  @"4", nil];
     
     
-    NSString * objectToAdd = [NSString stringWithString:@"9"];
+    NSString * objectToAdd = @"9";
     
     [testArray setObject:objectToAdd atIndex:9 fillWithObject:[NSNull null]];
     
@@ -50,7 +50,7 @@
         STAssertEquals( [testArray objectAtIndex:i], [NSNull null], @"The category method [NSMutableArray setObject:atPosition:fillWithObject:] doesn't fill properly (object at rank %d is %@", i,[testArray objectAtIndex:i] );
     }
     
-    NSString * anotherObjectToAdd = [NSString stringWithString:@"6"];
+    NSString * anotherObjectToAdd = @"6";
     [testArray setObject:anotherObjectToAdd atIndex:6 fillWithObject:[NSNull null]];
     
     STAssertEquals([testArray count],  (NSUInteger)10, @"The category method [NSMutableArray setObject:atPosition:fillWithObject:] doesn't add the proper number of objects ");
