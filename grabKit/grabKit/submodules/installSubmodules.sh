@@ -3,7 +3,7 @@
 
 #
 # This file is part of the GrabKit package.
-# Copyright (c) 2012 Pierre-Olivier Simonard <pierre.olivier.simonard@gmail.com>
+# Copyright (c) 2013 Pierre-Olivier Simonard <pierre.olivier.simonard@gmail.com>
 #  
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this software and 
 # associated documentation files (the "Software"), to deal in the Software without restriction, including 
@@ -25,6 +25,42 @@
 #
 
 
+
+
+
+installSubmodule() {
+
+	SUBMODULE_NAME=$1		
+	DEST_DIRECTORY=$2
+	SUBMODULE_URL=$3
+	
+	# create the directory if it doesn't exist
+	if [ ! -d $DEST_DIRECTORY ]; then
+		mkdir $DEST_DIRECTORY
+	fi
+	
+	# if the directory is empty
+	if [ "$(ls -1 $DEST_DIRECTORY | wc -l)" -le 1 ]; then
+		# download the archive from gitHub
+		wget -nv --no-check-certificate $SUBMODULE_URL -O $DEST_DIRECTORY.zip
+		# unzip it
+		unzip $DEST_DIRECTORY.zip
+		# move its content to the destination directory
+		mv $SUBMODULE_NAME-master/.[^.]* $DEST_DIRECTORY
+		mv $SUBMODULE_NAME-master/* $DEST_DIRECTORY
+		# remove the zip
+		rm $DEST_DIRECTORY.zip
+		# remove the dir created when unzipping
+		rmdir $SUBMODULE_NAME-master
+	else
+		# else, skip the step.
+		echo $DEST_DIRECTORY" exists and is not empty. Step skipped"
+		
+	fi 
+
+}
+
+
 # Check that we have the write permission
 if [  ! -w . ]
 then
@@ -39,61 +75,20 @@ command -v wget >/dev/null 2>&1 || { echo >&2 "You must have wget installed to p
 command -v unzip >/dev/null 2>&1 || { echo >&2 "You must have unzip installed to proceed. Aborting."; exit 1; }
 
 
-# Install ISO8601DateFormatter - https://github.com/keithpitt/ISO8601DateFormatter
-
-DEST_DIRECTORY=ISO8601DateFormatter
-
-# create the directory if it doesn't exist
-if [ ! -d $DEST_DIRECTORY ]; then
-	mkdir $DEST_DIRECTORY
-fi
-
-# if the directory is empty
-if [ "$(ls -1 $DEST_DIRECTORY | wc -l)" -le 1 ]; then
-	# download the archive from gitHub
-	wget -nv --no-check-certificate "https://github.com/keithpitt/ISO8601DateFormatter/archive/master.zip" -O ISO8601DateFormatter.zip
-	# unzip it
-	unzip ISO8601DateFormatter.zip
-	# move its content to the destination directory
-	mv ISO8601DateFormatter-master/.[^.]* $DEST_DIRECTORY
-	mv ISO8601DateFormatter-master/* $DEST_DIRECTORY
-	# remove the zip
-	rm ISO8601DateFormatter.zip
-	# remove the dir created when unzipping
-	rmdir ISO8601DateFormatter-master
-else
-	# else, skip the step.
-	echo $DEST_DIRECTORY" exists and is not empty. Step skipped"
-	
-fi 
 
 
-# Install ObjectiveFlickR - https://github.com/lukhnos/objectiveflickr/
+# Install the submodules
 
-DEST_DIRECTORY=objectiveflickr
+installSubmodule MBProgressHUD MBProgressHUD "https://github.com/jdg/MBProgressHUD/archive/master.zip"
 
-if [ ! -d $DEST_DIRECTORY ]; then
-	mkdir $DEST_DIRECTORY
-fi
+installSubmodule ISO8601DateFormatter ISO8601DateFormatter "https://github.com/keithpitt/ISO8601DateFormatter/archive/master.zip"
 
-if [ "$(ls -1 $DEST_DIRECTORY | wc -l)" -le 1 ]; then
+installSubmodule NVUIGradientButton NVUIGradientButton "https://github.com/nverinaud/NVUIGradientButton/archive/master.zip"
 
-	wget -nv --no-check-certificate "https://github.com/lukhnos/objectiveflickr/archive/master.zip" -O objectiveflickr.zip
-	
-	unzip objectiveflickr.zip
+installSubmodule objectiveflickr objectiveflickr "https://github.com/lukhnos/objectiveflickr/archive/master.zip"
 
-	mv objectiveflickr-master/.[^.]* $DEST_DIRECTORY
-	
-	mv objectiveflickr-master/* $DEST_DIRECTORY
+installSubmodule PSTCollectionView PSTCollectionView "https://github.com/steipete/PSTCollectionView/archive/master.zip"
 
-	rm objectiveflickr.zip
-
-	rmdir objectiveflickr-master
-else
-	
-	echo $DEST_DIRECTORY" exists and is not empty. Step skipped"
-
-fi
 
 
 

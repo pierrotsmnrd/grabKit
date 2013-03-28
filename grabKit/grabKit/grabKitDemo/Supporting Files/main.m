@@ -21,9 +21,28 @@
  * to promote the sale, use or other dealings in this Software without prior written authorization from (the )Author.
  */
 
-#import <Foundation/Foundation.h>
-#import "GRKConfiguratorProtocol.h"
+#import <UIKit/UIKit.h>
 
-@interface myGrabKitConfigurator : NSObject <GRKConfiguratorProtocol>
+#import "GrabKitDemoAppDelegate.h"
 
-@end
+int main(int argc, char *argv[])
+{
+    @autoreleasepool {
+        //return UIApplicationMain(argc, argv, nil, NSStringFromClass([GrabKitDemoAppDelegate class]));
+        
+        int retVal = 0;
+        @autoreleasepool {
+            NSString *classString = NSStringFromClass([GrabKitDemoAppDelegate class]);
+            @try {
+                retVal = UIApplicationMain(argc, argv, nil, classString);
+            }
+            @catch (NSException *exception) {
+                NSLog(@"Exception - %@",[exception description]);
+                exit(EXIT_FAILURE);
+            }
+        }
+        return retVal;
+
+        
+    }
+}

@@ -21,9 +21,28 @@
  * to promote the sale, use or other dealings in this Software without prior written authorization from (the )Author.
  */
 
-#import <Foundation/Foundation.h>
-#import "GRKConfiguratorProtocol.h"
 
-@interface myGrabKitConfigurator : NSObject <GRKConfiguratorProtocol>
+#import <UIKit/UIKit.h>
+#import "GRKPickerPhotosListThumbnail.h"
+#import "GRKAlbum.h"
+
+/* This class is not meant to be used as-is by third-party developers. The comments are here just for eventual needs of customisation .
+ 
+    This class is a subclass of UITableViewCell to display data about a GRKAlbum. 
+    It is used in GRKPickerAlbumsList
+
+ */
+@interface GRKPickerAlbumsListCell : UITableViewCell {
+    
+    GRKAlbum * _album;
+    
+}
+
+@property (nonatomic, strong) IBOutlet GRKPickerPhotosListThumbnail * thumbnail;
+@property (nonatomic, strong) IBOutlet UILabel * labelAlbumName;
+@property (nonatomic, strong) IBOutlet UILabel * labelPhotosCount;
+
+-(void)updateThumbnailWithImage:(UIImage*)image animated:(BOOL)animated;
+-(void)setAlbum:(GRKAlbum*)_newAlbum ;
 
 @end

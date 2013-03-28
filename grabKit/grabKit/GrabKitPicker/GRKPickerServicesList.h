@@ -21,9 +21,19 @@
  * to promote the sale, use or other dealings in this Software without prior written authorization from (the )Author.
  */
 
-#import <Foundation/Foundation.h>
-#import "GRKConfiguratorProtocol.h"
+#import <UIKit/UIKit.h>
 
-@interface myGrabKitConfigurator : NSObject <GRKConfiguratorProtocol>
+/* This class is not meant to be used as-is by third-party developers.
+ 
+ This class represents and displays the list of services available to the user.
+ 
+*/
+@interface GRKPickerServicesList : UITableViewController {
+
+    
+    NSMutableArray * services;
+    
+}
+
 
 @end

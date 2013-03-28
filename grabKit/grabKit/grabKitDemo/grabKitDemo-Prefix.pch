@@ -21,9 +21,14 @@
  * to promote the sale, use or other dealings in this Software without prior written authorization from (the )Author.
  */
 
-#import <Foundation/Foundation.h>
-#import "GRKConfiguratorProtocol.h"
 
-@interface myGrabKitConfigurator : NSObject <GRKConfiguratorProtocol>
+#import <Availability.h>
 
-@end
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+#endif

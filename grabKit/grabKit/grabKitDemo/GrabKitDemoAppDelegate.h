@@ -21,9 +21,11 @@
  * to promote the sale, use or other dealings in this Software without prior written authorization from (the )Author.
  */
 
-#import <Foundation/Foundation.h>
-#import "GRKConfiguratorProtocol.h"
+#import <UIKit/UIKit.h>
+#import "GrabKit.h"
 
-@interface myGrabKitConfigurator : NSObject <GRKConfiguratorProtocol>
+@interface GrabKitDemoAppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
 
 @end

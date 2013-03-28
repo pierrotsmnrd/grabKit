@@ -21,9 +21,32 @@
  * to promote the sale, use or other dealings in this Software without prior written authorization from (the )Author.
  */
 
-#import <Foundation/Foundation.h>
-#import "GRKConfiguratorProtocol.h"
 
-@interface myGrabKitConfigurator : NSObject <GRKConfiguratorProtocol>
+#import <UIKit/UIKit.h>
+#import "PSTCollectionViewCommon.h"
+#import "PSTCollectionView.h"
+
+
+
+/* This class is not meant to be used as-is by third-party developers. The comments are here just for eventual needs of customisation .
+ 
+ This class is a subclass of UICollectionViewCell (or PSUICollectionViewCell_ in iOS 5) used in GRKPickerPhotosList, and in GRKPickerAlbumsListCell.
+ 
+ It displays a default gray square, until the method updateThumbnailWithImage:animated: is called.
+ 
+ It also handles a UIImageView "selectedImageView", shown or hidden according to the cell's state.
+ 
+ */
+@interface GRKPickerPhotosListThumbnail : PSUICollectionViewCell {
+    
+    UIImageView * thumbnailImageView;
+    
+    UIImageView * selectedImageView;
+}
+
+
+-(void)updateThumbnailWithImage:(UIImage*)image animated:(BOOL)animated;
+
++(UIImage*)sharedThumbnailPlaceholderImage;
 
 @end
