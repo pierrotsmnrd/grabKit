@@ -73,8 +73,6 @@ GRKPickerViewController * pickerViewControllerSharedInstance = nil;
         
         runningOperations = 0;
         
-        NSLog(@"test : %@", GRK_BUNDLE);
-        
         /*
          Set the UINavigationControllerDelegate
             /!\ don't mix up between :

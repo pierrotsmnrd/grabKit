@@ -87,6 +87,8 @@ installSubmodule NVUIGradientButton NVUIGradientButton "https://github.com/nveri
 
 installSubmodule objectiveflickr objectiveflickr "https://github.com/lukhnos/objectiveflickr/archive/master.zip"
 
+echo "Downloading the next submodule can take a while..."
+
 installSubmodule PSTCollectionView PSTCollectionView "https://github.com/steipete/PSTCollectionView/archive/master.zip"
 
 
