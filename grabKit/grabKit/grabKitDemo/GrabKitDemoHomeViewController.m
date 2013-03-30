@@ -72,15 +72,14 @@
 
 
     
-    #if UI_USER_INTERFACE_IDIOM == UIUserInterfaceIdiomPhone
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ) {
 
         // On iPhone, all you have to do is to present the picker like any other view controller
         [self presentViewController:grabkitPickerViewController animated:YES completion:^{
             
         }];
 
-        
-    #else
+    } else {
     
         // On iPad, instead of building your own UIPopoverController to present the picker, use this method :
         [grabkitPickerViewController presentInPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -88,7 +87,7 @@
         // Don't build your own UIPopoverController to present the picker. GRKPickerViewController builds and uses its own popover, for technical reasons, leading to a better user experience.
     
     
-    #endif
+    }
 
     
     

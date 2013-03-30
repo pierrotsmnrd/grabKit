@@ -31,12 +31,8 @@
 
 #import "NSIndexSet+pagination.h"
 
-#if UI_USER_INTERFACE_IDIOM == UIUserInterfaceIdiomPhone
-static NSString *kGRKServiceNameDevice = @"iPhone";
-#else
-static NSString *kGRKServiceNameDevice = @"iPad";
-#endif
 
+static NSString *kGRKServiceNameDevice = @"device";
 
 @interface GRKDeviceGrabber()
 
@@ -53,7 +49,7 @@ static NSString *kGRKServiceNameDevice = @"iPad";
 
 
 -(id) init {
-    
+
     if ((self = [super initWithServiceName:kGRKServiceNameDevice]) != nil){
         
         library = [[ALAssetsLibrary alloc] init];
