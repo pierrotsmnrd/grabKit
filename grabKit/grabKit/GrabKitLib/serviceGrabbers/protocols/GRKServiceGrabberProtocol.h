@@ -183,8 +183,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
  If the service doesn't offer a proper batch method, this method must then implement a queue to perform the calls.
  
  @param albums NSArray array of GRKAlbum to fill the cover of
- @param completeBlock a GRKServiceGrabberCompleteBlock  performed once the covers are retrieved. 
-        A NSArray containing the updated GRKAlbum objects are given to that block.
+ @param completeBlock a GRKServiceGrabberCompleteBlock  performed once the covers are retrieved. A NSArray containing the updated GRKAlbum objects is passed to that block.
  @param errorBlock a GRKErrorBlock  performed if an error occured 
  */
 -(void) fillCoverPhotoOfAlbums:(NSArray *)albums 

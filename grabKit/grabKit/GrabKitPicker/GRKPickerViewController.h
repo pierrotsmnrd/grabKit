@@ -34,7 +34,7 @@
 #define GRK_i18n(key, default) NSLocalizedStringFromTableInBundle(key, @"GrabKitPicker", GRK_BUNDLE, default)
 
 
-/** GRKPickerViewController is the main class you use to help your users picker their photos in social networks.
+/** GRKPickerViewController is the main class you use to help your users pick their photos in social networks.
  
  It offers a singleton available through the method +[GRKPickerViewController sharedInstance].
  
@@ -44,11 +44,12 @@
  
  You can configure the GRKPickerViewController through several options :
  
-    _ allowsSelection : If YES (the default), the user can select an image from the picker
+ * allowsSelection : If YES (the default), the user can select an image from the picker
  
-    _ allowsMultipleSelection : If YES, the user can select several images from the picker (default NO)
+ * allowsMultipleSelection : If YES, the user can select several images from the picker (default NO)
  
-    _ keepsSelection : If YES, when the user selects images and dismisses the picker, the images will still be selected when he uses the picker again.
+ * keepsSelection : If YES, when the user selects images and dismisses the picker, the images will still be selected when he uses the picker again.
+ 
  
  
  On iPhone, you can simply present the GKRPickerViewController from your own view controller using :
@@ -68,7 +69,7 @@
  
 
  
- Do NOT build your own UIPopoverController to present the GRKPickerViewController within. GRKPickerViewController handles it for you, for technical reasons and a better user experience.
+ @warning Do NOT build your own UIPopoverController to present the GRKPickerViewController within. GRKPickerViewController handles it for you, for technical reasons and a better user experience.
  
  
  
