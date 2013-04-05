@@ -31,6 +31,7 @@
  */
 @protocol GRKServiceConnectorProtocol 
 
+/** @name GRKServiceConnectorProtocol methods */
 
 @required
 

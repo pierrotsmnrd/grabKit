@@ -182,10 +182,16 @@ static NSString *kGRKServiceNameFlickr = @"FlickR";
     //#warning for dev only
     //[params setObject:@"35591378@N03" forKey:@"user_id"];
     
+    /*#warning for demo only
+    [params setObject:@"86078191@N00" forKey:@"user_id"];
+    [params setObject:@"61" forKey:@"page"];
+    [params setObject:@"1" forKey:@"per_page"];
+    */
+    
     __block GRKFlickrQuery * albumsQuery = nil;
     
     albumsQuery = [GRKFlickrQuery queryWithMethod:@"flickr.photosets.getList"
-                                 andParams:params
+                                        andParams:params
                          withHandlingBlock:^(GRKFlickrQuery * query, id result){
                              
                              if ( ! [self isResultForAlbumsInTheExpectedFormat:result]){

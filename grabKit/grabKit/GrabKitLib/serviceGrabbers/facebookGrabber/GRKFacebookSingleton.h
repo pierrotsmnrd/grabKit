@@ -30,7 +30,7 @@
     FBSession * facebookSession;
     id sessionDelegate;
 
-    // The user's local, according to Facebook's settings, like "en_US"
+    // The user's locale, according to Facebook's settings, like "en_US"
     // This data is needed to have properly localized results from Facebook
     // Refer to http://developers.facebook.com/docs/internationalization/
     NSString * userLocale;
@@ -40,7 +40,9 @@
 @property (nonatomic, strong) NSString * userLocale;
 @property (nonatomic, strong) FBSession * facebookSession;
 
+/** @name  Getting the Share GRKFacebookSingleton */
+
 +(GRKFacebookSingleton *)sharedInstance;
-//-(void) setSessionDelegate:(id)newSessionDelegate;
+
 
 @end

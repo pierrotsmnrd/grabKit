@@ -41,13 +41,19 @@
     
 }
 
+/** @name  Adding queries to a GRKFacebookBatchQuery */
 
 -(void)addQueryWithGraphPath:(NSString *)graphPath 
                   withParams:(NSMutableDictionary *)params
                      andName:(NSString*)name
             andHandlingBlock:(GRKSubqueryResultBlock)handlingBlock; 
 
+/** @name  Start a GRKFacebookBatchQuery */
+
 -(void)performWithFinalBlock:(GRKQueryResultBlock)handlingBlock;
+
+/** @name  Stop a GRKFacebookBatchQuery */
+
 -(void)cancel;
 
 

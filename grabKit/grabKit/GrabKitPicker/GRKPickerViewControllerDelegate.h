@@ -91,7 +91,7 @@
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the dismissed picker
- @param selectedPhotos the selected photos
+ @param selectedPhotos the selected photos, an array of GRKPhoto objects
  */
 -(void)picker:(GRKPickerViewController*)picker didDismissWithSelectedPhotos:(NSArray*)selectedPhotos;
 

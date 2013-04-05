@@ -46,11 +46,14 @@
 }
 
 
+/** @name  Initializing a GRKFacebookQuery */
+
 -(id) initWithGraphPath:(NSString *)_graphPath 
 			 withParams:(NSMutableDictionary *)_params
       withHandlingBlock:(GRKQueryResultBlock)_handlingBlock
           andErrorBlock:(GRKErrorBlock)_errorBlock;
 
+/** @name  Creating a GRKFacebookQuery */
 
 +(GRKFacebookQuery*) queryWithGraphPath:(NSString *)_graphPath 
 					    withParams:(NSMutableDictionary *)_params

@@ -43,6 +43,7 @@
     BOOL _applicationDidEnterBackground;
 }
 
+/** @name Cancel all */
 
 -(void) cancelAll;
 

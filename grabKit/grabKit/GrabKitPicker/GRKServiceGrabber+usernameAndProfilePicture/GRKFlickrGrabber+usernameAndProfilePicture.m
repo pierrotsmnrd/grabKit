@@ -85,6 +85,8 @@
     // #warning for dev only
     //userId = @"35591378@N03";
     
+    //#warning for demo only
+    //userId = @"86078191@N00";
     
     if ( userId == nil ){
         

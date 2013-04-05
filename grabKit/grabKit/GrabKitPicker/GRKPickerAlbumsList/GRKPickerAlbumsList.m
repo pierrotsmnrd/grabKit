@@ -320,6 +320,7 @@ NSUInteger kMaximumRetriesCount = 1;
         NSString * username = [result objectForKey:kGRKUsernameKey];
         NSString * profilePictureURLstring = [result objectForKey:kGRKProfilePictureKey];
         
+        
         // download the profile picture asynchronously
         __block AsyncURLConnection * urlConnection =
         [AsyncURLConnection connectionWithString:profilePictureURLstring
