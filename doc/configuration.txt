@@ -1,4 +1,20 @@
-In order to grab content from each service, you need to register your app and get an API key from each service. Here are the detailed instructions for each service.
+This page will guide you to configure GrabKit for your app.
+
+
+# Prerequisites
+
+
+First, be sure you have [followed the instructions](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-run-GrabKit's-demo-application)  to run GrabKit's demo application. 
+
+Be also sure you have [followed the instructions](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-install-GrabKit)  to install GrabKit in your own application. 
+
+
+# Configuration
+
+
+In order to grab content from each service, you need to register your app and get an API key from each service. 
+
+Here are the detailed instructions for each service.
 
 
 #### Facebook :

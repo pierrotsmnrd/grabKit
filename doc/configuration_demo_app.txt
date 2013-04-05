@@ -9,18 +9,26 @@ There are 2 single steps :
 ### Download and install Facebook SDK
 
 
-FacebookSDK 3.1.1 is the last version tested and used with GrabKit. You can download it here :
-https://github.com/downloads/facebook/facebook-ios-sdk/FacebookSDK-3.1.1.pkg
+FacebookSDK 3.2 is the last version tested and used with GrabKit. You can download it here :
 
-( You can find other versions here http://developers.facebook.com/ios/downloads/ but the only version GrabKit has been tested with is the 3.1.1 )
+https://developers.facebook.com/resources/facebook-ios-sdk-3.2.pkg
+
+
+( You can find other versions here http://developers.facebook.com/ios/downloads/ but the only version GrabKit v1.3 has been tested with is the 3.2 )
 
 
 The default install location is ~/Documents/FacebookSDK
 
 
-Add Facebook SDK to the demo application by dragging the FacebookSDK.framework folder from the SDK installation folder into the Frameworks section of the demo application
+Add Facebook SDK to the demo application by dragging the FacebookSDK.framework folder from the SDK installation folder into the Frameworks section of the demo application.
 
 [[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/configuration_demo_app/add_framework.png]]
+
+
+Add the FacebookSDK to both GrabKitDemo target and GrabKitLib Target
+
+[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/configuration_demo_app/add_framework_targets.png]]
+
 
 
 Add the Facebook SDK for iOS resource bundle by dragging the FacebookSDKResources.bundle file from the FacebookSDK.framework/Resources folder into the Frameworks section of your Project Navigator.
@@ -28,29 +36,53 @@ Add the Facebook SDK for iOS resource bundle by dragging the FacebookSDKResource
 [[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/configuration_demo_app/add_bundle.png]]
 
 
+Add the FacebookSDK to both GrabKitDemo target and GrabKitBundle Target
+
+[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/configuration_demo_app/add_bundle_targets.png]]
+
+
+
+Unfold the Resources section, and remove the reference to the plist file. This file is known to mess with the plist project and prevent the demo app from compiling.
+
+[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/configuration_demo_app/add_bundle_delete_plist.png]]
+
+
+
+
 GrabKit's demo application is already configured with a default Facebook App Id.
+
+
+
 
 
 ###  Download and install the other libraries
 
-This step will make you install ISO8601DateFormatter and ObjectiveFlickR from Github, and parts of several projects of Google for Picasa.
+This step will make you install GrabKit's submodules.
 
-If you cloned GrabKit with the method "git clone", you can install ISO8601DateFormatter and ObjectiveFlickR using submodules methods :
+If you cloned GrabKit with the method "git clone", you can install them by using submodules methods. In a console, at the root of your project, enter :
 
- #refer to http://git-scm.com/book/en/Git-Tools-Submodules
- git submodule init
- git submodule update
+	#refer to http://git-scm.com/book/en/Git-Tools-Submodules
+ 
+	git submodule init
+ 
+	git submodule update
 
-This step is optionnal, and makes you install only 2 libraries out of the 3 needed. Proceed with the following step also :
+
+This step is optionnal, and doesn't make you install all the libraries needed. Proceed with the following step also :
 
 
 
-Run the bash script grabKit/grabKit/submodules/installSubmodules.sh
+Run the bash script grabKit/GrabKit/submodules/installSubmodules.sh
+
 Ensure that you have the write permision in this directory.
 
-This script will download ISO8601DateFormatter and ObjectiveFlickR from github, then unzip and install them. 
+
+This script will download the dependancies from GitHub, then unzip and install them. 
+
 They will be ignored if they already exist (i.e. if you used submodules)
+
 It will also import specific files from Google's svn repositories.
+
 
 
 Have a look to GrabKit's project, and unfold the grabKit/submodules group : Files must have turned from red to black, and the demo application should compile.
@@ -61,5 +93,7 @@ Have a look to GrabKit's project, and unfold the grabKit/submodules group : File
 
 The "grabKitDemo" target should now compile and run properly.
 
- 
 
+You can now [install GrabKit in your own application](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-install-GrabKit)
+
+ 

@@ -1,10 +1,17 @@
 This document explains how to use GrabKit in your own project.
 
+*** 
 
-First, be sure you have [followed the instructions](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-run-GrabKit's-demo-application)  to run GrabKit's demo application. This step is necessary to solve dependancies.
+# Prerequisites
+
+First, be sure you have [followed the instructions](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-run-GrabKit's-demo-application)  to run GrabKit's demo application. 
+
+This step is necessary to solve some of the dependancies.
 
 
 ***
+
+# Installation
 
 Drag'n'drop GrabKit's xcodeproj in your own project
 
@@ -34,6 +41,7 @@ Under the workspace section, select "GrabKitLib.a".  Also add the following fram
   * AdSupport.framework (for Facebook SDK)
   * AssetsLibrary.framework (for the Device Grabber)
   * CFNetwork.framework (for the FlickR Lib)
+  * QuartzCore.framework (for the GrabKitPicker)
   * Security.framework (for the Picasa Lib)
   * Social.framework (for Facebook SDK)
   * SystemConfiguration.framework (for the Picasa Lib)
@@ -48,10 +56,10 @@ In your project explorer, find "grabKitBundle.bundle" and drag it to your Target
 ***
 
 In your Target settings -> Build Settings, search for "Other linker flags", and add the following values :
-	-all_load
-	-ObjC
-	-lxml2
-	-lsqlite3.0
+	* -all_load
+	* -ObjC
+	* -lxml2
+	* -lsqlite3.0
 
 [[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/installation/07.png]]	
 
@@ -66,10 +74,13 @@ Still in "Build Settings", search for "header search path" and add the following
 ***
 	
 Import the FacebookSDK in your project
-You can either download it and follow the included informations : https://developers.facebook.com/ios/downloads/
-Or you can copy the version already included in the project. 
+
+If you have successfully set up the demo application, you can simply drag-and-drop the FacebookSDK.framework file from GrabKit's project to your own.
 
 [[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/installation/09.png]]
+
+
+You can either download it and follow the included informations : https://developers.facebook.com/ios/downloads/
 
 ***
 
@@ -85,10 +96,13 @@ In your own appDelegate, add this import :
 	#import "GrabKit.h"
 
 
-Try to build. If you have some errors, check this procedure again.
+Try to build. If you have any error, check this procedure again.
+
 If you don't have errors : Congratulations ! Only a few steps left before you can configure your project :) 
 
+
 First, copy the class myGrabKitConfigurator from the demo application to your own project. 
+
 ( The configuration process will guide you through the customization of this file )
 
 
@@ -101,7 +115,7 @@ In your AppDelegate, in the AppDelegate:didFinishLaunching: method, add the foll
     
 Still in your AppDelegate, add the following method : 
 
-	- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+	- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 		
 	    BOOL urlHasBeenHandledByDispatcher = [[GRKConnectorsDispatcher sharedInstance] dispatchURLToConnectingServiceConnector:url];
 	    
@@ -113,18 +127,6 @@ Still in your AppDelegate, add the following method :
 	    
 	    return NO;
 	}
-	
-
-
-Still in your AppDelegate, update the applicationDidBecomeActive: methods this way :
-	
-	- (void)applicationDidBecomeActive:(UIApplication *)application
-	{
- 		[[GRKConnectorsDispatcher sharedInstance] applicationDidBecomeActive];
-    
-	}
-
-	
 	
 	
 	

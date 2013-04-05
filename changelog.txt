@@ -1,3 +1,78 @@
+GrabKit v1.3 changelog :
+Release Date : 
+
+What's new :
+
+* You were expecting it, it's now available : GrabKitPicker, a ready-to-use controller to allow your users to picker their images.
+	
+	GrabKitPicker is Developer-friendly :
+	
+		Compatible with iOS 5.1 and higher, for both iPhone and iPad, the GrabKitPicker is already compatible with your project. 
+		
+		Once you've installed and configured it, all you have to do is to present it "modally" on iPhone, or through a popover on iPad.
+		
+		Easy to use, GrabKitPicker offers 2 main classes : GRKPickerViewController, and its delegate GRKPickerViewControllerDelegate.
+
+		Easy to customize, it will fit to the design of your applications.
+	
+		Through its delegation protocol, you can easily handle your users' interactions.
+	
+		Of course, GrabKitPicker uses ARC, and is full of documentation and comments.
+	
+	GrabKitPicker is also user-friendly :
+	
+		Translated in French and English so far, but soon translated in other languages. feel free to help ! :)
+		
+		The default interface is simple and easy to use, though heavily tested to offer the best user-experience possible.
+		
+		
+	
+* Added two properties to the grabbers :
+
+	* requiresConnection : returns YES for grabbers that needs to "connect" ( through OAuth or other mechanisms). 
+		This property is *does not* represent the current state of the connection of the user, but repreents the *existence* of an authentication mechanism.
+		For example, the deviceGrabber doesn't require a connection, but FacebookGrabber does.
+
+	* canLoadPagesDiscontinuously : returns YES if the grabber can load pages of photos of an album in a discontinuous way ( load page 1, then page 5, then page 0 ...)
+		For example, Instagram API doesn't offer pagination, so this property on GRKInstagramGrabber returns NO.
+
+
+* Added preprocessor constants in GrabKit.h, to easily disable a Grabber. see GRK_FACEBOOK_SERVICE, GRK_FLICKR_SERVICE, ...
+
+* New submodules added specifically for GrabKitPicker : 
+			* NVUIGradientButton 	https://github.com/nverinaud/NVUIGradientButton/
+			* MBProgressHUD 		https://github.com/jdg/MBProgressHUD/
+			* PSTCollectionView 	https://github.com/steipete/PSTCollectionView/
+	
+		
+
+
+What has changed :
+
+* The Demo application now demonstrates the use of a GRKPickerViewController, and its delegate.
+
+* Update in the Model : classes are now splitted in categories. 
+	The implementations of GRKAlbum and GRKPhoto classes allow read methods only. 
+	A "modify" category has been added for each class, and is included only where modification is needed, for classes allowed to modify the objects (i.e. the grabbers)
+	There is no "modify" category for GRKImage yet, because there's no need to modify GRKImage in the whole project. 
+	But GRKImage will follow this design pattern in the future, if needed.
+
+* Performances improvements, by adding specific dispatch_async on the proper queues where needed.
+
+* Update in GRKConnectorsDispatcher for a better developper-experience : the dispatcher is now adding itself as observer for specific notifications, thus preventing some modifications on the appDelegate.
+
+* Refined all the connectors
+
+* Some unit-tests have been updated
+
+
+What has been fixed :
+
+* Fix in GRKDeviceGrabber to improve the load of albums' covers
+
+
+
+
 GrabKit v1.2.3 changelog :
 Release Date : January 29, 2013
 
