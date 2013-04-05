@@ -143,6 +143,74 @@
     
     NSLog(@" did finish, selected photos : %@", selectedPhotos );
     
+    /* This method is called when the user dismisses the picker.
+        The array selectedPhotos contains the GRKPhoto objects that the user selected. 
+        If the multiple selection is not allowed, the array contains only one object.
+     
+        
+     A GRKPhoto object contains one or several GRKImage objects. 
+     Here is a snippet showing how you can retrieve the URL of one of the images :
+     
+     */
+    
+    
+    if ( [selectedPhotos count] > 0 ){
+        
+        // For this example, let's retrieve the first photo
+        GRKPhoto * firstPhoto = [selectedPhotos objectAtIndex:0];
+
+        // On this photo, we want the original image, the one the user uploaded on the service
+        GRKImage * originalImage = [firstPhoto originalImage];
+        
+        NSLog(@" the URL of the original image of the first selected photo is : %@", originalImage.URL );
+        NSLog(@" the size of this image is : %d x %d ", originalImage.width, originalImage.height );
+        
+        // Warning : this image can be VERY BIG (for example, on FlickR, original images can weight 5MB !)
+        
+        /* Important Notice : Special URLs for the images from the device
+         
+         For the photos grabbed from the device, the URL of the images will begin with : assets-library://
+         You can't download these images with an NSURLConnection or whatever. 
+         Here is a snippet showing how you can retrieve such image :
+         
+         */
+
+        // If the url begins with assets-library://
+        if ( [[originalImage.URL absoluteString] hasPrefix:@"assets-library://"] ){
+            
+            // Instantiate a library
+            ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+            
+            // Ask for the "Asset" for the URL. An asset is a representation of an image in the Photo application.
+            [library assetForURL:originalImage.URL
+                     resultBlock:^(ALAsset *asset) {
+                
+                         // Here, we have the asset, let's retrieve the image from it
+                         
+                         CGImageRef imgRef = [[asset defaultRepresentation] fullResolutionImage];
+                         /* Instead of the full res image, you can ask for an image that fits the screen
+                         CGImageRef imgRef  = [[asset defaultRepresentation] fullScreenImage];
+                         */
+                         
+                         // From the CGImage, let's build an UIImage
+                         UIImage * fullResImage = [UIImage imageWithCGImage:imgRef];
+                         
+                         // and we're done ! :)
+                         NSLog(@" The UIImage for URL %@ is %@", originalImage.URL, fullResImage);
+            
+                     } failureBlock:^(NSError *error) {
+                         
+                         // Something wrong happened.
+                         
+                     }];
+       
+        }
+        
+        
+        
+    }
+    
+    
 }
 
 
