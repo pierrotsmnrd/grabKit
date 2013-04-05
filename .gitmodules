@@ -4,3 +4,12 @@
 [submodule "grabKit/grabKit/submodules/objectiveflickr"]
 	path = grabKit/grabKit/submodules/objectiveflickr
 	url = git://github.com/lukhnos/objectiveflickr.git
+[submodule "grabKit/GrabKit/submodules/MBProgressHUD"]
+	path = grabKit/GrabKit/submodules/MBProgressHUD
+	url = https://github.com/jdg/MBProgressHUD
+[submodule "grabKit/GrabKit/submodules/PSTCollectionView"]
+	path = grabKit/GrabKit/submodules/PSTCollectionView
+	url = https://github.com/steipete/PSTCollectionView
+[submodule "grabKit/GrabKit/submodules/NVUIGradientButton"]
+	path = grabKit/GrabKit/submodules/NVUIGradientButton
+	url = https://github.com/nverinaud/NVUIGradientButton
