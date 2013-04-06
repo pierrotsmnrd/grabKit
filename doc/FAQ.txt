@@ -1,0 +1,176 @@
+
+
+## General purpose 
+
+
+#### Q. How do I exclude one of the services from my app ?  
+
+**A.** Follow these 3 simple steps :
+* Open GrabKit.h and set the service's constant to 0 ( for example : ``` #define GRK_FACEBOOK_SERVICE 0 ``` )
+* Navigate in the project hierarchy to GrabKitSources/serviceGrabbers/ and remove the file of the grabber you want to exclude ( for example : all the files in the group "facebookGrabber" )
+* Delete the related submodules and frameworks used only for this service. Here is the list :
+	* Flickr : delete submodules/objectiveflickr from your project
+	* Facebook : remove the Framework FacebookSDK.framework, its Resources folder, and submodules/ISO8601DateFormatter
+	* Picasa : delete submodules/Picasa
+	* Nothing to remove for the other grabbers
+
+
+***
+
+
+#### Q. I'm also using ShareKit in my app. Will there be some conflicts with GrabKit ? 
+
+**A.** No, there won't be any problem, if you do **NOT** add twice the libraries and frameworks in your project, once in GrabKit and once in ShareKit.
+
+
+***
+
+#### Q. It seems you wrote lots of comments and documentation. Can I generate a Docset for GrabKit, using Appledoc ?
+
+**A.** Thanks for noticing it ;)  Yes, you can. The comments necessary to use GrabKit as a third-party library are compatible with Appledoc. 
+Comments within internal-implementation classes are intentionally incompatible with Appledoc.  
+
+
+***
+
+
+## Troubleshooting
+
+
+#### Q. When I try to launch the demo, I get the following error : 
+_/serviceGrabbers/facebookGrabber/GRKFacebookConnector.m:138:91: Use of undeclared identifier 'FBErrorLoginFailedReasonUserCancelledValue'; did you mean 'FBErrorLoginFailedReasonInlineCancelledValue'?_
+
+**A.** You are using an old version of FacebookSDK. Just update it ! :)
+
+
+***
+
+
+#### Q. When I try to launch the demo, I get the following error :
+_"The selected destination does not support the architecture for which the selected software is built.  Switch to a destination that supports that architecture in order to run the selected software."_
+
+**A.** According to this post on StackOverflow : http://stackoverflow.com/questions/11767945/xcode-cannot-run-on-the-selected-destination
+
+You may have forgotten to remove the plist file when adding the Resources folder from the Facebook SDK. 
+Search in your project and remove the file named " Info.plist ", hidding under the Facebook "Resources" group, beside " FacebookSDKResources.bundle " and " FBUserSettingsViewResources.bundle ".
+
+
+
+***
+
+
+## Design and Architecture
+
+
+
+
+#### Q. What is the difference between a GRKPhoto and a GRKImage ? 
+**A.** A GRKPhoto represents a photo as a ***document***, a GRKImage represents this photo as a ***picture***.
+
+A GRKPhoto contains informations like the name, the date the photo was taken, etc. 
+It also contains one or several GRKImage objects, through the property GRKPhoto.images .
+
+These GRKImage objects are the various representations available for the given GRKPhoto, with different sizes, each of them having an URL to download the image itself.
+
+
+
+***
+
+
+#### Q. Why have you modified the Model in GrabKit v1.3 ? I now have errors like "No visible @interface for 'GRK…' declares the selector '...' " / I can't find any method to modify the GRK-Objects.
+
+**A.** One of the statements of GrabKit's architecture is : "The Grabbers, and only them, are responsible for building and modifying the GRK-Objects."
+Even though this statement has always been respected, the methods to modify GRK-Objects where still fully accessible, defined in classes' headers.
+
+In GrabKit v1.3, the methods of the model classes (GRKAlbum, GRKPhoto and GRKImage) have been splitted in two groups :
+    _ The getters are fully accessible everywhere in the code, as they are declared in object's headers
+    _ The setters are now in a "modify" category for each object : GRKAlbum+modify.h GRKPhoto+modify.h, GRKImage+modify.h.
+        These "modify" categories are included in the grabbers, and shouldn't be included anywhere else.
+        
+You can include these categories in your own code if you wish to modify the GRK-objects, it's up to you. But I'll never accept a pull request that doesn't respect the previous statement.
+
+
+***
+
+
+
+#### Q. Can you put the Authentication process inside the Picker / my App ? I'm not a big fan of launching a seperate browser.
+**A.** For several reasons : No.
+* Some SDK don't make this possible
+* By opening Safari, the user benefits of SSO (single sign-on), and doesn't need to log-in *AGAIN*
+* Skeptical / Paranoid users are reassured : they can check the opened URL, and verify they are not redirected in a scam page or whatever could scare them.
+
+
+***
+
+
+
+#### Q. Why doesn't GrabKit's picker ( GRKPickerViewController ) download the full-res images ?
+**A.** Because this is your responsability, and it makes you free to download the image the way you want.
+
+
+***
+
+
+#### Q. How can I download an image from a GRKPhoto objects ?
+**A.** On a GRKPhoto object, retrieve the GRKImage objects through the property GRKPhoto.images. Each GRKImage object present a property URL. You can use this URL with your favorite classes for download.
+Internally, GrabKit uses AsynURLConnection.
+
+
+***
+
+
+#### Q. In GrabKitPicker, there is a category "usernameAndProfilePicture" on each grabber. Why using a category and why not implementing this code in the grabbers themselves ?
+
+**A.** The methods in the "usernameAndProfilePicture" category don't pass GRK objects to the completeBlocks, but an NSDictionary with the user's name and the url of his profile picture.
+That's why these methods are not included in the grabbers themselves.
+Furthermore, this category is the perfect example on how to extend GrabKit.
+
+
+***
+
+
+#### Q. Why do the grabbers and their connectors both implement the GRKServiceConnectorProtocol ? Why this redundancy ?
+**A.** This is a "trampoline" design pattern.
+When you call a method from GRKServiceConnectorProtocol on a grabber, the grabber builds a connector and calls the same method on it.
+One more time, you ask "why ?!" : For simplicity reasons, to encourage and allow developers to use only one kind of class : the grabbers, and nothing more.
+No need to deal with the connector and so on, your code only needs to use grabbers.
+
+
+***
+
+
+#### Q. Can I implement my own grabber for "this service that I like", and send you a pull request ?
+
+**A.** Sure you can ! Thanks !
+But before accepting your pull-request, I'll be very demanding. 
+Grabbers must respect lots of constraints to keep GrabKit's integrity. You'll find these constraints in many places of the documentation in the code.
+To ease this process, I'm working on a serie of unit-tests to validate them. Stay tuned :)
+
+
+***
+
+
+#### Q. What are the specifities/tricks of the grabbers that I should know ?
+**A.** There are several of them :
+
+* Some grabbers require to connect (log in) to work properly. Their property grabber.requiresConnection returns YES.
+Actually, the only grabber that doesn't require to connect is GRKDeviceGrabber.
+
+* Some grabbers can fetch pages of photos in any order, you can then load page 0 and then page 30 … but some grabbers can't, because the service doesn't allow it. This is the case for Instagram. If you refer to their documentation ( http://instagram.com/developer/endpoints/ ), the "pagination" (sic) is done by sending the id of the last image of the previous page. This is why you need, with the Instagram Grabber, to load pages one after the other.
+
+The property grabber.canLoadPhotosPagesDiscontinuously  is NO for GRKInstagramGrabber, YES for the others.
+
+
+* You can't load more that 500 albums or photos par call to a grabber. This limit is imposed by FlickR, but this constraint is applied to all the grabbers, to keep consistency. 
+
+
+***
+
+
+
+#### Q. What are these PSUICollectionView thing ? Why don't you use a UICollectionView ? 
+**A.** UICollectionView is a powerful tool. It appeared with iOS 6. 
+PSUICollectionView is an open-source project to offer UICollectionView features compatible with iOS 5.1 .
+
+

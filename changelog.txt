@@ -1,5 +1,5 @@
 GrabKit v1.3 changelog :
-Release Date : 
+Release Date : April 6, 2013
 
 What's new :
 
@@ -66,9 +66,12 @@ What has changed :
 * Some unit-tests have been updated
 
 
+
 What has been fixed :
 
 * Fix in GRKDeviceGrabber to improve the load of albums' covers
+
+
 
 
 

@@ -5,50 +5,48 @@ GrabKit
 GrabKit for iOS offers a ready-to-use component to easily import photos from social networks. 
 
 GrabKit allows you to retrieve photos from  :
-	* Facebook
-	* FlickR
-	* Picasa
-	* Instagram
-	* iPhone/iPad
-	* ... and more to come
+* Facebook
+* FlickR
+* Picasa
+* Instagram
+* iPhone/iPad
+* ... and more to come
 
 
 
 Abstract
 --------
 
+
 In your iPhone/iPad applications, you may want to let your users access their photo albums hosted on various social networks like Facebook or FlickR, or stored in the device.
 Unfortunately, the websites hosting these images offer different APIs and different libraries to authentify a user, grab its photo albums, etc.
 
 GrabKit is made to wrap these differences into :
-	* a simple library : GrabKitLib 
-	* a simple ready-to-use component : GrabKitPicker, based on GrabKitLib
+* a simple library : GrabKitLib 
+* a simple ready-to-use component : GrabKitPicker, based on GrabKitLib
 
 
-GrabKitPicker is Developer-friendly :
-	
-	* Compatible with iOS 5.1 and higher, for both iPhone and iPad, the GrabKitPicker is already compatible with your project. 
-		
-	* Once you've installed and configured it, all you have to do is to present it "modally" on iPhone, or through a popover on iPad.
-		
-	* Easy to use, GrabKitPicker offers two main classes : GRKPickerViewController, and its delegate GRKPickerViewControllerDelegate.
+GrabKitPicker is **Developer-friendly** :
 
-	* Through its delegation protocol, you can easily handle your users' interactions.
-	
-	* Easy to customize, it will fit to the design of your applications.
-	
-	* Of course, GrabKitPicker uses ARC, and is full of documentation and comments.
-	
-GrabKitPicker is also user-friendly :
-	
-	* Translated in French and English so far, but soon translated in other languages. Feel free to help ! :)
-		
-	* The default interface is simple and easy to use, though heavily tested to offer the best user-experience possible.
-	
-	
-	
-![screenshot of GrabKitPicker](https://github.com/pierrotsmnrd/grabKit/raw/master/doc/screenshots_demo.png)
-		
+* Compatible with iOS 5.1 and higher, for **both iPhone and iPad**, the GrabKitPicker is already compatible with your project. 
+* Once you've installed and configured it, all you have to do is to present it "modally" on iPhone, or through a popover on iPad.
+* Easy to use, GrabKitPicker offers two main classes : **GRKPickerViewController**, and its delegate **GRKPickerViewControllerDelegate**.
+* Through its delegation protocol, you can easily handle the user's interactions.
+* Easy to customize, it will fit to the design of your applications.
+* Of course, GrabKitPicker uses ARC, and is full of documentation and comments.
+
+
+GrabKitPicker is also **User-friendly** :
+* Translated in French and English so far, but soon translated in other languages. Feel free to help ! :)	
+* The default interface is simple and easy to use, though heavily tested to offer the best user-experience possible.
+
+
+<p align="center">
+<img alt="screenshot of the demo application" width="285" height="539" src="https://github.com/pierrotsmnrd/grabKit/raw/master/doc/demo.gif"/><br />
+Watch this demo on YouTube : http://www.youtube.com/watch?v=6sOgy_3P4Ws<br />
+</p>
+
+
 
 
 Demo application
@@ -108,56 +106,6 @@ The delegate method called when the picker is dismissed, passing the array of th
 			
 	}
 
-### Use GrabKitLib
-
-	TODO REWORK
-	
-	
-#### First example : retrieve 10 albums on user's Facebook account.
-
-    #import "GRKFacebookGrabber.h"
-    
-    // create a grabber for Facebook
-	GRKFacebookGrabber * grabber = [[GRKFacebookGrabber alloc] init];
-
-	// Do you prefer a grabber for Picasa or FlickR ? simply create a GRKPicasaGrabber or a GRKFlickrGrabber.
-	// the following code would still work.
-
-    // Connect the grabber. the user will be prompted in Safari to authenticate and return to the app.
-	[grabber connectWithConnectionIsCompleteBlock:^(BOOL connected){
-		
-        if ( connected ){
-            
-            // ask for the first 10 albums of the user.
-            [grabber albumsOfCurrentUserAtPageIndex:0 withNumberOfAlbumsPerPage:10 andCompleteBlock:^(NSArray *albums) {
-               
-                // albums is an NSArray of GRKAlbum, containing the 10 first albums of the user on Facebook.
-                
-            } andErrorBlock:^(NSError *error) {
-        
-                // Oop's, an error occured :)
-            }];
-        }
-        
-    }];
-
-#### Second example : Fill an album with its 10 first photos
-	
-	GRKAlbum * firstAlbum = [albums objectAtIndex:0];
-	
-	[grabber fillAlbum:firstAlbum withPhotosAtPageIndex:0 withNumberOfPhotosPerPage:10 andCompleteBlock:^(NSArray *addedPhotos) {
-                    
-         // At this point, firstAlbum is filled with its 10 first photos, and the added photos are passed in the NSArray addedPhotos
-          
-          NSLog(@" already loaded photos of first album : %@", [firstAlbum photos]);
-          NSLog(@" added photos : %@", addedPhotos);
-          
-          
-      } andErrorBlock:^(NSError *error) {
-          // Oop's, an error occured :)
-      }] ;
-	
-
 
 
 Model 
@@ -190,6 +138,12 @@ GrabKit v1.3 changes
 * Introducing the GrabKitPicker, and much more. [check the full changelog](https://github.com/pierrotsmnrd/grabKit/blob/master/changelog.txt)
 	
 
+FAQ
+-------
+[All your questions have answers.](https://github.com/pierrotsmnrd/grabKit/wiki/FAQ) 
+	
+
+
 License
 -------
 
@@ -210,7 +164,7 @@ The FlickR Grabber uses the ObjectiveFlickR project :  https://github.com/lukhno
 The Picasa Grabber uses "Google Data APIs Objective-C Client Library" : https://code.google.com/p/gdata-objectivec-client/
 
 
-Special thanks to talented [Laurence Vagner](http://www.redisdead.net/) for the use of her photo album 'Foodporn' in the demo video.
+Special thanks to the talented [Laurence Vagner](http://www.redisdead.net/) for the use of her photo album 'Foodporn' in the demo video.
 
 Check her [FlickR page](http://www.flickr.com/photos/redisdead) for more pictures under Creative Commons licence.
 
@@ -220,7 +174,7 @@ The demo video has been made with CaptureRecord. https://github.com/gabriel/Capt
 Donations
 -------
 
-GrabKit is \***100% free**\* .
+GrabKit is **\*100% free**\* .
 However, developing and supporting this project is hard work and costs real money. Please help support the development of GrabKit !
 
 **10%** of your donations is donated to the **Free Software Foundation**.
