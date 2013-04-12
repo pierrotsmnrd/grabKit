@@ -66,7 +66,7 @@
 {
     
     __weak __block GRKFacebookQuery * userDataQuery = nil;
-    userDataQuery = [GRKFacebookQuery queryWithGraphPath:@"me?fields=picture.type(large),name" // we need a large picture, for retina displays...
+    userDataQuery = [GRKFacebookQuery queryWithGraphPath:@"me?fields=picture.width(88).height(88),name" // we need a large picture, for retina displays...
                                       withParams:nil
                                withHandlingBlock:^(GRKFacebookQuery *query, id result) {
 
