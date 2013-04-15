@@ -33,5 +33,7 @@
 
     GRKGrabberConnectionIsCompleteBlock connectionIsCompleteBlock;
     
+    __weak id _viewControllerToPresentAuthFrom;
+    
 }
 @end

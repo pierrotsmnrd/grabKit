@@ -25,7 +25,7 @@
 //
 //
 
-
+#import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
 @protocol GRKConfiguratorProtocol 
@@ -57,6 +57,29 @@
 // The name of the album "Tagged photos" on Facebook, as you want GrabKit to return it.
 // Hint : use localization here.
 - (NSString*) facebookTaggedPhotosAlbumName;
+
+@optional
+
+
+/* The Picasa connector doesn't open a Safari page to let the user authenticate. Instead, it presents a viewController. 
+ When using the GrabKitPicker, the viewController is presented in its navigation hierarchy, no action is required on your part.
+ 
+ But when you use GrabKit as a library, Picasa's Auth viewController must be displayed. 
+ The viewController returned by this configuration method will present Picasa's auth controller.
+
+ 
+ If your custom viewController is an instance of UINavigationController, GrabKit will call the configuration method 'customViewControllerShouldPresentPicasaAuthControllerModally' to know if Picasa's Auth Controller must be presented "modally", or pushed in the navigation hierarchy.
+ 
+ If your custom viewController is not a navigationController, GrabKit will present Picasa's auth controller "modally"
+ 
+ */
+-(UIViewController *)customViewControllerToPresentPicasaAuthController;
+
+
+/* If you use GrabKit as a library (i.e. without GrabKitPicker), and if the custom view controller you return in "customViewControllerToPresentPicasaAuthController" is an instance of UINavigationController, then this method will help you define if Picasa's Auth Controller must be pushed in the navigation hierarchy, or must be presented modally.
+ 
+ */
+-(BOOL)customViewControllerShouldPresentPicasaAuthControllerModally;
 
 @end
 

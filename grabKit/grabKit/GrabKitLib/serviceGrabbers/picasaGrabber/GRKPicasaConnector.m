@@ -91,8 +91,36 @@ NSString * keychainItemName = @"GoogleOAuth2Keychain";
     
     NSString * scope = @"https://photos.googleapis.com/data/";
     
-
+    
+    _viewControllerToPresentAuthFrom = [GRKPickerViewController sharedInstance];
+    BOOL isUsingACustomController = NO;
+    BOOL shouldPresentModally = NO;
     UIViewController * viewControllerToPopToAfterAuth = [[GRKPickerViewController sharedInstance] topViewController];
+
+    
+    if ( [ ((id) [GRKConfiguration sharedInstance].configurator) respondsToSelector:@selector(customViewControllerToPresentPicasaAuthController)] ){
+        
+        UIViewController * customViewControllerToPresentAuthFrom = [GRKCONFIG customViewControllerToPresentPicasaAuthController];
+        
+        if ( customViewControllerToPresentAuthFrom != nil){
+            
+            _viewControllerToPresentAuthFrom = customViewControllerToPresentAuthFrom;
+            isUsingACustomController = YES;
+            
+            if ( [customViewControllerToPresentAuthFrom isKindOfClass:[UINavigationController class]]
+            && [ ((id) [GRKConfiguration sharedInstance].configurator) respondsToSelector:@selector(customViewControllerShouldPresentPicasaAuthControllerModally)]){
+        
+                shouldPresentModally = [GRKCONFIG customViewControllerShouldPresentPicasaAuthControllerModally];
+                if ( ! shouldPresentModally ){
+                    viewControllerToPopToAfterAuth = [(UINavigationController*)_viewControllerToPresentAuthFrom topViewController];
+                }
+                
+            } else {
+            
+                shouldPresentModally = YES;
+            }
+        }
+    }
     
     connectionIsCompleteBlock = [completeBlock copy];
 	
@@ -122,11 +150,24 @@ NSString * keychainItemName = @"GoogleOAuth2Keychain";
                          // errors -1000 and -1001 are thrown when the user refuses the connection (respectively before and after being logged in )
                          if ( error.code == -1000 || error.code == -1001 ) {
                              
-                             [[GRKPickerViewController sharedInstance] popToRootViewControllerAnimated:YES];
+                             // remove the authentication controller.
+                             if ( shouldPresentModally ){
+                                 // When is configured to be presented "modally"
+                                 [_viewControllerToPresentAuthFrom dismissViewControllerAnimated:YES completion:nil];
+
+                             } else if ( isUsingACustomController ){
+                                 // When using a custom controller that is an instance of UINavigationController
+                                 [(UINavigationController*)_viewControllerToPresentAuthFrom popToViewController:viewControllerToPopToAfterAuth animated:YES];
+                             } else {
+                                 // Or when using the picker ...
+                                 [(UINavigationController*)_viewControllerToPresentAuthFrom popToRootViewControllerAnimated:YES];
+                             }
+                             
                              
                              dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                              dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                                  completeBlock(NO);
+                                 _viewControllerToPresentAuthFrom = nil;
                              });
 
                              
@@ -136,17 +177,29 @@ NSString * keychainItemName = @"GoogleOAuth2Keychain";
                              dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                              dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                                  errorBlock(error);
+                                 _viewControllerToPresentAuthFrom = nil;
                              });
 
                          }
                          
                      }else {
                       
-                         [[GRKPickerViewController sharedInstance] popToViewController:viewControllerToPopToAfterAuth animated:YES];
+                         
+                         // remove the authentication controller.
+                         if ( shouldPresentModally ){
+                             // When is configured to be presented "modally"
+                             [_viewControllerToPresentAuthFrom dismissViewControllerAnimated:YES completion:nil];
+                             
+                         } else {
+                             // When using a custom controller that is an instance of UINavigationController, or when using the picker ...
+                             [(UINavigationController*)_viewControllerToPresentAuthFrom popToViewController:viewControllerToPopToAfterAuth animated:YES];
+                         }
+                         
                          
                          dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                          dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                              completeBlock(YES);
+                             _viewControllerToPresentAuthFrom = nil;
                          });
                         
                      }
@@ -155,12 +208,31 @@ NSString * keychainItemName = @"GoogleOAuth2Keychain";
                  }];
     
 
+    // Present the auth controller according to the config : modally, or pushed in the navigation hierarchy
+    if (shouldPresentModally ){
+        
+        // Wrap the Auth controller in a navigationController to show the navigation bar, featuring a "Cancel" button
+        
+        UINavigationController * wrappingNavigationController = [[UINavigationController alloc] initWithRootViewController:authController];
 
-    [[GRKPickerViewController sharedInstance] pushViewController:authController animated:YES];
-
+        authController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismissAuthController)];
+        
+        [_viewControllerToPresentAuthFrom presentViewController:wrappingNavigationController animated:YES completion:nil];
+        
+        
+    } else {
+        
+        [(UINavigationController*)_viewControllerToPresentAuthFrom pushViewController:authController animated:YES];
+    }
+    
     
 }
+-(void)dismissAuthController {
 
+    [_viewControllerToPresentAuthFrom dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
 
 /*  @see refer to GRKServiceConnectorProtocol documentation
  */

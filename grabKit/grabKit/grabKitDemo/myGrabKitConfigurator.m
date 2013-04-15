@@ -150,4 +150,36 @@
     
 }
 
+
+
+
+/* The Picasa connector doesn't open a Safari page to let the user authenticate. Instead, it presents a viewController.
+ When using the GrabKitPicker, the viewController is presented in its navigation hierarchy, there is nothing you have to handle.
+ 
+ But when you use GrabKit as a library, Picasa's Auth viewController needs to be displayed.
+ The viewController returned by this configuration method will present Picasa's auth controller.
+ 
+ 
+ If your custom viewController is an instance of UINavigationController, GrabKit will call the configuration method 'customViewControllerShouldPresentPicasaAuthControllerModally' to know if Picasa's Auth Controller must be presented "modally", or pushed in the navigation hierarchy.
+ 
+ If your custom viewController is not a navigationController, GrabKit will present Picasa's auth controller "modally"
+ 
+ */
+/*
+-(UIViewController *)customViewControllerToPresentPicasaAuthController {
+ 
+    return  yourUIViewController;
+}*/
+
+
+/* If you use GrabKit as a library (i.e. without GrabKitPicker), and if the custom view controller you return in "customViewControllerToPresentPicasaAuthController" is an instance of UINavigationController, then this method will help you define if Picasa's Auth Controller must be pushed in the navigation hierarchy, or must be presented modally.
+ 
+ */
+/*
+-(BOOL)customViewControllerShouldPresentPicasaAuthControllerModally {
+    return YES;
+}
+*/
+
+
 @end
