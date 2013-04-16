@@ -75,9 +75,9 @@ Still in "Build Settings", search for "header search path" and add the following
 	
 Import the FacebookSDK in your project
 
-If you have successfully set up the demo application, you can simply drag-and-drop the FacebookSDK.framework file from GrabKit's project to your own.
+[As you did when you configured the demo project](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-run-GrabKit's-demo-application#download-and-install-facebook-sdk), drag and drop the FacebookSDK framework into your own project.
 
-[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/installation/09.png]]
+[[https://github.com/pierrotsmnrd/grabKit/raw/master/doc/configuration_demo_app/add_framework.png]]
 
 
 You can either download it and follow the included informations : https://developers.facebook.com/ios/downloads/
