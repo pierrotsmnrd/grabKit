@@ -27,7 +27,7 @@
 #import "ObjectiveFlickr.h"
 #import "GRKServiceConnector.h"
 
-/** a GRKFlickrConnector is an object responsible for authentifying the user on FlickR. 
+/** a GRKFlickrConnector is an object responsible for authenticating the user on FlickR. 
  */
 @interface GRKFlickrConnector : GRKServiceConnector <OFFlickrAPIRequestDelegate, GRKServiceConnectorProtocol>{
     

@@ -27,7 +27,7 @@
 #import "GRKServiceConnector.h"
 #import "GTMOAuth2ViewControllerTouch.h"
 
-/** a GRKPicasaConnector is an object responsible for authentifying the user on Picasa. 
+/** a GRKPicasaConnector is an object responsible for authenticating the user on Picasa. 
  */
 @interface GRKPicasaConnector : GRKServiceConnector <GRKServiceConnectorProtocol>{
 

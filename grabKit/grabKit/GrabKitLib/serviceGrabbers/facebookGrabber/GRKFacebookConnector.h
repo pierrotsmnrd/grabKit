@@ -27,7 +27,7 @@
 #import "GRKServiceConnector.h"
 
 
-/** a GRKFacebookConnector is an object responsible for authentifying the user on Facebook. 
+/** a GRKFacebookConnector is an object responsible for authenticating the user on Facebook. 
 */
 @interface GRKFacebookConnector : GRKServiceConnector <GRKServiceConnectorProtocol> {
     

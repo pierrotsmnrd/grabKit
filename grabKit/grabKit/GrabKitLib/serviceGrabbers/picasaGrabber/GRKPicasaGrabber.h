@@ -31,7 +31,7 @@
  *
  * The specifity of the GRKPicasaGrabber is that it doesn't open Safari to connect the user. 
  * Actually, Google's implementation of the OAuth protocol has some particularities, preventing from having a proper redirection from Safari to your application. 
- *   Then, to authentify the user, GrabKit uses a specific view controller available in the Google Data library.
+ *   Then, to authenticate the user, GrabKit uses a specific view controller available in the Google Data library.
  * 
  * @see Reference : http://code.google.com/p/gdata-objectivec-client/
  *

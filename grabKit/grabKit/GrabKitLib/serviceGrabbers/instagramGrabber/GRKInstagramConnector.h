@@ -27,7 +27,7 @@
 #import "GRKServiceConnector.h"
 #import "GRKServiceConnectorProtocol.h"
 
-/** a GRKInstagramConnector is an object responsible for authentifying the user on Instagram. 
+/** a GRKInstagramConnector is an object responsible for authenticating the user on Instagram. 
  */
 @interface GRKInstagramConnector : GRKServiceConnector<NSURLConnectionDelegate, GRKServiceConnectorProtocol> {
     

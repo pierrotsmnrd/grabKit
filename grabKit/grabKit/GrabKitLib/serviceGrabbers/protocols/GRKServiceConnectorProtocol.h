@@ -24,10 +24,10 @@
 #import <Foundation/Foundation.h>
 #import "GRKServiceGrabberConnectionProtocol.h"
 
-/** The GRKServiceGrabberProtocol protocol is adopted by objects responsible for connecting a grabber, by authentifying the user to the service, typically using the OAuth protocol.
+/** The GRKServiceGrabberProtocol protocol is adopted by objects responsible for connecting a grabber, by authenticating the user to the service, typically using the OAuth protocol.
  
  When asking a grabber to connect with the method [GRKServiceGrabberConnectionProtocol connectWithConnectionIsCompleteBlock:andErrorBlock:],
- the grabber gets a shared instance of GRKServiceConnector and calls the method [GRKServiceConnectorProtocol connectWithConnectionIsCompleteBlock:andErrorBlock:] on it. Typically, in this method, the connector opens Safari to an authentification page, that redirects to the application once he's authentified.
+ the grabber gets a shared instance of GRKServiceConnector and calls the method [GRKServiceConnectorProtocol connectWithConnectionIsCompleteBlock:andErrorBlock:] on it. Typically, in this method, the connector opens Safari to an authentication page, that redirects to the application once he's authenticated.
  */
 @protocol GRKServiceConnectorProtocol 
 
@@ -37,7 +37,7 @@
 
 /** The [GRKServiceConnectorProtocol connectWithConnectionIsCompleteBlock:andErrorBlock:] method must perform all actions needed to authenticate a user to a service.
  
- Typically, in this method, the connector opens Safari to an authentification page, that redirects to the application once he's authentified.
+ Typically, in this method, the connector opens Safari to an authentication page, that redirects to the application once he's authenticated.
  
  @param connectionIsCompleteBlock a block to call passing a BOOL parameter indicating if the user is connected, or not.
  @param errorBlock a block to call if an error occurs.
@@ -91,13 +91,13 @@
 -(void) cancelAll;
 
 
-/** When a user authentify with OAuth on Safari, but doesn't complete the process and returns to the app, this method is called on the connector.
+/** When a user authenticate with OAuth on Safari, but doesn't complete the process and returns to the app, this method is called on the connector.
  Typically, this method must call the "connectionIsCompleteBlock" block given to the connector, passing the value NO
 */
 -(void) didNotCompleteConnection;
 
 
-/** When a user authentify with OAuth on Safari, the page redirects the user to the application, calling a specific URL.
+/** When a user authenticate with OAuth on Safari, the page redirects the user to the application, calling a specific URL.
  This URL can contain token and other specific informations. 
  This method must return YES if the GRKServiceConnector can/must handle this URL an retrieve data from it
  
@@ -107,7 +107,7 @@
 -(BOOL) canHandleURL:(NSURL*)url;
 
 
-/** When a user authentify with OAuth on Safari, the page redirects the user to the application, calling a specific URL.
+/** When a user authenticate with OAuth on Safari, the page redirects the user to the application, calling a specific URL.
  This URL can contain token and other specific informations. 
  This method retrieve the specific data from the URL and initialize the GRKServiceConnector data.
  Often, the GRKServiceConnector must then call a connectedBlock previously stored ( @see [GRKServiceConnectorProtocol connectWithConnectionIsCompleteBlock:andErrorBlock:] );
