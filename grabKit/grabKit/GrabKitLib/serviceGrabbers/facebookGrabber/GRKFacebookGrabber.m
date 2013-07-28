@@ -672,6 +672,7 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
  @param rawAlbum a NSDictionary representing the album to build, as returned by Facebook's API
  @return a GRKAlbum
 */
+
 -(GRKAlbum *) albumWithRawAlbum:(NSDictionary*)rawAlbum;
 {
     
@@ -679,21 +680,32 @@ withNumberOfPhotosPerPage:(NSUInteger)numberOfPhotosPerPage
     NSString * name = [rawAlbum objectForKey:@"name"];
     NSUInteger count = [[rawAlbum objectForKey:@"count"] intValue];
     
-    // raw dates stored as strings in the FB result. 
-    // there are ISO 8601 dates, looking like : 2010-09-08T21:11:25+0000
-    NSString * dateCreatedDatetimeISO8601String = [rawAlbum objectForKey:@"created_time"];
-    NSString * dateUpdatedDatetimeISO8601String = [rawAlbum objectForKey:@"updated_time"];
     
     // convert the string dates to NSDate
     ISO8601DateFormatter *formatter = [[ISO8601DateFormatter alloc] init];
-    NSDate * dateCreated = [formatter dateFromString:dateCreatedDatetimeISO8601String];
-    NSDate * dateUpdated = [formatter dateFromString:dateUpdatedDatetimeISO8601String];
-
     
     NSMutableDictionary * dates = [NSMutableDictionary dictionary];
-    if (dateCreated != nil) [dates setObject:dateCreated forKey:kGRKAlbumDatePropertyDateCreated];
-    if (dateUpdated != nil) [dates setObject:dateUpdated forKey:kGRKAlbumDatePropertyDateUpdated];
     
+    
+    // raw dates stored as strings in the FB result.
+    // there are ISO 8601 dates, looking like : 2010-09-08T21:11:25+0000
+    NSString * dateCreatedDatetimeISO8601String = [rawAlbum objectForKey:@"created_time"];
+    
+    if ( [dateCreatedDatetimeISO8601String isKindOfClass:[NSString class]] ) {
+        NSDate * dateCreated = [formatter dateFromString:dateCreatedDatetimeISO8601String];
+        
+        if (dateCreated != nil)
+            [dates setObject:dateCreated forKey:kGRKAlbumDatePropertyDateCreated];
+        
+    }
+    
+    NSString * dateUpdatedDatetimeISO8601String = [rawAlbum objectForKey:@"updated_time"];
+    if ( [dateUpdatedDatetimeISO8601String isKindOfClass:[NSString class]] ){
+        NSDate * dateUpdated = [formatter dateFromString:dateUpdatedDatetimeISO8601String];
+        
+        if (dateUpdated != nil)
+            [dates setObject:dateUpdated forKey:kGRKAlbumDatePropertyDateUpdated];
+    }
     
     GRKAlbum * album = [GRKAlbum albumWithId:albumId andName:name andCount:count andDates:dates];
     
