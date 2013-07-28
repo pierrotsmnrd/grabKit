@@ -101,7 +101,6 @@
 		5F990C3D1702E5FE00B89A7B /* GTMOAuth2ViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FB1362716ADAD2700BE500B /* GTMOAuth2ViewTouch.xib */; };
 		5F990C431702EF6800B89A7B /* GrabKitDemoHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FD46C7C16B83A5D00EE496F /* GrabKitDemoHomeViewController.xib */; };
 		5F990C441702EF6C00B89A7B /* GrabKitDemoHomeViewController-ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F585B2416CAD92D0023401D /* GrabKitDemoHomeViewController-ipad.xib */; };
-		5F990C451702F0D000B89A7B /* GrabKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5F89F1C115BFC18B00B8739D /* GrabKitBundle.bundle */; };
 		5F990C461702F41000B89A7B /* GrabKitLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD3999715BF1E2B0063542C /* GrabKitLib.a */; };
 		5F990C481702F42200B89A7B /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F990C471702F42200B89A7B /* Social.framework */; };
 		5FA4911415C3C3540000DADB /* GrabKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FA4911315C3C3540000DADB /* GrabKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -285,6 +284,7 @@
 		5FC2547A16E73F53007471D4 /* AsyncURLConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC2547816E73F52007471D4 /* AsyncURLConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC2547C16E73F53007471D4 /* AsyncURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC2547916E73F52007471D4 /* AsyncURLConnection.m */; };
 		5FC2547E16E749AF007471D4 /* GRKPickerViewControllerDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC2547D16E749AF007471D4 /* GRKPickerViewControllerDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FC4D13A175F48BF00EEADFD /* GrabKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5F89F1C115BFC18B00B8739D /* GrabKitBundle.bundle */; };
 		5FC592F916FCDAA500ABDF45 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3C2B6615B9F7FC008D894A /* SenTestingKit.framework */; };
 		5FC592FA16FCDAA500ABDF45 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3C2B4E15B9F7FC008D894A /* UIKit.framework */; };
 		5FC592FB16FCDAA500ABDF45 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3C2B5015B9F7FC008D894A /* Foundation.framework */; };
@@ -597,6 +597,8 @@
 		5F8E24A816A7F8660090F93B /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		5F8E24A916A7F8660090F93B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		5F990C471702F42200B89A7B /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		5FA034C117A567C300313705 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/GrabKitPicker.strings"; sourceTree = "<group>"; };
+		5FA034C217A5697800313705 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/GrabKitPicker.strings; sourceTree = "<group>"; };
 		5FA4911315C3C3540000DADB /* GrabKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrabKit.h; sourceTree = "<group>"; };
 		5FB1344E16AAA3CA00BE500B /* LFHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFHTTPRequest.h; sourceTree = "<group>"; };
 		5FB1344F16AAA3CA00BE500B /* LFHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFHTTPRequest.m; sourceTree = "<group>"; };
@@ -2001,6 +2003,8 @@
 				en,
 				English,
 				fr,
+				"zh-Hans",
+				tr,
 			);
 			mainGroup = 5F3C2B3F15B9F7FC008D894A;
 			productRefGroup = 5F3C2B4B15B9F7FC008D894A /* Products */;
@@ -2022,7 +2026,7 @@
 			files = (
 				5F990C431702EF6800B89A7B /* GrabKitDemoHomeViewController.xib in Resources */,
 				5F990C441702EF6C00B89A7B /* GrabKitDemoHomeViewController-ipad.xib in Resources */,
-				5F990C451702F0D000B89A7B /* GrabKitBundle.bundle in Resources */,
+				5FC4D13A175F48BF00EEADFD /* GrabKitBundle.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2327,6 +2331,8 @@
 			children = (
 				5F8B84BF16F793C800ADCC8D /* en */,
 				5F8B84C116F793F400ADCC8D /* fr */,
+				5FA034C117A567C300313705 /* zh-Hans */,
+				5FA034C217A5697800313705 /* tr */,
 			);
 			name = GrabKitPicker.strings;
 			sourceTree = "<group>";
@@ -2402,6 +2408,7 @@
 		5F3C2B7815B9F7FC008D894A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GrabKit/GrabKitDemo/grabKitDemo-Prefix.pch";
@@ -2419,6 +2426,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = GrabKitDemo;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2426,6 +2434,7 @@
 		5F3C2B7915B9F7FC008D894A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GrabKit/GrabKitDemo/grabKitDemo-Prefix.pch";
@@ -2443,6 +2452,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = GrabKitDemo;
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
