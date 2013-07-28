@@ -151,6 +151,13 @@
         }
         
         
+        if ( ! self.keepsSelection ){
+            
+            [_selectedPhotos removeAllObjects];
+            
+        }
+        
+        
     } else {
         
         [self dismissViewControllerAnimated:YES completion:^{
