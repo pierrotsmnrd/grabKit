@@ -131,6 +131,20 @@
 -(void)presentInPopoverFromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated;
 
 
+/** This methods builds a UIPopoverViewController and displays the GRKPickerViewController within.
+ 
+ 
+ @warning For technical reasons leading to a better user experience, you must use this method on iPad, instead of building your own UIPopoverViewController.
+ 
+ @param rect The rectangle in view at which to anchor the popover window.
+ @param view The view containing the anchor rectangle for the popover.
+ @param arrowDirections The arrow directions the popover is permitted to use
+ @param animated Specify YES to animate the presentation of the popover or NO to display it immediately.
+ 
+ @see [UIPopoverController presentPopoverFromBarButtonItem:permittedArrowDirections:animated:]
+ 
+ */
+-(void)presentInPopoverFromRect:(CGRect)rect inView:(UIView*)view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated;
 
 
 

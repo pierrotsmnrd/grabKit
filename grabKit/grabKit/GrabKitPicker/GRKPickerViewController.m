@@ -98,9 +98,25 @@ GRKPickerViewController * pickerViewControllerSharedInstance = nil;
 
     [self popToRootViewControllerAnimated:NO];
     
-    [_pickerPresentingPopover presentPopoverFromBarButtonItem:item permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [_pickerPresentingPopover presentPopoverFromBarButtonItem:item permittedArrowDirections:arrowDirections animated:animated];
     
 }
+
+
+
+-(void)presentInPopoverFromRect:(CGRect)rect inView:(UIView*)view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated {
+    
+    if ( _pickerPresentingPopover == nil ){
+        _pickerPresentingPopover = [[UIPopoverController alloc] initWithContentViewController:self];
+    }
+    
+    _pickerPresentingPopover.popoverContentSize = CGSizeMake(320, 500);
+    
+    [self popToRootViewControllerAnimated:NO];
+    
+    [_pickerPresentingPopover presentPopoverFromRect:rect inView:view permittedArrowDirections:arrowDirections animated:animated];
+}
+
 
 
 - (void)viewDidLoad
