@@ -34,7 +34,7 @@
 @optional
 
 
-/** This method if called when the user selects a photo in the picker
+/** This method is called when the user selects a photo in the picker
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the picker that had a photo selected
@@ -44,7 +44,7 @@
 
 
 
-/** This method if called when the user deselects a photo in the picker
+/** This method is called when the user deselects a photo in the picker
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the picker that had a photo deselected
@@ -53,7 +53,8 @@
 -(void)picker:(GRKPickerViewController*)picker didDeselectPhoto:(GRKPhoto*)photo;
 
 
-/** This method if called when the user highlights a photo in the picker (i.e. when he makes a "touch down" it)
+
+/** This method is called when the user highlights a photo in the picker (i.e. when he makes a "touch down" it)
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  In this method implementation, you can push your own viewController if you need.
@@ -70,7 +71,7 @@
 -(void)picker:(GRKPickerViewController*)picker didHighlightPhoto:(GRKPhoto*)photo;
 
 
-/** This method if called when the user unhighlights a photo in the picker (i.e. when he removes his/her finger from it)
+/** This method is called when the user unhighlights a photo in the picker (i.e. when he removes his/her finger from it)
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  In this method implementation, you can push your own viewController if you need.
@@ -87,7 +88,7 @@
 -(void)picker:(GRKPickerViewController*)picker didUnhighlightPhoto:(GRKPhoto*)photo;
 
 
-/** This method if called when the user did finish using the picker, i.e. closes the picker by touching "cancel" or "done".
+/** This method is called when the user did finish using the picker, i.e. closes the picker by touching "cancel" or "done".
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the dismissed picker
@@ -97,7 +98,7 @@
 
 
 
-/** This method if called when the GRKPickerViewController is displayed, and is about to show the list of services.
+/** This method is called when the GRKPickerViewController is displayed, and is about to show the list of services.
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the displayed picker
@@ -105,7 +106,7 @@
 -(void)pickerWillShowServicesList:(GRKPickerViewController*)picker;
 
 
-/** This method if called when the GRKPickerViewController is displayed, and to show the list of services is shown.
+/** This method is called when the GRKPickerViewController is displayed, and to show the list of services is shown.
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the displayed picker
@@ -113,7 +114,7 @@
 -(void)pickerDidShowServicesList:(GRKPickerViewController*)picker;
 
 
-/** This method if called when the GRKPickerViewController is about to show the albums for a given service, i.e. when the user did select a service.
+/** This method is called when the GRKPickerViewController is about to show the albums for a given service, i.e. when the user did select a service.
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the picker
@@ -121,7 +122,7 @@
  */
 -(void)picker:(GRKPickerViewController*)picker willShowAlbumsListForServiceName:(NSString *)serviceName;
 
-/** This method if called when the GRKPickerViewController shows the albums for a given service, i.e. when the user did select a service.
+/** This method is called when the GRKPickerViewController shows the albums for a given service, i.e. when the user did select a service.
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the picker
@@ -130,7 +131,7 @@
 -(void)picker:(GRKPickerViewController*)picker didShowAlbumsListForServiceName:(NSString *)serviceName;
 
 
-/** This method if called when the GRKPickerViewController is about to show the photos for a given album, i.e. when the user did select an album.
+/** This method is called when the GRKPickerViewController is about to show the photos for a given album, i.e. when the user did select an album.
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the picker
@@ -139,7 +140,7 @@
 -(void)picker:(GRKPickerViewController*)picker willShowPhotosListForAlbum:(GRKAlbum *)album;
 
 
-/** This method if called when the GRKPickerViewController shows the photos for a given album, i.e. when the user did select an album.
+/** This method is called when the GRKPickerViewController shows the photos for a given album, i.e. when the user did select an album.
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
  @param picker the picker
