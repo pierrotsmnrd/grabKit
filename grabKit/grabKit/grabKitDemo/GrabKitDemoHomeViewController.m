@@ -127,6 +127,21 @@
 
 
 
+-(BOOL)picker:(GRKPickerViewController *)picker shouldSelectPhoto:(GRKPhoto *)photo {
+    
+    NSLog(@" should select photo ? %@", photo);
+    return YES;
+}
+
+-(BOOL)picker:(GRKPickerViewController *)picker shouldDeselectPhoto:(GRKPhoto *)photo {
+    
+    NSLog(@" should deselect photo ? %@", photo);
+    return YES;
+}
+
+
+
+
 -(void)picker:(GRKPickerViewController *)picker didSelectPhoto:(GRKPhoto *)photo {
     
     NSLog(@" did select photo : %@", photo);

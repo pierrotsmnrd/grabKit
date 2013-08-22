@@ -71,6 +71,20 @@
 }
 
 
+-(BOOL) shouldSelectPhoto:(GRKPhoto*)selectedPhoto {
+    
+    BOOL shouldSelectPhoto = YES;
+    
+    // Should the photo be selected ?
+    if ( self.pickerDelegate != nil && [self.pickerDelegate respondsToSelector:@selector(picker:shouldSelectPhoto:)]){
+        
+        shouldSelectPhoto = [(id<GRKPickerViewControllerDelegate>)self.pickerDelegate picker:self shouldSelectPhoto:selectedPhoto];
+        
+    }
+    
+	return shouldSelectPhoto;
+    
+}
 
 -(void) didSelectPhoto:(GRKPhoto*)selectedPhoto {
     
@@ -87,7 +101,23 @@
     
 }
 
+
+
+
+-(BOOL) shouldDeselectPhoto:(GRKPhoto*)deselectedPhoto {
+    
+    BOOL shouldDeselectPhoto = YES;
+    
+    if ( self.pickerDelegate != nil && [self.pickerDelegate respondsToSelector:@selector(picker:shouldSelectPhoto:)]){
+        shouldDeselectPhoto = [(id<GRKPickerViewControllerDelegate>)self.pickerDelegate picker:self shouldDeselectPhoto:deselectedPhoto];
+    }
+    
+ 	return shouldDeselectPhoto;
+    
+}
+
 -(void) didDeselectPhoto:(GRKPhoto*)deselectedPhoto {
+    
     
     [_selectedPhotos removeObjectForKey:deselectedPhoto.photoId];
     

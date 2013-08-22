@@ -51,6 +51,12 @@
 /* Called to notify the GRKPickerViewController that the user unhighlighted (touched up) a photo */
 -(void)didUnhighlightPhoto:(GRKPhoto*)unhighlightedPhoto;
 
+/* Calls the delegate to determine if the photo should be selected or not. */
+-(BOOL) shouldSelectPhoto:(GRKPhoto*)deselectedPhoto;
+
+/* Calls the delegate to determine if the photo should be deselected or not. */
+-(BOOL) shouldDeselectPhoto:(GRKPhoto*)deselectedPhoto;
+
 
 /* Called to notify the GRKPickerViewController that the user selected a photo */
 -(void) didSelectPhoto:(GRKPhoto*)selectedPhoto;

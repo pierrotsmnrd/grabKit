@@ -565,11 +565,30 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
 
 
 -(BOOL) collectionView:(PSUICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
- 
+
+	GRKPhoto * selectedPhoto =  [self photoForCellAtIndexPath:indexPath];
+    
     // Only allow selection of items for already-loaded photos.
-    return [self photoForCellAtIndexPath:indexPath] != nil;
+    if ( selectedPhoto == nil ){
+        return NO;
+    }
+    
+    // if the photo is already loaded, then ask the Picker if it can select the photo or not
+    return [[GRKPickerViewController sharedInstance] shouldSelectPhoto:selectedPhoto];
     
 }
+
+
+
+-(BOOL) collectionView:(PSUICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+	GRKPhoto * deselectedPhoto =  [self photoForCellAtIndexPath:indexPath];
+    
+    // Ask the Picker if it can deselect the photo or not
+    return [[GRKPickerViewController sharedInstance] shouldDeselectPhoto:deselectedPhoto];
+    
+}
+
 
 -(void)collectionView:(PSUICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
    
@@ -604,9 +623,14 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
     
     
     GRKPhoto * selectedPhoto = [self photoForCellAtIndexPath:indexPath];
-    [[GRKPickerViewController sharedInstance] didDeselectPhoto:selectedPhoto];
+
+//    if ( [[GRKPickerViewController sharedInstance] shouldDeselectPhoto:selectedPhoto] ){
+
+        [[GRKPickerViewController sharedInstance] didDeselectPhoto:selectedPhoto];
+        [self updateRightBarButtonItem];
+        
+//    }
     
-    [self updateRightBarButtonItem];
     
 }
 

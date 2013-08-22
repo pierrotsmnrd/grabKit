@@ -54,6 +54,40 @@
 
 
 
+/** This method is called when the user selects a photo in the picker. 
+ 
+ @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
+
+ @return  If it returns YES, the picker will call the delegate method picker:didSelectPhoto: .
+ If it returns NO, nothing happens : the photo is not selected, the method  picker:didSelectPhoto:  will not be called on the delegate
+ 
+ If the delegate doesn't implement this method, the picker will consider it can select the photo.
+
+ 
+ @param picker the picker that had a photo selected
+ @param photo the selected photo
+ */
+-(BOOL)picker:(GRKPickerViewController*)picker shouldSelectPhoto:(GRKPhoto*)photo;
+
+
+
+/** This method is called when the user deselects a photo in the picker
+
+ @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
+ @return  If it returns YES, the picker will call the delegate method picker:didDeselectPhoto: .
+ If it returns NO, nothing happens : the photo is not deselected, the method picker:didDeselectPhoto: will not be called on the delegate
+ 
+ If the delegate doesn't implement this method, the picker will consider it can deselect the photo.
+
+ 
+ @param picker the picker that had a photo deselected
+ @param photo the deselected photo
+ */
+-(BOOL)picker:(GRKPickerViewController*)picker shouldDeselectPhoto:(GRKPhoto*)photo;
+
+
+
+
 /** This method is called when the user highlights a photo in the picker (i.e. when he makes a "touch down" it)
  @note remember the picker is a singleton available through the method +[GRKPickerViewController sharedInstance]
  
