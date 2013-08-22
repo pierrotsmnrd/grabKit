@@ -37,10 +37,14 @@
 
 -(void) addImage:(GRKImage*)newImage {
     [_images addObject:newImage];
+    _shouldRebuildImagesSortedByWidth = YES;
+    _shouldRebuildImagesSortedByHeight = YES;    
 }
 
 -(void) addArrayOfImages:(NSArray*)newImages {
     [_images addObjectsFromArray:newImages];
+    _shouldRebuildImagesSortedByWidth = YES;
+    _shouldRebuildImagesSortedByHeight = YES;
 }
 
 

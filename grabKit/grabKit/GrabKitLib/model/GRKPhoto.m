@@ -47,6 +47,9 @@ NSString * const kGRKPhotoDatePropertyDateTaken = @"kGRKPhotoDatePropertyDateTak
         _images = [[NSMutableArray alloc] initWithArray:images];
         _dates = [[NSMutableDictionary alloc] initWithDictionary:dates];
         
+        _shouldRebuildImagesSortedByWidth = YES;
+        _shouldRebuildImagesSortedByHeight = YES;
+
         _album = nil;
     }
     
@@ -76,6 +79,10 @@ NSString * const kGRKPhotoDatePropertyDateTaken = @"kGRKPhotoDatePropertyDateTak
 
 -(NSArray*)imagesSortedByHeight;
 {
+    if ( ! _shouldRebuildImagesSortedByHeight ){
+        return _imagesSortedByHeight;
+    }
+
     // Create a temporary NSMutableArray that will be sorted
     NSMutableArray * tmpArray = [NSMutableArray arrayWithArray:self.images];
     
@@ -101,13 +108,20 @@ NSString * const kGRKPhotoDatePropertyDateTaken = @"kGRKPhotoDatePropertyDateTak
         
     }];
     
+    
+    _shouldRebuildImagesSortedByHeight = NO;
     // return a sorted NSArray
-    return [NSArray arrayWithArray:tmpArray];
+	_imagesSortedByHeight = [NSArray arrayWithArray:tmpArray];
+    return _imagesSortedByHeight;
     
 }
 
 -(NSArray*)imagesSortedByWidth;
 {
+	if ( ! _shouldRebuildImagesSortedByWidth ){
+        return _imagesSortedByWidth;
+    }
+    
     // Create a temporary NSMutableArray that will be sorted
     NSMutableArray * tmpArray = [NSMutableArray arrayWithArray:self.images];
     
@@ -133,11 +147,46 @@ NSString * const kGRKPhotoDatePropertyDateTaken = @"kGRKPhotoDatePropertyDateTak
         
     }];
     
+    _shouldRebuildImagesSortedByWidth = NO;
     // return a sorted NSArray
-    return [NSArray arrayWithArray:tmpArray];
-
+	_imagesSortedByWidth = [NSArray arrayWithArray:tmpArray];
+    return _imagesSortedByWidth;
     
 }
+
+
+-(GRKImage*)firstImageWithWidthGreaterThan:(CGFloat)minimumWidth; {
+    
+    NSArray * imagesSortedByWidth = [self imagesSortedByWidth];
+    GRKImage * result = nil;
+    
+    for ( GRKImage * iteratedImage in imagesSortedByWidth ){
+        if ( iteratedImage.width > minimumWidth){
+    		result = iteratedImage;
+            break;
+        }
+    }
+    
+    return result;
+}
+
+
+-(GRKImage*)firstImageWithHeightGreaterThan:(CGFloat)minimumHeight; {
+
+    NSArray * imagesSortedByHeight = [self imagesSortedByHeight];
+    GRKImage * result = nil;
+    
+    for ( GRKImage * iteratedImage in imagesSortedByHeight ){
+        if ( iteratedImage.height > minimumHeight){
+    		result = iteratedImage;
+            break;
+        }
+    }
+    
+    return result;
+}
+
+
 
 -(GRKImage*)originalImage;
 {

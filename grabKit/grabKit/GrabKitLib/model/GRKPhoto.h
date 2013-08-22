@@ -21,6 +21,7 @@
  * to promote the sale, use or other dealings in this Software without prior written authorization from (the )Author.
  */
 
+#import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
 #import "GRKImage.h"
 
@@ -86,6 +87,13 @@ extern GRKPhotoDateProperty * const kGRKPhotoDatePropertyDateTaken;
     NSMutableDictionary * _dates; // Dictionary of NSDate, representing various dates for the photo (date of creation, date of the last update, date when the photo was taken, ...). 
     
     __weak GRKAlbum * _album; // the album this photo belongs to. can be nil.
+    
+    NSArray * _imagesSortedByWidth;
+    BOOL _shouldRebuildImagesSortedByWidth;
+ 
+    NSArray * _imagesSortedByHeight;
+    BOOL _shouldRebuildImagesSortedByHeight;
+    
 }
 
 
@@ -154,8 +162,20 @@ extern GRKPhotoDateProperty * const kGRKPhotoDatePropertyDateTaken;
  */
 -(NSArray*)imagesSortedByWidth;
 
+/** Returns the first image having its width greater than the given width
+ @return Returns the first image having its width greater than the given width, or nil if there is no image with a greater width.
+ */
+-(GRKImage*)firstImageWithWidthGreaterThan:(CGFloat)minimumWidth;
+
+/** Returns the first image having its height greater than the given height
+ @return Returns the first image having its width greater than the given height, or nil if there is no image with a greater height.
+ */
+-(GRKImage*)firstImageWithHeightGreaterThan:(CGFloat)minimumHeight;
+
+
+
 /** Get the original image of the GRKPhoto
- @return a GRKImage representing the original image of th ephoto
+ @return a GRKImage representing the original image of the photo
  */
 -(GRKImage*)originalImage;
 
