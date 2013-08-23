@@ -1,3 +1,29 @@
+GrabKit v1.3.1 changelog :
+Release Date : August 23, 2013
+
+What's new :
+
+* Turkish and Chinese Localizations
+* On GRKPhoto, 2 methods have been added : 
+	* -(GRKImage*)firstImageWithWidthGreaterThan:(CGFloat)minimumWidth;
+	* -(GRKImage*)firstImageWithHeightGreaterThan:(CGFloat)minimumHeight; 
+* On GRKPickerViewController, the method presentInPopoverFromRect:inView:permittedArrowDirections:animated: has been added
+
+What has changed :
+
+* On GRKPhoto, methods imagesSortedByWidth and imageSortedByHeight now use a cache
+
+What has been fixed :
+
+* On GRKPickerViewController, the method  -presentInPopoverFromBarButtonItem:permittedArrowDirections:animated: now uses the given parameter
+* Fix inconsistent capitalization in the .gitsubmodules file 
+* Remove all selected photos if keepsSelection == NO, when the picker is presented in popover.
+* Fix in Facebook Grabber : Sometimes, "created_time" and "updated_time" entries are missing from Facebook's API results.
+* Fix in the recycling of thumbnails
+* Some typo in comments
+
+
+
 GrabKit v1.3 changelog :
 Release Date : April 6, 2013
 
