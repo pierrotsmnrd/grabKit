@@ -1,4 +1,4 @@
-GrabKit v1.3.1 changelog :
+GrabKit v1.3.2 changelog :
 Release Date : August 23, 2013
 
 What's new :
@@ -21,6 +21,15 @@ What has been fixed :
 * Fix in Facebook Grabber : Sometimes, "created_time" and "updated_time" entries are missing from Facebook's API results.
 * Fix in the recycling of thumbnails
 * Some typo in comments
+
+
+
+GrabKit v1.3.1 changelog :
+Release Date : mid july 2013
+
+What has been fixed :
+* Fix in the Facebook query for the profile picture ( #20 )
+* Fix in the Picasa Grabber and configuration when using GrabKit as a lib (without the picker)
 
 
 
