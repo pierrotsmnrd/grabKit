@@ -48,7 +48,6 @@ Watch this demo on YouTube : http://www.youtube.com/watch?v=6sOgy_3P4Ws<br />
 
 
 
-
 Demo application
 -------------
 
@@ -143,6 +142,26 @@ FAQ
 [All your questions have answers.](https://github.com/pierrotsmnrd/grabKit/wiki/FAQ) 
 	
 
+Applications using GrabKit
+-------------
+
+Several top-rated applications use GrabKit, as :
+* [XnSketch](http://www.xnview.com/en/mobile/xnsketch/) : Turn your photos into drawing, cartoons or sketch images in one click to create instant works of art.
+* [1sleeve](http://www.1sleeve.com/) : 1sleeve is a cool and innovative iPad app to design, customize, personalize and buy your own sleeve for iPad, iPad mini and macbookAir 11" and 13".
+* [Printzel](https://printzel.it/get/printzel) : Create an elegant photo book in minutes!
+
+
+Donations
+-------
+
+GrabKit is **\*100% free**\* .
+However, developing and supporting this project is hard work and costs real money. Please help support the development of GrabKit !
+
+**10%** of your donations is donated to the **Free Software Foundation**.
+
+[![donation](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=GEHQ8UX5RR298&lc=US&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
+
+
 
 License
 -------
@@ -170,17 +189,6 @@ Check her [FlickR page](http://www.flickr.com/photos/redisdead) for more picture
 
 
 The demo video has been made with CaptureRecord. https://github.com/gabriel/CaptureRecord
-
-Donations
--------
-
-GrabKit is **\*100% free**\* .
-However, developing and supporting this project is hard work and costs real money. Please help support the development of GrabKit !
-
-**10%** of your donations is donated to the **Free Software Foundation**.
-
-[![donation](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=GEHQ8UX5RR298&lc=US&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted)
-
 
 
 Contact
