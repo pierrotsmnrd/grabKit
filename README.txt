@@ -71,7 +71,7 @@ In order to grab content from each service, you need to register your app and ge
 Please follow the [detailled instructions in the wiki](https://github.com/pierrotsmnrd/grabKit/wiki/How-to-configure-GrabKit) 
 
 
-### Add the GrabKitPicker in you code 
+### Add the GrabKitPicker in your code 
 
 From any UIViewController in your app, all you have to do is similar to this :
 	
