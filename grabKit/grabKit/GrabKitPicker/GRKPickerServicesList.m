@@ -142,11 +142,17 @@
 {
     [super viewWillAppear:animated];
  
-    
-    if ( [[GRKPickerViewController sharedInstance] isPresentedInPopover] ) {
-        self.tableView.contentOffset = CGPointZero;
-        self.tableView.contentInset = UIEdgeInsetsZero;
+    // fix for iOS6.x
+	if ( ! [@[@"7.0"] containsObject:[[UIDevice currentDevice] systemVersion]] ){
+	
+    	if ( [[GRKPickerViewController sharedInstance] isPresentedInPopover] ) {
+        	self.tableView.contentOffset = CGPointZero;
+	        self.tableView.contentInset = UIEdgeInsetsZero;
+    	}
     }
+
+
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
