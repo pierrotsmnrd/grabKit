@@ -24,8 +24,6 @@
 #import <UIKit/UIKit.h>
 #import "GRKServiceGrabber.h"
 #import "GRKAlbum.h"
-#import "PSTCollectionView.h"
-#import "PSTCollectionViewCommon.h"
 
 
 enum {
@@ -47,23 +45,21 @@ typedef NSUInteger GRKPickerPhotosListState;
 
 /* This class is not meant to be used as-is by third-party developers. The comments are here just for eventual needs of customisation .
  
- This class represents and displays a collection ( UICollectionView on iOS 6, PSUICollectionView_ on iOS 5) of photos for the given album.
+ This class represents and displays a collection of photos for the given album.
  
  All the UI updates are made using the setState: method.
  
  It features several UI elements :
  
- _ a UICollectionView or a PSUICollectionView_, according to the iOS version.
-    ( have a look to https://github.com/steipete/PSTCollectionView )
+ _ a UICollectionView
  
  _ Two UIBarButtonItem, a "Done" and a "Cancel" one, according to the selection of the user.
  
  
- 
  */
-@interface GRKPickerPhotosList : UIViewController<PSUICollectionViewDataSource, PSUICollectionViewDelegate > {
+@interface GRKPickerPhotosList : UIViewController<UICollectionViewDataSource, UICollectionViewDelegate > {
     
-    PSUICollectionView * _collectionView;
+    UICollectionView * _collectionView;
 
     UIBarButtonItem * _cancelButton;
     UIBarButtonItem * _doneButton;

@@ -96,14 +96,14 @@ NSUInteger kCellHeight = 75;
 {
     [super viewDidLoad];
 
-    PSUICollectionViewFlowLayout *flowLayout = [[PSUICollectionViewFlowLayout alloc] init];
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
     [flowLayout setItemSize:CGSizeMake(kCellWidth, kCellHeight)];
     [flowLayout setMinimumInteritemSpacing:1.0f];
     [flowLayout setMinimumLineSpacing:4.0f];
     [flowLayout setSectionInset:UIEdgeInsetsMake(4, 4, 4, 4)];
 
     
-    _collectionView = [[PSUICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
+    _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;
     
@@ -215,7 +215,7 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
 
                // Then, set the selected items again
                for ( NSIndexPath * indexPathOfSelectedItem in selectedItems ){
-                   [_collectionView selectItemAtIndexPath:indexPathOfSelectedItem animated:NO scrollPosition:PSTCollectionViewScrollPositionNone];
+                   [_collectionView selectItemAtIndexPath:indexPathOfSelectedItem animated:NO scrollPosition:UICollectionViewScrollPositionNone];
                }
 
                
@@ -435,14 +435,14 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
 
 #pragma mark - UICollectionViewDataSource methods
 
-- (NSInteger)collectionView:(PSUICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
  
     return _album.count;
     
 }
 
--(void) prepareCell:(GRKPickerPhotosListThumbnail *)cell fromCollectionView:(PSUICollectionView*)collectionView atIndexPath:(NSIndexPath*)indexPath withPhoto:(GRKPhoto*)photo  {
+-(void) prepareCell:(GRKPickerPhotosListThumbnail *)cell fromCollectionView:(UICollectionView*)collectionView atIndexPath:(NSIndexPath*)indexPath withPhoto:(GRKPhoto*)photo  {
     
         NSURL * thumbnailURL = nil;
         
@@ -507,7 +507,7 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
 }
 
 
-- (PSUICollectionViewCell *)collectionView:(PSUICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
     GRKPickerPhotosListThumbnail * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"pickerPhotosCell" forIndexPath:indexPath];
@@ -521,7 +521,7 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
         
         if ( ! cell.selected && [[[GRKPickerViewController sharedInstance] selectedPhotosIds] containsObject:photo.photoId]) {
             //[collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-            [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:PSTCollectionViewScrollPositionNone];
+            [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
             cell.selected = YES;
         }
         
@@ -564,7 +564,7 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
 }
 
 
--(BOOL) collectionView:(PSUICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+-(BOOL) collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 	GRKPhoto * selectedPhoto =  [self photoForCellAtIndexPath:indexPath];
     
@@ -580,7 +580,7 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
 
 
 
--(BOOL) collectionView:(PSUICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+-(BOOL) collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     
 	GRKPhoto * deselectedPhoto =  [self photoForCellAtIndexPath:indexPath];
     
@@ -590,7 +590,7 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
 }
 
 
--(void)collectionView:(PSUICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
    
     GRKPhoto * selectedPhoto = [self photoForCellAtIndexPath:indexPath];
     
@@ -619,7 +619,7 @@ withNumberOfPhotosPerPage:kNumberOfPhotosPerPage
     
 }
 
--(void)collectionView:(PSUICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+-(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     
     GRKPhoto * selectedPhoto = [self photoForCellAtIndexPath:indexPath];
