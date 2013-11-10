@@ -166,7 +166,7 @@ GRKAlbumDateProperty * const kGRKAlbumDatePropertyDateUpdated = @"kGRKAlbumDateP
     }
     @catch (NSException *exception) {
 
-        keysForThisPage = [NSArray array];
+        keysForThisPage = [NSMutableArray array];
         
         // method [NSArray objectsAtIndexes:] may throw a NSRangeException
 		NSLog(@" error : %@", exception);

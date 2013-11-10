@@ -226,11 +226,28 @@ Then : we have to fetch from "(page index) * (number of photo per page)" to "ran
  */
     
     NSUInteger finalNumberOfPhotosPerPage = numberOfPhotosPerPage;
+    NSIndexSet * indexSetAtThisPageIndex;
+    
     if ( pageIndex*numberOfPhotosPerPage + numberOfPhotosPerPage > album.count ){
+        
         finalNumberOfPhotosPerPage = MAX(0,album.count - pageIndex*numberOfPhotosPerPage);
+        
+        NSMutableIndexSet * mutableIndexSetAtThisPageIndex = [[NSMutableIndexSet alloc] initWithIndexSet:[NSIndexSet indexSetForPageIndex:pageIndex
+                                                                                                                 withNumberOfItemsPerPage:numberOfPhotosPerPage]];
+        
+        NSInteger numberOfExtraIndexSet = (pageIndex+1)*numberOfPhotosPerPage - album.count;
+        
+        NSIndexSet * indexSetToRemove = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange( (pageIndex+1)*numberOfPhotosPerPage - numberOfExtraIndexSet,
+                                                                                           numberOfExtraIndexSet ) ];
+
+        [mutableIndexSetAtThisPageIndex removeIndexes:indexSetToRemove];
+        
+        indexSetAtThisPageIndex = [[NSIndexSet alloc] initWithIndexSet:mutableIndexSetAtThisPageIndex];
+        
+    } else {
+		indexSetAtThisPageIndex = [NSIndexSet indexSetForPageIndex:pageIndex withNumberOfItemsPerPage:finalNumberOfPhotosPerPage];
     }
 
-    NSIndexSet * indexSetAtThisPageIndex = [NSIndexSet indexSetForPageIndex:pageIndex withNumberOfItemsPerPage:finalNumberOfPhotosPerPage];
     
     [self incrementQueriesCount];
     cancelAllFlag = NO;
@@ -241,7 +258,6 @@ Then : we have to fetch from "(page index) * (number of photo per page)" to "ran
         // the array of GRKPhoto for this page of the album
         __block NSMutableArray * newPhotos = [NSMutableArray array];
         __block id me = self;
-        // I have some doubts on this "__weak __block" thing ... am I doing something wrong ? I just want to avoid leaks with the block ...
         
         [groupForThisAlbum enumerateAssetsAtIndexes:indexSetAtThisPageIndex
                                             options:0
@@ -254,7 +270,7 @@ Then : we have to fetch from "(page index) * (number of photo per page)" to "ran
                                                  return;
                                              }
                                              
-                                             // when enumeration is finished, a nil group is passed to this block
+                                             // when enumeration is finished, a nil result is passed to this block
                                              if ( result == nil ){
                                                  
                                                  // add the new photos to the album
