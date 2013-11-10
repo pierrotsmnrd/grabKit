@@ -7,9 +7,6 @@
 [submodule "grabKit/grabKit/submodules/MBProgressHUD"]
 	path = grabKit/grabKit/submodules/MBProgressHUD
 	url = https://github.com/jdg/MBProgressHUD
-[submodule "grabKit/grabKit/submodules/PSTCollectionView"]
-	path = grabKit/grabKit/submodules/PSTCollectionView
-	url = https://github.com/steipete/PSTCollectionView
 [submodule "grabKit/grabKit/submodules/NVUIGradientButton"]
 	path = grabKit/grabKit/submodules/NVUIGradientButton
 	url = https://github.com/nverinaud/NVUIGradientButton
