@@ -93,64 +93,159 @@ static NSString *kGRKServiceNameDevice = @"device";
 {
 
     if ( numberOfAlbumsPerPage > kGRKMaximumNumberOfAlbumsPerPage ) {
-
+        
         NSException* exception = [NSException
-                                    exceptionWithName:@"numberOfAlbumsPerPageTooHigh"
+                                  exceptionWithName:@"numberOfAlbumsPerPageTooHigh"
                                   reason:[NSString stringWithFormat:@"The number of albums per page you asked (%d) is too high", numberOfAlbumsPerPage]
-                                    userInfo:nil];
+                                  userInfo:nil];
         @throw exception;
     }
     
+    /* We want to present the "Camera Roll" as first result.
+     This is why, if we're asked for the pageIndex 0, 
+     	_ First, we retrieve the "Camera Roll" ALAssetsGroup (type ALAssetsGroupSavedPhotos)
+        _ Then, we retrieve all the other groups, minus one (all types of ALAssetsGroup, except ALAssetsGroupSavedPhotos)
+     */
+
+    
+    if ( pageIndex == 0 ){
+        
+        // The dictionary of albums that will be sent to the caller
+        __block NSMutableArray * albums = [[NSMutableArray alloc] init];
+        
+        [self albumsOfCurrentUserFromIndex:0
+                                   toIndex:0
+                              andGroupsTypes:ALAssetsGroupSavedPhotos
+                            andCompleteBlock:^(NSArray *results) {
+                                
+                                if ( [results count] != 1 ){
+                                    
+                                    if ( errorBlock != nil ){
+						
+                                        NSString * errorDomain = [NSString stringWithFormat:@"com.grabKit.%@", _serviceName];
+                                        NSError * error = [NSError errorWithDomain:errorDomain code:404 userInfo:nil];
+                                        errorBlock(error);
+                                    }
+                                    return;
+                                }
+                                
+                                [albums addObject:results[0]];
+                                
+                                [self albumsOfCurrentUserFromIndex:0
+                                                           toIndex:(numberOfAlbumsPerPage>=2)?(numberOfAlbumsPerPage-2):0
+                                                      andGroupsTypes:(ALAssetsGroupAll & ~ALAssetsGroupSavedPhotos)
+                                                    andCompleteBlock:^(NSArray *results) {
+                                                        
+                                                        [albums addObjectsFromArray:results];
+                                                        dispatch_async_on_main_queue(completeBlock, albums);
+                                                        return;
+                                                        
+                                                    } andErrorBlock:^(NSError *error) {
+                                                     
+                                                        if ( errorBlock != nil ){
+                                                            errorBlock(error);
+                                                        }
+                                                        return;
+                                                    }];
+                                
+                            } andErrorBlock:^(NSError *error) {
+                                
+                                if ( errorBlock != nil ){
+	                                errorBlock(error);
+                                }
+                                return;
+                            }];
+        
+        
+        return;
+    } else {
+        
+        [self albumsOfCurrentUserFromIndex:(pageIndex*numberOfAlbumsPerPage)-1
+                                   toIndex:((pageIndex+1)*numberOfAlbumsPerPage)-2
+                              andGroupsTypes:(ALAssetsGroupAll & ~ALAssetsGroupSavedPhotos)
+                            andCompleteBlock:^(NSArray *results) {
+                                
+                                dispatch_async_on_main_queue(completeBlock, results);
+                                return;
+                                
+                            } andErrorBlock:^(NSError *error) {
+                                
+                            }];
+
+    }
+    
+
+    
+}
+
+
+-(void) albumsOfCurrentUserFromIndex:(NSUInteger)startIndex
+                               toIndex:(NSUInteger)endIndex
+                       andGroupsTypes:(ALAssetsGroupType)groupTypes
+                      andCompleteBlock:(GRKServiceGrabberCompleteBlock)completeBlock
+                         andErrorBlock:(GRKErrorBlock)errorBlock {
+    
+//    NSLog(@" albums from index %d to index %d", startIndex,  endIndex);
+    
     // The dictionary of albums that will be sent to the caller
     __block NSMutableArray * albums = [[NSMutableArray alloc] init];
-
+    
     [self incrementQueriesCount];
     cancelAllFlag = NO;
     
-    __block int currentGroupIndex = 0; // enumerations count
-    [library enumerateGroupsWithTypes:ALAssetsGroupAll
+    __block int indexOfIteratedAssetsGroup = -1; // enumerations count
+    [library enumerateGroupsWithTypes:groupTypes
                            usingBlock:^(ALAssetsGroup * group, BOOL *stop){
-                           
-                               // check if the cancelAll flag has been set 
+                               
+                               if ( (*stop) ){
+                                   return;
+                               }
+                               
+                               // check if the cancelAll flag has been set
                                if ( cancelAllFlag == YES ){
                                    *stop = YES;
                                    [self decrementQueriesCount];
                                    return;
                                }
                                
+                               indexOfIteratedAssetsGroup++;
+                               
+                               
                                // the ALAssetsLibrary doesn't allow pagination
                                // So let's skip the groups that are not in the wanted range
-    
-                               // if the current group is before the first desired group, just skip it
-                               if ( currentGroupIndex < pageIndex*numberOfAlbumsPerPage ) {
-	                                return;   
-                               }
                                
-                               /* if the current group is after the last desired group, 
-	                               	_ stop the iteration 
-                               		_ perform the complete block
-                               		_ return
-                                */
-                               if ( currentGroupIndex > pageIndex*numberOfAlbumsPerPage+numberOfAlbumsPerPage){
-                                   *stop = YES;
-                                   [self decrementQueriesCount];
-                                  
-                                   dispatch_async_on_main_queue(completeBlock, albums);
-                                  
+                               // if the current group is before the first desired group, just skip it
+                               if ( indexOfIteratedAssetsGroup < startIndex ) {
                                    return;
                                }
+                               
+                               /* if the current group is after the last desired group,
+                                _ stop the iteration
+                                _ perform the complete block
+                                _ return
+                                */
+                               if ( indexOfIteratedAssetsGroup > endIndex ){
+                                   *stop = YES;
+
+                                   [self decrementQueriesCount];
+                                   dispatch_async_on_main_queue(completeBlock, albums);
                                    
+                                   return;
+                               }
+                               
                                
                                /* When all the groups have been enumerated, a nil group is passed to this block.
-                                  then call the completeBlock and return
+                                then call the completeBlock and return
                                 */
                                if ( group == nil ){
-                                   [self decrementQueriesCount];                                   
-                                   dispatch_async_on_main_queue(completeBlock, albums);
-                                 
+                                    *stop = YES;
+                                    [self decrementQueriesCount];
+                                	dispatch_async_on_main_queue(completeBlock, albums);
+                                   
                                    return;
                                }
                                
+//                               NSLog( @"%d group : %@", indexOfIteratedAssetsGroup, group);
                                
                                // Let's fetch the group's informations to build a GRKAlbum
                                
@@ -158,9 +253,13 @@ static NSString *kGRKServiceNameDevice = @"device";
                                [group setAssetsFilter:[ALAssetsFilter allPhotos]];
                                
                                NSString * albumId = [group valueForProperty:ALAssetsGroupPropertyPersistentID];
+                               if ( albumId == nil ){
+                                   return;
+                               }
+                               
                                NSString * albumName = [group valueForProperty:ALAssetsGroupPropertyName];
                                NSUInteger count = [group numberOfAssets];
-                              
+                               
                                // Build the GRKAlbum
                                GRKAlbum * album = [GRKAlbum albumWithId:albumId andName:albumName andCount:count  andDates:nil];
                                
@@ -170,7 +269,7 @@ static NSString *kGRKServiceNameDevice = @"device";
                                // keep a reference to the group for the albumId
                                [assetsGroupsById setObject:group forKey:albumId];
                                
-                               currentGroupIndex++;
+                               
                            }
                          failureBlock:^(NSError * error){
                              
@@ -180,8 +279,8 @@ static NSString *kGRKServiceNameDevice = @"device";
                              
                          }];
     
-    
 }
+
 
 /* @see refer to GRKServiceGrabberProtocol documentation
  */
