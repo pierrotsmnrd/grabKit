@@ -1,3 +1,16 @@
+GrabKit v1.4 changelog :
+Release Date : November 13, 2013
+
+What has changed :
+
+* The deployment target is now iOS 6
+* In the GRKDeviceGrabber, the Camera Roll is now the first album to be returned
+
+What has been fixed :
+* In the GRKDeviceGrabber, the bug preventing to retrieve all the photos of an album has been fixed.
+
+
+
 GrabKit v1.3.2 changelog :
 Release Date : August 23, 2013
 
